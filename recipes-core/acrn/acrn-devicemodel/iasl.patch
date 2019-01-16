@@ -1,0 +1,20 @@
+Fix the path to iasl.
+
+Evil workaround, upstream are working on a way of letting us customise this.
+
+Upstream-Status: Inappropriate
+Signed-off-by: Ross Burton <ross.burton@intel.com>
+
+diff --git a/devicemodel/hw/platform/acpi/acpi.c b/devicemodel/hw/platform/acpi/acpi.c
+index 1ec26695..9071fd38 100644
+--- a/devicemodel/hw/platform/acpi/acpi.c
++++ b/devicemodel/hw/platform/acpi/acpi.c
+@@ -88,7 +88,7 @@
+ 
+ #define	ASL_TEMPLATE	"dm.XXXXXXX"
+ #define ASL_SUFFIX	".aml"
+-#define ASL_COMPILER	"/usr/sbin/iasl"
++#define ASL_COMPILER	"/usr/bin/iasl"
+ 
+ uint64_t audio_nhlt_len = 0;
+ uint32_t csme_sec_cap = 0;

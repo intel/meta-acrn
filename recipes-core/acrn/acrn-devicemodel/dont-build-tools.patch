@@ -1,0 +1,18 @@
+No need to build the tools as we can use the libraries already installed.
+
+Upstream-Status: Inappropriate
+Signed-off-by: Ross Burton <ross.burton@intel.com>
+
+diff --git a/Makefile b/Makefile
+index 87eb0c93..ce2c4b6a 100644
+--- a/Makefile
++++ b/Makefile
+@@ -58,7 +58,7 @@ sbl-hypervisor:
+ 	$(MAKE) -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE) clean
+ 	$(MAKE) -C $(T)/hypervisor HV_OBJDIR=$(HV_OUT)-sbl BOARD=apl-mrb FIRMWARE=sbl RELEASE=$(RELEASE)
+ 
+-devicemodel: tools
++devicemodel:
+ 	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) clean
+ 	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) DM_BUILD_VERSION=$(BUILD_VERSION) DM_BUILD_TAG=$(BUILD_TAG)
+ 
