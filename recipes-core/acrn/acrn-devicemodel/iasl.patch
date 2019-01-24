@@ -1,20 +1,72 @@
-Fix the path to iasl.
-
-Evil workaround, upstream are working on a way of letting us customise this.
-
-Upstream-Status: Inappropriate
+Upstream-Status: Backport
 Signed-off-by: Ross Burton <ross.burton@intel.com>
 
+From fe636818bf99179c35e41eb01f8f583ad9d35495 Mon Sep 17 00:00:00 2001
+From: Xiaoguang Wu <xiaoguang.wu@intel.com>
+Date: Mon, 14 Jan 2019 06:42:02 +0000
+Subject: [PATCH] DM: ACPI: Avoiding hard code the ASL_COMPILER macro
+
+The ASL_COMPILER macro is hard coded as /usr/sbin/iasl, it is
+complained by some developers. This patch changes it to a
+flexible way, by which the following make command lines are
+supported:
+
+make
+make devicemodel
+make ASL_COMPILER=/path/to/iasl
+make ASL_COMPILER=/path/to/iasl devicemodel
+
+Tracked-On: #2298
+Signed-off-by: Xiaoguang Wu <xiaoguang.wu@intel.com>
+Reviewed-by: Binbin Wu <binbin.wu@intel.com>
+---
+ Makefile                            | 2 +-
+ devicemodel/Makefile                | 4 ++++
+ devicemodel/hw/platform/acpi/acpi.c | 2 ++
+ 3 files changed, 7 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index f0bfd2d3..2768300e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -62,7 +62,7 @@ sbl-hypervisor:
+ 
+ devicemodel: tools
+ 	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) clean
+-	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) DM_BUILD_VERSION=$(BUILD_VERSION) DM_BUILD_TAG=$(BUILD_TAG)
++	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) DM_BUILD_VERSION=$(BUILD_VERSION) DM_BUILD_TAG=$(BUILD_TAG) DM_ASL_COMPILER=$(ASL_COMPILER)
+ 
+ tools:
+ 	mkdir -p $(TOOLS_OUT)
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index 32c52193..4707ab25 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -25,6 +25,10 @@ CFLAGS += -I$(BASEDIR)/include/public
+ CFLAGS += -I$(DM_OBJDIR)/include
+ CFLAGS += -I$(TOOLS_OUT)
+ 
++ifneq (, $(DM_ASL_COMPILER))
++CFLAGS += -DASL_COMPILER=\"$(DM_ASL_COMPILER)\"
++endif
++
+ GCC_MAJOR=$(shell echo __GNUC__ | $(CC) -E -x c - | tail -n 1)
+ GCC_MINOR=$(shell echo __GNUC_MINOR__ | $(CC) -E -x c - | tail -n 1)
+ 
 diff --git a/devicemodel/hw/platform/acpi/acpi.c b/devicemodel/hw/platform/acpi/acpi.c
-index 1ec26695..9071fd38 100644
+index 8abf44b4..d43ec237 100644
 --- a/devicemodel/hw/platform/acpi/acpi.c
 +++ b/devicemodel/hw/platform/acpi/acpi.c
-@@ -88,7 +88,7 @@
+@@ -89,7 +89,9 @@
  
  #define	ASL_TEMPLATE	"dm.XXXXXXX"
  #define ASL_SUFFIX	".aml"
--#define ASL_COMPILER	"/usr/sbin/iasl"
-+#define ASL_COMPILER	"/usr/bin/iasl"
++#ifndef ASL_COMPILER
+ #define ASL_COMPILER	"/usr/sbin/iasl"
++#endif
  
  uint64_t audio_nhlt_len = 0;
  uint32_t csme_sec_cap = 0;
+-- 
+2.11.0
+

@@ -3,8 +3,6 @@ require acrn-common.inc
 # TODO: force this to 1 for now as debug mode means a dependency on telemetrics
 ACRN_RELEASE = "1"
 
-SRC_URI += "file://flags.patch"
-
 inherit pkgconfig systemd
 
 PACKAGECONFIG ??= "${@'debugtools' if d.getVar('ACRN_RELEASE') == '0' else ''}"
@@ -13,6 +11,7 @@ PACKAGECONFIG[debugtools] = ",,telemetrics e2fsprogs libxml2 systemd util-linux 
 do_compile() {
 	oe_runmake tools
 }
+
 do_install() {
 	oe_runmake tools-install
 

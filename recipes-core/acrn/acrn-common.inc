@@ -3,11 +3,11 @@ HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
-SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_0.5 \
-           file://paths.patch \
-           file://make.patch"
+SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_0.6 \
+           file://paths.patch"
 
-SRCREV = "b5f235cf75694d18c062492e7215ad2aced3e3f7"
+PV = "0.6"
+SRCREV = "35f20a5a291f1836e5bd6dfb7ee7398f0b078b4c"
 
 UPSTREAM_CHECK_COMMITS = "1"
 

@@ -1,7 +1,7 @@
 require acrn-common.inc
 
-SRC_URI += "file://dont-build-tools.patch \
-            file://iasl.patch"
+SRC_URI += "file://iasl.patch \
+            file://dont-build-tools.patch"
 
 inherit python3native
 
@@ -9,6 +9,8 @@ DEPENDS += "python3-kconfiglib-native util-linux libusb1 openssl libpciaccess ac
 
 # Tell the build where to find acrn-tools
 EXTRA_OEMAKE += "TOOLS_OUT=${STAGING_DIR_TARGET}${includedir}/acrn"
+
+EXTRA_OEMAKE += "ASL_COMPILER=${bindir}/iasl"
 
 RDEPENDS_${PN} += "acpica"
 
