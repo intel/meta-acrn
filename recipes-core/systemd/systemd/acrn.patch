@@ -1,0 +1,37 @@
+Add detection for the ACRN hypervisor.
+
+Upstream-Status: Backport [095b9cf45ad85dffff2e40752e74392484dfbcab]
+Signed-off-by: Ross Burton <ross.burton@intel.com>
+
+diff --git a/src/basic/virt.c b/src/basic/virt.c
+index d347732bb3..18d926731f 100644
+--- a/src/basic/virt.c
++++ b/src/basic/virt.c
+@@ -40,6 +40,7 @@ static int detect_vm_cpuid(void) {
+                 /* https://wiki.freebsd.org/bhyve */
+                 { "bhyve bhyve ", VIRTUALIZATION_BHYVE     },
+                 { "QNXQVMBSQG",   VIRTUALIZATION_QNX       },
++                { "ACRNACRNACRN", VIRTUALIZATION_ACRN      },
+         };
+ 
+         uint32_t eax, ebx, ecx, edx;
+@@ -611,6 +612,7 @@ static const char *const virtualization_table[_VIRTUALIZATION_MAX] = {
+         [VIRTUALIZATION_PARALLELS] = "parallels",
+         [VIRTUALIZATION_BHYVE] = "bhyve",
+         [VIRTUALIZATION_QNX] = "qnx",
++        [VIRTUALIZATION_ACRN] = "acrn",
+         [VIRTUALIZATION_VM_OTHER] = "vm-other",
+ 
+         [VIRTUALIZATION_SYSTEMD_NSPAWN] = "systemd-nspawn",
+diff --git a/src/basic/virt.h b/src/basic/virt.h
+index c4cf4bfeab..03cf1752f4 100644
+--- a/src/basic/virt.h
++++ b/src/basic/virt.h
+@@ -21,6 +21,7 @@ enum {
+         VIRTUALIZATION_PARALLELS,
+         VIRTUALIZATION_BHYVE,
+         VIRTUALIZATION_QNX,
++        VIRTUALIZATION_ACRN,
+         VIRTUALIZATION_VM_OTHER,
+         VIRTUALIZATION_VM_LAST = VIRTUALIZATION_VM_OTHER,
+ 
