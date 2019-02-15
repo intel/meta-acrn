@@ -1,6 +1,6 @@
 require acrn-common.inc
 
-ACRN_BOARD ?= "${MACHINE}"
+ACRN_BOARD ?= "NUC6CAYH"
 ACRN_FIRMWARE ?= "uefi"
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor EFI_OBJDIR=${B}/efi-stub"
