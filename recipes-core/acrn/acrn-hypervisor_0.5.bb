@@ -14,19 +14,13 @@ DEPENDS += "python3-kconfiglib-native"
 DEPENDS += "${@'gnu-efi' if d.getVar('ACRN_FIRMWARE') == 'uefi' else ''}"
 
 do_configure() {
-	# Use oldconfig so we get to override more options (passed via EXTRA_OEMAKE).
-	# Ideally, we could write a .config and then defoldconfig it but that doesn't work.
-	# https://github.com/projectacrn/acrn-hypervisor/issues/2371
-	#
-	# Need to tell this explicitly where the object directory is otherwise it
-	# writes the .config to S/build/hypervisor.
+	mkdir --parents ${B}/hypervisor
+	cat <<-EOF >${B}/hypervisor/.config
+	CONFIG_BOARD="${ACRN_BOARD}"
+	CONFIG_UEFI_OS_LOADER_NAME="\\\\EFI\\\\BOOT\\\\bootx64.efi"
+	EOF
+	cat ${B}/hypervisor/.config
 	oe_runmake -C hypervisor oldconfig
-
-	# Remove the Clear Linux-ism.  When we move to 0.6 this can be done by
-	# seeding .config.
-	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
-		sed -e 's|^CONFIG_UEFI_OS_LOADER_NAME=.*|CONFIG_UEFI_OS_LOADER_NAME="\\\\EFI\\\\BOOT\\\\bootx64.efi"|' -i ${B}/hypervisor/.config
-	fi
 }
 
 do_compile() {
