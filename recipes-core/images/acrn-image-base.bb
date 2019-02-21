@@ -7,4 +7,3 @@ CORE_IMAGE_EXTRA_INSTALL_append = " \
 "
 
 inherit image-acrn
-IMAGE_FSTYPES = "ext4 wic.acrn"
