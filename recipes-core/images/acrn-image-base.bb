@@ -1,12 +1,9 @@
 require recipes-core/images/core-image-base.bb
 
 CORE_IMAGE_EXTRA_INSTALL_append = " \
+    packagegroup-acrn \
     linux-firmware \
     kernel-modules \
-    acrn-hypervisor \
-    acrn-tools \
-    acrn-devicemodel \
-    acrn-efi-setup \
 "
 
 inherit image-acrn
