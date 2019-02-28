@@ -1,5 +1,7 @@
 require acrn-common.inc
 
+SRC_URI += "file://cpuid.patch"
+
 ACRN_BOARD ?= "NUC6CAYH"
 ACRN_FIRMWARE ?= "uefi"
 
