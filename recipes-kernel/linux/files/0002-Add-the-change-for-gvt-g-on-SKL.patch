@@ -1,0 +1,74 @@
+Upstream-Status: Submitted [https://github.com/projectacrn/acrn-kernel/compare/acrn_skl_test]
+Signed-off-by: Chin Huat Ang <chin.huat.ang@intel.com>
+
+From 20752796efcafc44560b905ccc73b75a2a59512d Mon Sep 17 00:00:00 2001
+From: Zhao Yakui <yakui.zhao@intel.com>
+Date: Mon, 11 Mar 2019 11:01:47 +0800
+Subject: [PATCH 2/8] Add the change for gvt-g on SKL
+
+Signed-off-by: Li, WeiNan <weinan.z.li@intel.com>
+---
+ drivers/gpu/drm/i915/gvt/cfg_space.c    | 3 ++-
+ drivers/gpu/drm/i915/gvt/mmio_context.c | 9 ++++++---
+ drivers/gpu/drm/i915/gvt/scheduler.c    | 4 +++-
+ 3 files changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/gvt/cfg_space.c b/drivers/gpu/drm/i915/gvt/cfg_space.c
+index 71a815d..8ba6a5a 100644
+--- a/drivers/gpu/drm/i915/gvt/cfg_space.c
++++ b/drivers/gpu/drm/i915/gvt/cfg_space.c
+@@ -400,7 +400,8 @@ int intel_vgpu_emulate_cfg_write(struct intel_vgpu *vgpu, unsigned int offset,
+ 		 * OpRegion. So here we don't report OpRegion to guest.
+ 		 */
+ 		if (IS_BROXTON(vgpu->gvt->dev_priv) ||
+-				IS_KABYLAKE(vgpu->gvt->dev_priv))
++		    IS_SKYLAKE(vgpu->gvt->dev_priv) ||
++		    IS_KABYLAKE(vgpu->gvt->dev_priv))
+ 			return 0;
+ 
+ 		ret = intel_vgpu_opregion_base_write_handler(vgpu,
+diff --git a/drivers/gpu/drm/i915/gvt/mmio_context.c b/drivers/gpu/drm/i915/gvt/mmio_context.c
+index 4e99cd0..417e4e8 100644
+--- a/drivers/gpu/drm/i915/gvt/mmio_context.c
++++ b/drivers/gpu/drm/i915/gvt/mmio_context.c
+@@ -404,7 +404,8 @@ static void switch_mocs(struct intel_vgpu *pre, struct intel_vgpu *next,
+ 	if (WARN_ON(ring_id >= ARRAY_SIZE(regs)))
+ 		return;
+ 
+-	if ((IS_KABYLAKE(dev_priv) || IS_BROXTON(dev_priv)) && ring_id == RCS)
++	if ((IS_KABYLAKE(dev_priv) || IS_SKYLAKE(dev_priv) || IS_BROXTON(dev_priv))
++	    && ring_id == RCS)
+ 		return;
+ 
+ 	if (!pre && !gen9_render_mocs.initialized)
+@@ -484,8 +485,10 @@ static void switch_mmio(struct intel_vgpu *pre,
+ 		 * state image on kabylake, it's initialized by lri command and
+ 		 * save or restore with context together.
+ 		 */
+-		if ((IS_KABYLAKE(dev_priv) || IS_BROXTON(dev_priv))
+-			&& mmio->in_context)
++		if ((IS_KABYLAKE(dev_priv) ||
++		     IS_SKYLAKE(dev_priv) ||
++		     IS_BROXTON(dev_priv))
++		     && mmio->in_context)
+ 			continue;
+ 
+ 		// save
+diff --git a/drivers/gpu/drm/i915/gvt/scheduler.c b/drivers/gpu/drm/i915/gvt/scheduler.c
+index 51060ff..1376c89 100644
+--- a/drivers/gpu/drm/i915/gvt/scheduler.c
++++ b/drivers/gpu/drm/i915/gvt/scheduler.c
+@@ -338,7 +338,9 @@ static int copy_workload_to_ring_buffer(struct intel_vgpu_workload *workload)
+ 	void *shadow_ring_buffer_va;
+ 	u32 *cs;
+ 
+-	if ((IS_KABYLAKE(req->i915) || IS_BROXTON(req->i915))
++	if ((IS_KABYLAKE(req->i915) ||
++	     IS_SKYLAKE(req->i915) ||
++	     IS_BROXTON(req->i915))
+ 		&& is_inhibit_context(req->hw_context))
+ 		intel_vgpu_restore_inhibit_context(vgpu, req);
+ 
+-- 
+2.7.4
+
