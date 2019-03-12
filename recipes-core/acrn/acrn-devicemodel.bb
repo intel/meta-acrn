@@ -23,6 +23,11 @@ do_compile() {
 do_install() {
 	oe_runmake devicemodel-install
 
+	# Write a modprobe.d so that acrngt is loaded before i915, as otherwise i915
+	# fails to initialise and output is disabled.
+	install -d ${D}${sysconfdir}/modprobe.d
+	echo "softdep i915 pre: acrngt" >${D}${sysconfdir}/modprobe.d/acrn.conf
+
 	# Remove samples, these should be packaged separately.
 	rm -rf ${D}${systemd_unitdir}
 	rmdir --ignore-fail-on-non-empty `dirname ${D}${systemd_unitdir}`
