@@ -1,8 +1,8 @@
 require acrn-common.inc
 
-SRC_URI += "file://cpuid.patch"
+SRC_URI += "file://efi-loader.patch"
 
-ACRN_BOARD ?= "NUC6CAYH"
+ACRN_BOARD ?= "nuc7i7bnh"
 ACRN_FIRMWARE ?= "uefi"
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor EFI_OBJDIR=${B}/efi-stub"
@@ -16,12 +16,6 @@ DEPENDS += "python3-kconfiglib-native"
 DEPENDS += "${@'gnu-efi' if d.getVar('ACRN_FIRMWARE') == 'uefi' else ''}"
 
 do_configure() {
-	mkdir --parents ${B}/hypervisor
-	cat <<-EOF >${B}/hypervisor/.config
-	CONFIG_BOARD="${ACRN_BOARD}"
-	CONFIG_UEFI_OS_LOADER_NAME="\\\\EFI\\\\BOOT\\\\bootx64.efi"
-	EOF
-	cat ${B}/hypervisor/.config
 	oe_runmake -C hypervisor oldconfig
 }
 

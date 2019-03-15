@@ -5,8 +5,7 @@ least $libdir is set right.
 
 Upstream-Status: Pending
 Signed-off-by: Ross Burton <ross.burton@intel.com>
-
-From 0ffd0ad1f3c9daa4c72aadbf7a1a1b581579dbd0 Mon Sep 17 00:00:00 2001
+From 9825b6c5d9789a734cfe48abaefbec9cf5455cbb Mon Sep 17 00:00:00 2001
 From: Ross Burton <ross.burton@intel.com>
 Date: Tue, 15 Jan 2019 14:49:48 +0000
 Subject: [PATCH] XXX tools: don't hardcode install paths
@@ -18,68 +17,117 @@ TODO replace hard-coded paths in files too
 
 Signed-off-by: Ross Burton <ross.burton@intel.com>
 ---
+ devicemodel/Makefile         | 18 +++++-----
+ devicemodel/vmcfg/Makefile   |  5 +--
+ hypervisor/Makefile          | 14 ++++----
+ paths.make                   |  8 +++++
+ tools/acrn-crashlog/Makefile | 86 ++++++++++++++++++++++----------------------
+ tools/acrn-manager/Makefile  | 20 ++++++-----
+ tools/acrnbridge/Makefile    | 12 +++----
+ tools/acrnlog/Makefile       | 10 +++---
+ tools/acrntrace/Makefile     |  6 ++--
+ 9 files changed, 100 insertions(+), 79 deletions(-)
+ create mode 100644 paths.make
+
 diff --git a/devicemodel/Makefile b/devicemodel/Makefile
-index 32c52193..682d187d 100644
+index 9a95d44a..cfada96b 100644
 --- a/devicemodel/Makefile
 +++ b/devicemodel/Makefile
-@@ -4,0 +5,2 @@ include ../VERSION
+@@ -2,6 +2,8 @@
+ # ACRN-DM
+ #
+ include ../VERSION
 +include ../paths.make
 +
-@@ -213 +215 @@ install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install
+ FULL_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)$(EXTRA_VERSION)
+ BASEDIR := $(shell pwd)
+ DM_OBJDIR ?= $(CURDIR)/build
+@@ -221,22 +223,22 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
+ 	$(CC) $(CFLAGS) -c $< -o $@
+ 
+ install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-vmcfg install-samples-up2
 -	install -D --mode=0755 $(DM_OBJDIR)/$(PROGRAM) $(DESTDIR)/usr/bin/$(PROGRAM)
 +	install -D --mode=0755 $(DM_OBJDIR)/$(PROGRAM) $(DESTDIR)$(bindir)/$(PROGRAM)
-@@ -216 +218 @@ install-samples-up2: $(SAMPLES_UP2)
--	install -D -t $(DESTDIR)/usr/share/acrn/samples/up2 $^
-+	install -D -t $(DESTDIR)$(datadir)/acrn/samples/up2 $^
-@@ -219 +221 @@ install-samples-nuc: $(SAMPLES_NUC)
+ 
+ install-samples-up2: $(SAMPLES_UP2)
+-	install -D -t $(DESTDIR)/usr/share/acrn/samples/apl-up2 $^
++	install -D -t $(DESTDIR)$(datadir)/acrn/samples/apl-up2 $^
+ 
+ install-samples-nuc: $(SAMPLES_NUC)
 -	install -D -t $(DESTDIR)/usr/share/acrn/samples/nuc $^
 +	install -D -t $(DESTDIR)$(datadir)/acrn/samples/nuc $^
-@@ -222,3 +224,3 @@ install-samples-mrb: $(SAMPLES_MRB)
+ 
+ install-samples-mrb: $(SAMPLES_MRB)
 -	install -D -t $(DESTDIR)/usr/share/acrn/samples/apl-mrb $^
 -	install -d $(DESTDIR)/usr/lib/systemd/system/
 -	install -p -D -m 0644 ./samples/apl-mrb/acrn_guest.service $(DESTDIR)/usr/lib/systemd/system
 +	install -D -t $(DESTDIR)$(datadir)/acrn/samples/apl-mrb $^
 +	install -d $(DESTDIR)$(systemd_unitdir)/system/
 +	install -p -D -m 0644 ./samples/apl-mrb/acrn_guest.service $(DESTDIR)$(systemd_unitdir)/system
-@@ -227,2 +229,2 @@ install-bios: $(BIOS_BIN)
+ 
+ install-bios: $(BIOS_BIN)
 -	install -d $(DESTDIR)/usr/share/acrn/bios
 -	install -D --mode=0664 -t $(DESTDIR)/usr/share/acrn/bios $^
 +	install -d $(DESTDIR)$(datadir)/acrn/bios
 +	install -D --mode=0664 -t $(DESTDIR)$(datadir)/acrn/bios $^
+ 
+ install-vmcfg:
+ 	$(MAKE) -C $(BASEDIR)/vmcfg install DESTDIR=$(DESTDIR) BASEDIR=$(BASEDIR)
 diff --git a/devicemodel/vmcfg/Makefile b/devicemodel/vmcfg/Makefile
 index df323d22..7d0e04af 100644
 --- a/devicemodel/vmcfg/Makefile
 +++ b/devicemodel/vmcfg/Makefile
-@@ -3,0 +4 @@ include $(BASEDIR)/vmcfg/scripts/kconfig/kconfig.mk
+@@ -1,9 +1,10 @@
+ BASEDIR ?= ..
+ 
+ include $(BASEDIR)/vmcfg/scripts/kconfig/kconfig.mk
 +include ../../paths.make
-@@ -8,2 +9,2 @@ install:
+ 
+ all:
+ 
+ install:
 -	install -d $(DESTDIR)/usr/share/acrn/samples/apl-mrb
 -	install -t $(DESTDIR)/usr/share/acrn/samples/apl-mrb $(BASEDIR)/vmcfg/apl-mrb/mrb-env-setup.sh
 +	install -d $(DESTDIR)$(datadir)/acrn/samples/apl-mrb
 +	install -t $(DESTDIR)$(datadir)/acrn/samples/apl-mrb $(BASEDIR)/vmcfg/apl-mrb/mrb-env-setup.sh
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index bba4587d..7f851c28 100644
+index 7d603991..9368826d 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -41,0 +42,2 @@ include scripts/kconfig/kconfig.mk
+@@ -46,6 +46,8 @@ else ifeq ($(CONFIG_LOGICAL_PARTITION),y)
+ SCENARIO_NAME := logical_partition
+ endif
+ 
 +include ../paths.make
 +
-@@ -308 +310 @@ ifeq ($(BOARD),up2)
--	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).up2.sbl
-+	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).up2.sbl
-@@ -310 +312 @@ else
+ LD_IN_TOOL = scripts/genld.sh
+ BASH = $(shell which bash)
+ 
+@@ -305,18 +307,18 @@ all: lib $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
+ ifeq ($(FIRMWARE),sbl)
+ install: lib $(HV_OBJDIR)/$(HV_FILE).32.out
+ ifeq ($(BOARD),apl-up2)
+-	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl
++	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).apl-up2.sbl
+ else
 -	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
 +	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl
-@@ -315,2 +317,2 @@ ifeq ($(BOARD),up2)
--	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).up2.sbl.out
--	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).up2.sbl.map
-+	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).up2.sbl.out
-+	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).up2.sbl.map
-@@ -318,2 +320,2 @@ else
+ endif
+ 
+ install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
+ ifeq ($(BOARD),apl-up2)
+-	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl.out
+-	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl.map
++	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).apl-up2.sbl.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).apl-up2.sbl.map
+ else
 -	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.out
 -	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.map
 +	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl.out
 +	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl.map
+ endif
+ endif
+ 
 diff --git a/paths.make b/paths.make
 new file mode 100644
 index 00000000..65a23582
@@ -95,13 +143,22 @@ index 00000000..65a23582
 +includedir ?= $(prefix)/include
 +systemd_unitdir ?= $(prefix)/lib/systemd
 diff --git a/tools/acrn-crashlog/Makefile b/tools/acrn-crashlog/Makefile
-index 3f74c99d..6d39df3f 100644
+index 05345088..a8123686 100644
 --- a/tools/acrn-crashlog/Makefile
 +++ b/tools/acrn-crashlog/Makefile
-@@ -4,0 +5,2 @@
+@@ -2,6 +2,8 @@
+ # ACRN-Crashlog Makefile
+ #
+ 
 +include ../../paths.make
 +
-@@ -100,17 +102,17 @@ install:
+ BASEDIR 	:= $(shell pwd)
+ OUT_DIR 	?= $(BASEDIR)
+ BUILDDIR	:= $(OUT_DIR)/acrn-crashlog
+@@ -97,60 +99,60 @@ clean:
+ 
+ .PHONY:install
+ install:
 -	@install -d $(DESTDIR)/usr/bin/
 -	@install -p -D -m 0755 $(BUILDDIR)/acrnprobe/bin/acrnprobe $(DESTDIR)/usr/bin/
 -	@install -p -D -m 0755 $(BUILDDIR)/usercrash/bin/debugger $(DESTDIR)/usr/bin/
@@ -136,121 +193,145 @@ index 3f74c99d..6d39df3f 100644
 +	@install -p -D -m 0644 data/usercrash.service $(DESTDIR)$(systemd_unitdir)/system/
 +	@install -d $(DESTDIR)$(libdir)/tmpfiles.d
 +	@install -p -D -m 0644 data/acrn-crashlog-dirs.conf $(DESTDIR)$(libdir)/tmpfiles.d/
-@@ -120,2 +122,2 @@ uninstall:
+ 
+ .PHONY:uninstall
+ uninstall:
 -	@if [ -e "$(DESTDIR)/usr/bin/acrnprobe" ];then \
 -		$(RM) $(DESTDIR)/usr/bin/acrnprobe; \
 +	@if [ -e "$(DESTDIR)$(bindir)/acrnprobe" ];then \
 +		$(RM) $(DESTDIR)$(bindir)/acrnprobe; \
-@@ -123,3 +125,3 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/bin/crashlogctl" ];then \
 -		$(DESTDIR)/usr/bin/crashlogctl disable && \
 -		$(RM) $(DESTDIR)/usr/bin/crashlogctl; \
 +	@if [ -e "$(DESTDIR)$(bindir)/crashlogctl" ];then \
 +		$(DESTDIR)$(bindir)/crashlogctl disable && \
 +		$(RM) $(DESTDIR)$(bindir)/crashlogctl; \
-@@ -127,2 +129,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/bin/debugger" ];then \
 -		$(RM) $(DESTDIR)/usr/bin/debugger; \
 +	@if [ -e "$(DESTDIR)$(bindir)/debugger" ];then \
 +		$(RM) $(DESTDIR)$(bindir)/debugger; \
-@@ -130,2 +132,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/bin/usercrash_c" ];then \
 -		$(RM) $(DESTDIR)/usr/bin/usercrash_c; \
 +	@if [ -e "$(DESTDIR)$(bindir)/usercrash_c" ];then \
 +		$(RM) $(DESTDIR)$(bindir)/usercrash_c; \
-@@ -133,2 +135,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/bin/usercrash_s" ];then \
 -		$(RM) $(DESTDIR)/usr/bin/usercrash_s; \
 +	@if [ -e "$(DESTDIR)$(bindir)/usercrash_s" ];then \
 +		$(RM) $(DESTDIR)$(bindir)/usercrash_s; \
-@@ -136,2 +138,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/bin/usercrash-wrapper" ];then \
 -		$(RM) $(DESTDIR)/usr/bin/usercrash-wrapper; \
 +	@if [ -e "$(DESTDIR)$(bindir)/usercrash-wrapper" ];then \
 +		$(RM) $(DESTDIR)$(bindir)/usercrash-wrapper; \
-@@ -139,2 +141,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/share/acrn/crashlog/40-watchdog.conf" ];then \
 -		$(RM) $(DESTDIR)/usr/share/acrn/crashlog/40-watchdog.conf; \
 +	@if [ -e "$(DESTDIR)$(datadir)/acrn/crashlog/40-watchdog.conf" ];then \
 +		$(RM) $(DESTDIR)$(datadir)/acrn/crashlog/40-watchdog.conf; \
-@@ -142,2 +144,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/share/acrn/crashlog/80-coredump.conf" ];then \
 -		$(RM) $(DESTDIR)/usr/share/acrn/crashlog/80-coredump.conf; \
 +	@if [ -e "$(DESTDIR)$(datadir)/acrn/crashlog/80-coredump.conf" ];then \
 +		$(RM) $(DESTDIR)$(datadir)/acrn/crashlog/80-coredump.conf; \
-@@ -145,2 +147,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/share/defaults/telemetrics/acrnprobe.xml" ];then \
 -		$(RM) $(DESTDIR)/usr/share/defaults/telemetrics/acrnprobe.xml; \
 +	@if [ -e "$(DESTDIR)$(datadir)/defaults/telemetrics/acrnprobe.xml" ];then \
 +		$(RM) $(DESTDIR)$(datadir)/defaults/telemetrics/acrnprobe.xml; \
-@@ -148,2 +150,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/lib/systemd/system/acrnprobe.service" ];then \
 -		$(RM) $(DESTDIR)/usr/lib/systemd/system/acrnprobe.service; \
 +	@if [ -e "$(DESTDIR)$(systemd_unitdir)/system/acrnprobe.service" ];then \
 +		$(RM) $(DESTDIR)$(systemd_unitdir)/system/acrnprobe.service; \
-@@ -151,2 +153,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/lib/systemd/system/usercrash.service" ];then \
 -		$(RM) $(DESTDIR)/usr/lib/systemd/system/usercrash.service; \
 +	@if [ -e "$(DESTDIR)$(systemd_unitdir)/system/usercrash.service" ];then \
 +		$(RM) $(DESTDIR)$(systemd_unitdir)/system/usercrash.service; \
-@@ -154,2 +156,2 @@ uninstall:
+ 	fi
 -	@if [ -e "$(DESTDIR)/usr/lib/tmpfiles.d/acrn-crashlog-dirs.conf" ];then \
 -		$(RM) $(DESTDIR)/usr/lib/tmpfiles.d/acrn-crashlog-dirs.conf; \
 +	@if [ -e "$(DESTDIR)$(libdir)/tmpfiles.d/acrn-crashlog-dirs.conf" ];then \
 +		$(RM) $(DESTDIR)$(libdir)/tmpfiles.d/acrn-crashlog-dirs.conf; \
+ 	fi
 diff --git a/tools/acrn-manager/Makefile b/tools/acrn-manager/Makefile
-index 781c7dee..d263ea0f 100644
+index fca8288d..7d560c84 100644
 --- a/tools/acrn-manager/Makefile
 +++ b/tools/acrn-manager/Makefile
-@@ -0,0 +1,2 @@
+@@ -1,3 +1,5 @@
 +include ../../paths.make
 +
-@@ -87,9 +89,9 @@ install: $(OUT_DIR)/acrnctl $(OUT_DIR)/acrn_mngr.h $(OUT_DIR)/libacrn-mngr.a
+ T := $(CURDIR)
+ OUT_DIR ?= $(shell mkdir -p $(T)/build;cd $(T)/build;pwd)
+ CC ?= gcc
+@@ -90,14 +92,14 @@ endif
+ 
+ .PHONY: install
+ install:
 -	install -d $(DESTDIR)/usr/bin
 -	install -d $(DESTDIR)/usr/lib/systemd/system
 -	install -d $(DESTDIR)/usr/lib64/
 -	install -d $(DESTDIR)/usr/include/acrn
--	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrnctl
--	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrnd
--	install -t $(DESTDIR)/usr/lib64/ $(OUT_DIR)/libacrn-mngr.a
--	install -t $(DESTDIR)/usr/include/acrn $(OUT_DIR)/acrn_mngr.h
--	install -p -D -m 0644 $(OUT_DIR)/acrnd.service $(DESTDIR)/usr/lib/systemd/system
 +	install -d $(DESTDIR)$(bindir)
 +	install -d $(DESTDIR)$(systemd_unitdir)/system
 +	install -d $(DESTDIR)$(libdir)
 +	install -d $(DESTDIR)$(includedir)/acrn
+ ifeq ($(RELEASE),0)
+-	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrnctl
 +	install -t $(DESTDIR)$(bindir) $(OUT_DIR)/acrnctl
+ endif
+-	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrnd
+-	install -t $(DESTDIR)/usr/lib64/ $(OUT_DIR)/libacrn-mngr.a
+-	install -t $(DESTDIR)/usr/include/acrn $(OUT_DIR)/acrn_mngr.h
+-	install -p -D -m 0644 $(OUT_DIR)/acrnd.service $(DESTDIR)/usr/lib/systemd/system
 +	install -t $(DESTDIR)$(bindir) $(OUT_DIR)/acrnd
 +	install -t $(DESTDIR)$(libdir) $(OUT_DIR)/libacrn-mngr.a
 +	install -t $(DESTDIR)$(includedir)/acrn $(OUT_DIR)/acrn_mngr.h
 +	install -p -D -m 0644 $(OUT_DIR)/acrnd.service $(DESTDIR)$(systemd_unitdir)/system
 diff --git a/tools/acrnbridge/Makefile b/tools/acrnbridge/Makefile
-index fe3367d4..d403c3b9 100644
+index 02688eec..32b6f0b7 100644
 --- a/tools/acrnbridge/Makefile
 +++ b/tools/acrnbridge/Makefile
-@@ -0,0 +1 @@
+@@ -1,6 +1,6 @@
 +include ../../paths.make
-@@ -3 +3,0 @@ OUT_DIR ?= .
+ 
+ OUT_DIR ?= .
 -SYSTEMD_NETWORKDIR := usr/lib
-@@ -12,5 +12,5 @@ install:
+ 
+ all:
+ 	cp acrn.netdev $(OUT_DIR)
+@@ -9,8 +9,8 @@ all:
+ 	cp eth.network $(OUT_DIR)
+ 
+ install:
 -	install -d $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network
 -	install -p -D -m 0644 $(OUT_DIR)/acrn.netdev $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/50-acrn.netdev
 -	install -p -D -m 0644 $(OUT_DIR)/acrn.network $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/50-acrn.network
--	install -p -D -m 0644 $(OUT_DIR)/acrn_tap0.netdev $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/50-acrn_tap0.netdev
+-	install -p -D -m 0644 $(OUT_DIR)/tap0.netdev $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/50-tap0.netdev
 -	install -p -D -m 0644 $(OUT_DIR)/eth.network $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/50-eth.network
 +	install -d $(DESTDIR)$(systemd_unitdir)/network
 +	install -p -D -m 0644 $(OUT_DIR)/acrn.netdev $(DESTDIR)$(systemd_unitdir)/network/50-acrn.netdev
 +	install -p -D -m 0644 $(OUT_DIR)/acrn.network $(DESTDIR)$(systemd_unitdir)/network/50-acrn.network
-+	install -p -D -m 0644 $(OUT_DIR)/acrn_tap0.netdev $(DESTDIR)$(systemd_unitdir)/network/50-acrn_tap0.netdev
++	install -p -D -m 0644 $(OUT_DIR)/tap0.netdev $(DESTDIR)$(systemd_unitdir)/network/50-tap0.netdev
 +	install -p -D -m 0644 $(OUT_DIR)/eth.network $(DESTDIR)$(systemd_unitdir)/network/50-eth.network
 diff --git a/tools/acrnlog/Makefile b/tools/acrnlog/Makefile
-index 8c7a9ff1..6a66d7c5 100644
+index 749c20c2..b605c92d 100644
 --- a/tools/acrnlog/Makefile
 +++ b/tools/acrnlog/Makefile
-@@ -0,0 +1,2 @@
+@@ -1,3 +1,5 @@
 +include ../../paths.make
 +
-@@ -51,4 +53,4 @@ install: $(OUT_DIR)/acrnlog
+ T := $(CURDIR)
+ OUT_DIR ?= $(shell mkdir -p $(T)/build;cd $(T)/build;pwd)
+ CC ?= gcc
+@@ -48,7 +50,7 @@ ifneq ($(OUT_DIR),.)
+ endif
+ 
+ install: $(OUT_DIR)/acrnlog
 -	install -d $(DESTDIR)/usr/bin
 -	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrnlog
 -	install -d $(DESTDIR)/usr/lib/systemd/system
@@ -260,14 +341,23 @@ index 8c7a9ff1..6a66d7c5 100644
 +	install -d $(DESTDIR)$(systemd_unitdir)/system
 +	install -p -D -m 0644 $(OUT_DIR)/acrnlog.service $(DESTDIR)$(systemd_unitdir)/system
 diff --git a/tools/acrntrace/Makefile b/tools/acrntrace/Makefile
-index fa42880a..f71f6865 100644
+index 22ff4f90..96c73599 100644
 --- a/tools/acrntrace/Makefile
 +++ b/tools/acrntrace/Makefile
-@@ -0,0 +1,2 @@
+@@ -1,3 +1,5 @@
 +include ../../paths.make
 +
-@@ -49,2 +51,2 @@ install: $(OUT_DIR)/acrntrace
+ T := $(CURDIR)
+ OUT_DIR ?= $(shell mkdir -p $(T)/build;cd $(T)/build;pwd)
+ CC ?= gcc
+@@ -46,5 +48,5 @@ ifneq ($(OUT_DIR),.)
+ endif
+ 
+ install: $(OUT_DIR)/acrntrace
 -	install -d $(DESTDIR)/usr/bin
 -	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrntrace
 +	install -d $(DESTDIR)$(bindir)
 +	install -t $(DESTDIR)$(bindir) $(OUT_DIR)/acrntrace
+-- 
+2.11.0
+

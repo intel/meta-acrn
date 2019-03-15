@@ -1,0 +1,18 @@
+Update the default EFI loader to the EFI default, not Clear Linux specific.
+
+Upstream-Status: Inappropriate
+Signed-off-by: Ross Burton <ross.burton@intel.com>
+
+diff --git a/efi-stub/boot.c b/efi-stub/boot.c
+index cc8200fa..ec07dd0a 100644
+--- a/efi-stub/boot.c
++++ b/efi-stub/boot.c
+@@ -336,7 +336,7 @@ static inline EFI_STATUS isspace(CHAR8 ch)
+     return ((uint8_t)ch <= ' ');
+ }
+ 
+-#define DEFAULT_UEFI_OS_LOADER_NAME "\\EFI\\org.clearlinux\\bootloaderx64.efi"
++#define DEFAULT_UEFI_OS_LOADER_NAME "\\EFI\\BOOT\\bootx64.efi"
+ /**
+  * efi_main - The entry point for the OS loader image.
+  * @image: firmware-allocated handle that identifies the image

@@ -1,12 +1,8 @@
 require acrn-common.inc
 
-# TODO: force this to 1 for now as debug mode means a dependency on telemetrics
-ACRN_RELEASE = "1"
+SRC_URI += "file://no-crashlog.patch"
 
 inherit pkgconfig systemd
-
-PACKAGECONFIG ??= "${@'debugtools' if d.getVar('ACRN_RELEASE') == '0' else ''}"
-PACKAGECONFIG[debugtools] = ",,telemetrics e2fsprogs libxml2 systemd util-linux openssl,bash"
 
 do_compile() {
 	oe_runmake tools
@@ -21,7 +17,8 @@ do_install() {
 	fi
 }
 
-SYSTEMD_SERVICE_${PN} = "acrnd.service acrnlog.service"
-SYSTEMD_SERVICE_${PN} += "${@'usercrash.service acrnprobe.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
+SYSTEMD_SERVICE_${PN} = "acrnd.service"
+# Add usercrash.service acrnprobe.service below when enabling crashlog
+SYSTEMD_SERVICE_${PN} += "${@'acrnlog.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
 
 FILES_${PN} += "${systemd_unitdir} ${libdir}/tmpfiles.d ${datadir}/acrn ${datadir}/defaults"

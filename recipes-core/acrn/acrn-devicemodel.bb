@@ -1,7 +1,6 @@
 require acrn-common.inc
 
-SRC_URI += "file://iasl.patch \
-            file://dont-build-tools.patch"
+SRC_URI += "file://dont-build-tools.patch"
 
 inherit python3native
 
