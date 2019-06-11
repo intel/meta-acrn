@@ -11,6 +11,8 @@ SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.0 \
 PV = "1.0"
 SRCREV = "3f2dde4ee5a4b36ec0ce30e7ae81e41416aa7364"
 
+UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
+
 S = "${WORKDIR}/git/"
 
 # 1 for release build, 0 for debug build.
