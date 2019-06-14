@@ -14,14 +14,14 @@ There is now a prototype example distro called `acrn-demo` that uses multiconfig
 
 ```
 MACHINE = "intel-corei7-64"
-TMPDIR = "/data/poky-tmp/master-acrn-sos"
+TMPDIR = "${TOPDIR}/master-acrn-sos"
 DISTRO = "acrn-demo-sos"
 
 # Also use the 'uos' configuration
 BBMULTICONFIG = "uos"
 
 # The packages-from-images class (container-package.bbclass) needs to know where images are
-CONTAINER_PACKAGE_DEPLOY_DIR = "/data/poky-tmp/master-acrn-uos/deploy/images/${MACHINE}"
+CONTAINER_PACKAGE_DEPLOY_DIR = "${TOPDIR}/master-acrn-uos/deploy/images/${MACHINE}"
 CONTAINER_PACKAGE_MC = "uos"
 
 # Add core-image-base-package to acrn-image-base
@@ -34,7 +34,7 @@ Then this in `conf/multiconfig/uos.conf`:
 
 ```
 DISTRO = "acrn-demo-uos"
-TMPDIR = "/data/poky-tmp/master-acrn-uos"
+TMPDIR = "${TOPDIR}/master-acrn-uos"
 ```
 
 Note how the parent `local.conf` refers to what `DEPLOY_DIR_IMAGE` will be in `uos.conf`.  Remember to keep these in sync.
