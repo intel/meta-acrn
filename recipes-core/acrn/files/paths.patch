@@ -18,7 +18,6 @@ TODO replace hard-coded paths in files too
 Signed-off-by: Ross Burton <ross.burton@intel.com>
 ---
  devicemodel/Makefile         | 18 +++++-----
- devicemodel/vmcfg/Makefile   |  5 +--
  hypervisor/Makefile          | 14 ++++----
  paths.make                   |  8 +++++
  tools/acrn-crashlog/Makefile | 86 ++++++++++++++++++++++----------------------
@@ -42,21 +41,21 @@ index 9a95d44a..cfada96b 100644
  FULL_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)$(EXTRA_VERSION)
  BASEDIR := $(shell pwd)
  DM_OBJDIR ?= $(CURDIR)/build
-@@ -221,22 +223,22 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
+@@ -217,19 +217,19 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
  	$(CC) $(CFLAGS) -c $< -o $@
- 
- install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-vmcfg install-samples-up2
+
+ install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-samples-up2
 -	install -D --mode=0755 $(DM_OBJDIR)/$(PROGRAM) $(DESTDIR)/usr/bin/$(PROGRAM)
 +	install -D --mode=0755 $(DM_OBJDIR)/$(PROGRAM) $(DESTDIR)$(bindir)/$(PROGRAM)
- 
+
  install-samples-up2: $(SAMPLES_UP2)
 -	install -D -t $(DESTDIR)/usr/share/acrn/samples/apl-up2 $^
 +	install -D -t $(DESTDIR)$(datadir)/acrn/samples/apl-up2 $^
- 
+
  install-samples-nuc: $(SAMPLES_NUC)
 -	install -D -t $(DESTDIR)/usr/share/acrn/samples/nuc $^
 +	install -D -t $(DESTDIR)$(datadir)/acrn/samples/nuc $^
- 
+
  install-samples-mrb: $(SAMPLES_MRB)
 -	install -D -t $(DESTDIR)/usr/share/acrn/samples/apl-mrb $^
 -	install -d $(DESTDIR)/usr/lib/systemd/system/
@@ -64,46 +63,26 @@ index 9a95d44a..cfada96b 100644
 +	install -D -t $(DESTDIR)$(datadir)/acrn/samples/apl-mrb $^
 +	install -d $(DESTDIR)$(systemd_unitdir)/system/
 +	install -p -D -m 0644 ./samples/apl-mrb/acrn_guest.service $(DESTDIR)$(systemd_unitdir)/system
- 
+
  install-bios: $(BIOS_BIN)
 -	install -d $(DESTDIR)/usr/share/acrn/bios
 -	install -D --mode=0664 -t $(DESTDIR)/usr/share/acrn/bios $^
 +	install -d $(DESTDIR)$(datadir)/acrn/bios
 +	install -D --mode=0664 -t $(DESTDIR)$(datadir)/acrn/bios $^
- 
- install-vmcfg:
- 	$(MAKE) -C $(BASEDIR)/vmcfg install DESTDIR=$(DESTDIR) BASEDIR=$(BASEDIR)
-diff --git a/devicemodel/vmcfg/Makefile b/devicemodel/vmcfg/Makefile
-index df323d22..7d0e04af 100644
---- a/devicemodel/vmcfg/Makefile
-+++ b/devicemodel/vmcfg/Makefile
-@@ -1,9 +1,10 @@
- BASEDIR ?= ..
- 
- include $(BASEDIR)/vmcfg/scripts/kconfig/kconfig.mk
-+include ../../paths.make
- 
- all:
- 
- install:
--	install -d $(DESTDIR)/usr/share/acrn/samples/apl-mrb
--	install -t $(DESTDIR)/usr/share/acrn/samples/apl-mrb $(BASEDIR)/vmcfg/apl-mrb/mrb-env-setup.sh
-+	install -d $(DESTDIR)$(datadir)/acrn/samples/apl-mrb
-+	install -t $(DESTDIR)$(datadir)/acrn/samples/apl-mrb $(BASEDIR)/vmcfg/apl-mrb/mrb-env-setup.sh
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
 index 7d603991..9368826d 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -46,6 +46,8 @@ else ifeq ($(CONFIG_LOGICAL_PARTITION),y)
- SCENARIO_NAME := logical_partition
+@@ -46,6 +46,8 @@ else ifeq ($(CONFIG_HYBRID),y)
+ SCENARIO_NAME := hybrid
  endif
- 
+
 +include ../paths.make
 +
  LD_IN_TOOL = scripts/genld.sh
  BASH = $(shell which bash)
- 
-@@ -305,18 +307,18 @@ all: lib $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
+
+@@ -305,18 +307,18 @@ all: pre_build lib $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
  ifeq ($(FIRMWARE),sbl)
  install: lib $(HV_OBJDIR)/$(HV_FILE).32.out
  ifeq ($(BOARD),apl-up2)
@@ -113,7 +92,7 @@ index 7d603991..9368826d 100644
 -	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
 +	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl
  endif
- 
+
  install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
  ifeq ($(BOARD),apl-up2)
 -	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl.out
@@ -127,7 +106,7 @@ index 7d603991..9368826d 100644
 +	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl.map
  endif
  endif
- 
+
 diff --git a/paths.make b/paths.make
 new file mode 100644
 index 00000000..65a23582
@@ -149,14 +128,14 @@ index 05345088..a8123686 100644
 @@ -2,6 +2,8 @@
  # ACRN-Crashlog Makefile
  #
- 
+
 +include ../../paths.make
 +
  BASEDIR 	:= $(shell pwd)
  OUT_DIR 	?= $(BASEDIR)
  BUILDDIR	:= $(OUT_DIR)/acrn-crashlog
 @@ -97,60 +99,60 @@ clean:
- 
+
  .PHONY:install
  install:
 -	@install -d $(DESTDIR)/usr/bin/
@@ -193,7 +172,7 @@ index 05345088..a8123686 100644
 +	@install -p -D -m 0644 data/usercrash.service $(DESTDIR)$(systemd_unitdir)/system/
 +	@install -d $(DESTDIR)$(libdir)/tmpfiles.d
 +	@install -p -D -m 0644 data/acrn-crashlog-dirs.conf $(DESTDIR)$(libdir)/tmpfiles.d/
- 
+
  .PHONY:uninstall
  uninstall:
 -	@if [ -e "$(DESTDIR)/usr/bin/acrnprobe" ];then \
@@ -269,7 +248,7 @@ index fca8288d..7d560c84 100644
  OUT_DIR ?= $(shell mkdir -p $(T)/build;cd $(T)/build;pwd)
  CC ?= gcc
 @@ -90,14 +92,14 @@ endif
- 
+
  .PHONY: install
  install:
 -	install -d $(DESTDIR)/usr/bin
@@ -298,15 +277,15 @@ index 02688eec..32b6f0b7 100644
 +++ b/tools/acrnbridge/Makefile
 @@ -1,6 +1,6 @@
 +include ../../paths.make
- 
+
  OUT_DIR ?= .
 -SYSTEMD_NETWORKDIR := usr/lib
- 
+
  all:
  	cp acrn.netdev $(OUT_DIR)
 @@ -9,8 +9,8 @@ all:
  	cp eth.network $(OUT_DIR)
- 
+
  install:
 -	install -d $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network
 -	install -p -D -m 0644 $(OUT_DIR)/acrn.netdev $(DESTDIR)/$(SYSTEMD_NETWORKDIR)/systemd/network/50-acrn.netdev
@@ -330,7 +309,7 @@ index 749c20c2..b605c92d 100644
  CC ?= gcc
 @@ -48,7 +50,7 @@ ifneq ($(OUT_DIR),.)
  endif
- 
+
  install: $(OUT_DIR)/acrnlog
 -	install -d $(DESTDIR)/usr/bin
 -	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrnlog
@@ -352,12 +331,11 @@ index 22ff4f90..96c73599 100644
  CC ?= gcc
 @@ -46,5 +48,5 @@ ifneq ($(OUT_DIR),.)
  endif
- 
+
  install: $(OUT_DIR)/acrntrace
 -	install -d $(DESTDIR)/usr/bin
 -	install -t $(DESTDIR)/usr/bin $(OUT_DIR)/acrntrace
 +	install -d $(DESTDIR)$(bindir)
 +	install -t $(DESTDIR)$(bindir) $(OUT_DIR)/acrntrace
--- 
+--
 2.11.0
-
