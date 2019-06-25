@@ -7,13 +7,12 @@ SRC_URI = "git://github.com/intel/linux-intel-lts.git;protocol=https;branch=${KB
            file://0002-Add-the-change-for-gvt-g-on-SKL.patch \
            file://defconfig"
 
-# lts-v4.19.36-base-190429T152313Z
+# lts-v4.19.55-base-190626T050511Z
 KBRANCH = "4.19/base"
-SRCREV = "99a52e81ddce86d4b03b46a6d6cdc62bc3c8e07e"
-PV = "4.19.36-190429T152313Z"
+SRCREV = "3347a3790f0a2e332180e353909cbd262dabd70e"
+PV = "4.19.55-190626T050511Z"
 inherit kernel
 
 S = "${WORKDIR}/git"
 
 DEPENDS += "lz4-native elfutils-native"
-
