@@ -7,6 +7,6 @@ diff --git a/Makefile b/Makefile
 index f0bfd2d3..2440070c 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -63 +63 @@ sbl-hypervisor:
+@@ -45 +45 @@ sbl-hypervisor:
 -devicemodel: tools
 +devicemodel:

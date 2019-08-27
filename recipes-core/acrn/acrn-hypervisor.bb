@@ -2,7 +2,7 @@ require acrn-common.inc
 
 SRC_URI += "file://efi-loader.patch"
 
-ACRN_BOARD ?= "nuc7i7bnh"
+ACRN_BOARD ?= "nuc7i7dnb"
 ACRN_FIRMWARE ?= "uefi"
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor EFI_OBJDIR=${B}/efi-stub"
@@ -22,13 +22,13 @@ do_configure() {
 do_compile() {
 	oe_runmake -C hypervisor
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
-		oe_runmake -C efi-stub
+		oe_runmake -C misc/efi-stub
 	fi
 }
 
 do_install() {
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
-		oe_runmake -C efi-stub install install-debug
+		oe_runmake -C misc/efi-stub install install-debug
 	else
 		oe_runmake -C hypervisor install install-debug
 	fi
