@@ -4,7 +4,7 @@
 
 All tests should be ran primarily on the supported platform:
 
-* Kaby Lake NUC ([details here](https://github.com/projectacrn/acrn-hypervisor/blob/master/doc/hardware.rst#intel-kaby-lake-nuc))
+* Kaby Lake NUC ([details here](https://projectacrn.github.io/1.3/reference/hardware.html#verified-platforms-according-to-acrn-usage))
 
 ### SOS kernel without ACRN
 
