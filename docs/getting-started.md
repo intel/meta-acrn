@@ -88,6 +88,39 @@ That will let you start applications but you still can't interact with them: goo
 
 This forwards ports 1-1 and 1-2 into the UOS, which on Skull Canyon is the two front ports (1-1 on the left, 1-2 on the right).  You'll need two input devices for this to work, obviously.
 
+
+### Install onto NUC
+
+To install the image on to NUC, you could burn the .wic.acrn image to the target NUC internal storage.
+
+Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, add below lines to `local.conf`:
+
+```
+# use the installer wks file
+WKS_FILE = "image-installer.wks.in"
+
+# do not need to convert wic to wic.acrn
+IMAGE_FSTYPES_remove="wic.acrn"
+
+# build initramsfs to start the installation
+INITRD_IMAGE_LIVE="core-image-minimal-initramfs"
+
+# make sure initramfs and ext4 image are ready before building wic image
+do_image_wic[depends] += "${INITRD_IMAGE_LIVE}:do_image_complete"
+IMAGE_TYPEDEP_wic = "ext4"
+
+# content to be install
+IMAGE_BOOT_FILES_append = "\
+    ${KERNEL_IMAGETYPE} \
+    microcode.cpio \
+    acrn.efi;EFI/BOOT/acrn.efi \
+    systemd-bootx64.efi;EFI/BOOT/bootx64.efi \
+    ${IMAGE_ROOTFS}/boot/loader/loader.conf;loader/loader.conf \
+    ${IMAGE_ROOTFS}/boot/loader/entries/boot.conf;loader/entries/boot.conf \
+    ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img \
+"
+```
+
 ### Things That Break
 
 If a guest kernel sits at `vhm: initializing` and then restarts then I think the problem is that the UOS is trying to boot with the SOS kernel.
