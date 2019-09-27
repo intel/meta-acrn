@@ -1,4 +1,4 @@
-From 7c594bfd84e383f934fbf49ab7e026af2de06d1d Mon Sep 17 00:00:00 2001
+From b3b09a17eea9d171b03e82a4d5430113b9012388 Mon Sep 17 00:00:00 2001
 From: Ross Burton <ross.burton@intel.com>
 Date: Tue, 15 Jan 2019 14:49:48 +0000
 Subject: [PATCH] XXX tools: don't hardcode install paths
@@ -20,18 +20,18 @@ Signed-off-by: Ross Burton <ross.burton@intel.com>
 
 ---
  devicemodel/Makefile              | 18 ++++----
- hypervisor/Makefile               | 14 ++++---
+ hypervisor/Makefile               |  8 ++--
  misc/acrn-manager/Makefile        | 22 +++++-----
  misc/acrnbridge/Makefile          | 12 +++---
  misc/tools/acrn-crashlog/Makefile | 86 ++++++++++++++++++++-------------------
  misc/tools/acrnlog/Makefile       | 10 +++--
  misc/tools/acrntrace/Makefile     |  6 ++-
  paths.make                        |  8 ++++
- 8 files changed, 98 insertions(+), 78 deletions(-)
+ 8 files changed, 95 insertions(+), 75 deletions(-)
  create mode 100644 paths.make
 
 diff --git a/devicemodel/Makefile b/devicemodel/Makefile
-index 9486f46..c5ca944 100644
+index f293414..1256a96 100644
 --- a/devicemodel/Makefile
 +++ b/devicemodel/Makefile
 @@ -2,6 +2,8 @@
@@ -43,7 +43,7 @@ index 9486f46..c5ca944 100644
  FULL_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)$(EXTRA_VERSION)
  BASEDIR := $(shell pwd)
  DM_OBJDIR ?= $(CURDIR)/build
-@@ -222,19 +224,19 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
+@@ -225,19 +227,19 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
  	$(CC) $(CFLAGS) -c $< -o $@
  
  install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-samples-up2
@@ -72,10 +72,10 @@ index 9486f46..c5ca944 100644
 +	install -d $(DESTDIR)$(datadir)/acrn/bios
 +	install -D --mode=0664 -t $(DESTDIR)$(datadir)/acrn/bios $^
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 84b63d6..ab067c5 100644
+index ac743a1..d93cf71 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -62,6 +62,8 @@ else ifeq ($(CONFIG_HYBRID),y)
+@@ -68,6 +68,8 @@ else ifeq ($(CONFIG_HYBRID),y)
  SCENARIO_NAME := hybrid
  endif
  
@@ -84,31 +84,21 @@ index 84b63d6..ab067c5 100644
  LD_IN_TOOL = scripts/genld.sh
  BASH = $(shell which bash)
  
-@@ -359,18 +361,18 @@ all: pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
- ifeq ($(FIRMWARE),sbl)
+@@ -366,11 +368,11 @@ endif
+ all: cfg_src pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
+ 
  install: $(HV_OBJDIR)/$(HV_FILE).32.out
- ifeq ($(BOARD),apl-up2)
--	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl
-+	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).apl-up2.sbl
- else
--	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl
-+	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl
- endif
+-	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).32.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).32.out
  
  install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
- ifeq ($(BOARD),apl-up2)
--	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl.out
--	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).apl-up2.sbl.map
-+	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).apl-up2.sbl.out
-+	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).apl-up2.sbl.map
- else
--	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.out
--	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).sbl.map
-+	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl.out
-+	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).sbl.map
- endif
- endif
+-	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).out
+-	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).map
++	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).out
++	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).map
  
+ cfg_src: $(VERSION)
+ ifneq ($(BOARD_FILE)$(SCENARIO_FILE),)
 diff --git a/misc/acrn-manager/Makefile b/misc/acrn-manager/Makefile
 index acf7e0c..76e4fba 100644
 --- a/misc/acrn-manager/Makefile

@@ -2,13 +2,10 @@ require acrn-common.inc
 
 SRC_URI += "file://efi-loader.patch"
 
-ACRN_BOARD ?= "nuc7i7dnb"
-ACRN_FIRMWARE ?= "uefi"
-
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor EFI_OBJDIR=${B}/efi-stub"
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} FIRMWARE=${ACRN_FIRMWARE}"
 
-inherit python3native deploy
+inherit python3native deploy acrn
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
@@ -44,6 +41,6 @@ FILES_${PN}-dbg += "${libdir}/acrn/*.efi.*"
 addtask deploy after do_install before do_build
 do_deploy() {
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
-		install -m 0755 ${D}${libdir}/acrn/acrn.efi ${DEPLOYDIR}
+		install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.efi ${DEPLOYDIR}
 	fi
 }
