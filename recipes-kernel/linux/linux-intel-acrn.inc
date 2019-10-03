@@ -7,10 +7,10 @@ SRC_URI = "git://github.com/intel/linux-intel-lts.git;protocol=https;branch=${KB
            file://0002-Add-the-change-for-gvt-g-on-SKL.patch \
            file://defconfig"
 
-# lts-v4.19.55-base-190626T050511Z
+# lts-v4.19.73-base-190919T160721Z
 KBRANCH = "4.19/base"
-SRCREV = "3347a3790f0a2e332180e353909cbd262dabd70e"
-PV = "4.19.55-190626T050511Z"
+SRCREV = "ca05e9cd64b5afbd698fa2707be4d2602890b849"
+PV = "4.19.73-base-190919T160721Z"
 inherit kernel
 
 S = "${WORKDIR}/git"
