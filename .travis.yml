@@ -11,12 +11,14 @@ addons:
 
 env:
   global:
-  - MACHINE=qemux86-64
+  - MACHINE=intel-corei7-64
   - DISTRO=acrn-demo-sos
 
 install:
+ - git clone --depth=10 --branch=master git://git.yoctoproject.org/meta-intel ../meta-intel
  - git clone --depth=50 --branch=master git://git.yoctoproject.org/poky ../poky
  - . ../poky/oe-init-build-env $TRAVIS_BUILD_DIR/build
+ - bitbake-layers add-layer ../../meta-intel
  - bitbake-layers add-layer ../../meta-acrn
 
 script:
