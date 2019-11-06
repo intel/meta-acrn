@@ -22,6 +22,7 @@ install:
  - bitbake-layers add-layer ../../meta-acrn
 
 script:
+ - yocto-check-layer ../../meta-acrn --dependency ../../meta-intel 
  - bitbake packagegroup-acrn --parse-only
  - bitbake packagegroup-acrn --dry-run
  - devtool latest-version acrn-hypervisor
