@@ -1,4 +1,4 @@
-From b3b09a17eea9d171b03e82a4d5430113b9012388 Mon Sep 17 00:00:00 2001
+From 63a9da3bb8369abe50572ff1abd812f4fb3d9300 Mon Sep 17 00:00:00 2001
 From: Ross Burton <ross.burton@intel.com>
 Date: Tue, 15 Jan 2019 14:49:48 +0000
 Subject: [PATCH] XXX tools: don't hardcode install paths
@@ -72,7 +72,7 @@ index f293414..1256a96 100644
 +	install -d $(DESTDIR)$(datadir)/acrn/bios
 +	install -D --mode=0664 -t $(DESTDIR)$(datadir)/acrn/bios $^
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index ac743a1..d93cf71 100644
+index 3940930..1b30d25 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
 @@ -68,6 +68,8 @@ else ifeq ($(CONFIG_HYBRID),y)
@@ -84,7 +84,7 @@ index ac743a1..d93cf71 100644
  LD_IN_TOOL = scripts/genld.sh
  BASH = $(shell which bash)
  
-@@ -366,11 +368,11 @@ endif
+@@ -371,11 +373,11 @@ endif
  all: cfg_src pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
  
  install: $(HV_OBJDIR)/$(HV_FILE).32.out
