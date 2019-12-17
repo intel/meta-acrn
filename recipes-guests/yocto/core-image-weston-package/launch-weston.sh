@@ -28,14 +28,10 @@ acrn-dm -A -m $mem_size -s 0:0,hostbridge -s 1:0,lpc -l com1,stdio \
   -s 2,pci-gvt -G "$3" \
   -s 5,virtio-console,@pty:pty_port \
   -s 6,virtio-hyper_dmabuf \
-  -s 3,virtio-blk,/var/lib/machines/core-image-weston.ext4 \
+  -s 3,virtio-blk,/var/lib/machines/core-image-weston.wic \
   -s 4,virtio-net,tap0 \
+  --ovmf /usr/share/acrn/bios/OVMF.fd \
   --mac_seed $mac_seed \
-  -k /var/lib/machines/core-image-weston.bzImage \
-  -B "root=/dev/vda rw rootwait maxcpus=$2 nohpet console=tty0 console=hvc0 \
-  console=ttyS0 no_timer_check ignore_loglevel log_buf_len=16M \
-  consoleblank=0 tsc=reliable \
-  i915.nuclear_pageflip=1 i915.avail_planes_per_pipe=$4" \
   $vm_name
 }
 
