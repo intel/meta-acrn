@@ -27,13 +27,11 @@ mem_size=2048M
 acrn-dm -A -m $mem_size -s 0:0,hostbridge -s 1:0,lpc -l com1,stdio \
   -s 5,virtio-console,@pty:pty_port \
   -s 6,virtio-hyper_dmabuf \
-  -s 3,virtio-blk,/var/lib/machines/core-image-base.ext4 \
+  -s 3,virtio-blk,/var/lib/machines/core-image-base.wic \
   -s 4,virtio-net,tap0 \
+  --ovmf /usr/share/acrn/bios/OVMF.fd \
   --mac_seed $mac_seed \
-  -k /var/lib/machines/core-image-base.bzImage \
-  -B "root=/dev/vda rw rootwait maxcpus=$2 nohpet console=tty0 console=hvc0 \
-  console=ttyS0 no_timer_check ignore_loglevel log_buf_len=16M \
-  consoleblank=0 tsc=reliable" $vm_name
+  $vm_name
 }
 
 # offline SOS CPUs except BSP before launch UOS

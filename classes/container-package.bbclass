@@ -21,6 +21,5 @@ do_install[mcdepends] += "multiconfig::${CONTAINER_PACKAGE_MC}:${IMAGE_NAME}:do_
 
 do_install () {
 	install -d ${D}${containerdir}
-	install ${CONTAINER_PACKAGE_DEPLOY_DIR}/${IMAGE_NAME}-${MACHINE}.ext4 ${D}${containerdir}/${IMAGE_NAME}.ext4
-	install ${CONTAINER_PACKAGE_DEPLOY_DIR}/${KERNEL_IMAGETYPE} ${D}${containerdir}/${IMAGE_NAME}.${KERNEL_IMAGETYPE}
+	install ${CONTAINER_PACKAGE_DEPLOY_DIR}/${IMAGE_NAME}-${MACHINE}.wic ${D}${containerdir}/${IMAGE_NAME}.wic
 }
