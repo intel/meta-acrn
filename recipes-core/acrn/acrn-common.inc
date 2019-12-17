@@ -4,7 +4,9 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.4 \
-           file://paths.patch"
+		   file://paths.patch \
+		   file://0002-hypervisor-config-modify-industry-config.patch \
+		   file://0004-Add-default-config-files-for-whl.patch "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>

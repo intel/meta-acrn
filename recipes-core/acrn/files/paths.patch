@@ -89,13 +89,13 @@ index 3940930..1b30d25 100644
  
  install: $(HV_OBJDIR)/$(HV_FILE).32.out
 -	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).32.out
-+	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).32.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(nonarchlibdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).32.out
  
  install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
 -	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).out
 -	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).map
-+	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).out
-+	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).map
++	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(nonarchlibdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).out
++	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(nonarchlibdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).map
  
  cfg_src: $(VERSION)
  ifneq ($(BOARD_FILE)$(SCENARIO_FILE),)

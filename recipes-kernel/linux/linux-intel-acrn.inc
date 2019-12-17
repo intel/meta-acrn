@@ -1,6 +1,16 @@
 SUMMARY = "Linux Kernel with ACRN enabled"
+LICENSE = "GPLv2"
+LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
-SRC_URI_append = "  file://0001-Add-the-plane-restrictionfor-SKL.-Otherwise-there-is.patch \
-                    file://0002-Add-the-change-for-gvt-g-on-SKL.patch"
-                    
-KERNEL_EXTRA_FEATURES += " cfg/hv-guest.scc  cfg/paravirt_kvm.scc "
+KERNEL_SRC_URI ?= "git://github.com/projectacrn/acrn-kernel.git;protocol=https;branch=release_1.4;name=machine"
+SRC_URI = "${KERNEL_SRC_URI}"
+
+SRC_URI_append = " file://defconfig"
+SRCREV_machine ?= "1dc26c7b52f5366a0859c7d4b0d52d0232c46104"
+
+
+inherit kernel
+
+S = "${WORKDIR}/git"
+
+DEPENDS += "lz4-native elfutils-native"
