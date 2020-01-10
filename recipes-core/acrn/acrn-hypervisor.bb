@@ -1,13 +1,12 @@
 require acrn-common.inc
 
-SRC_URI += "file://efi-loader.patch"
-
-ACRN_BOARD ?= "whl-ipc-i7"
+ACRN_BOARD ?= "nuc7i7dnb"
 ACRN_FIRMWARE ?= "uefi"
-ACRN_SCENARIO  ?= "industry"
+ACRN_SCENARIO  ?= "sdc"
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor EFI_OBJDIR=${B}/efi-stub"
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} FIRMWARE=${ACRN_FIRMWARE} SCENARIO=${ACRN_SCENARIO}"
+EXTRA_OEMAKE += "BOARD_FILE=${S}/misc/acrn-config/xmls/board-xmls/${ACRN_BOARD}.xml SCENARIO_FILE=${S}/misc/acrn-config/xmls/config-xmls/${ACRN_BOARD}/${ACRN_SCENARIO}.xml"
 
 inherit python3native deploy
 
@@ -16,6 +15,17 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 DEPENDS += "python3-kconfiglib-native"
 DEPENDS += "${@'gnu-efi' if d.getVar('ACRN_FIRMWARE') == 'uefi' else ''}"
+
+do_configure() {
+	mkdir --parents ${B}/hypervisor
+	cat <<-EOF >> ${B}/hypervisor/.config
+CONFIG_BOARD="${ACRN_BOARD}"
+CONFIG_$(echo ${ACRN_SCENARIO} | tr '[:lower:]' '[:upper:]')=y
+CONFIG_UEFI_OS_LOADER_NAME="\\\\EFI\\\\BOOT\\\\bootx64.efi"
+EOF
+	cat ${B}/hypervisor/.config
+	oe_runmake -C hypervisor oldconfig
+}
 
 
 do_compile() {
