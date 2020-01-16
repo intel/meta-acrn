@@ -4,6 +4,8 @@ SRC_URI += "file://no-crashlog.patch"
 
 inherit pkgconfig systemd
 
+DEPENDS += "numactl"
+
 do_compile() {
 	oe_runmake tools
 }
