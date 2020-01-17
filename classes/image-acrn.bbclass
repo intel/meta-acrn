@@ -4,6 +4,8 @@ PRELAUNCHED_VM ??= ""
 PRELAUNCHED_VM_MOD_TAG ??= "Zephyr_RawImage"
 SOS_MOD_TAG ??= "Linux_bzImage"
 
+WICVARS_append = " SOS_MOD_TAG PRELAUNCHED_VM PRELAUNCHED_VM_MOD_TAG  "
+
 addtask do_deploy_prelaunched_vm before do_image after do_rootfs
 
 do_deploy_prelaunched_vm() {
