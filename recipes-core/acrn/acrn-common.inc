@@ -7,13 +7,10 @@ SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.5 \
 		   file://paths.patch \
                    file://0001-Modify-industry-config.patch"
 
-#                   file://0002-hypervisor-config-modify-industry-config.patch"
-#                   file://0001-Add-generated-config-for-WHL.patch
-
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "1.5"
-SRCREV = "v1.5"
+PV = "1.5.1"
+SRCREV = "v1.5.1"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
