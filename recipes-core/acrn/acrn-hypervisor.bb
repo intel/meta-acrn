@@ -16,14 +16,11 @@ DEPENDS += "python3-kconfiglib-native"
 DEPENDS += "${@'gnu-efi' if d.getVar('ACRN_FIRMWARE') == 'uefi' else ''}"
 
 do_configure() {
-	mkdir --parents ${B}/hypervisor
-	cat <<-EOF >> ${B}/hypervisor/.config
-CONFIG_BOARD="${ACRN_BOARD}"
+	cat <<-EOF >> ${S}/hypervisor/arch/x86/configs/${ACRN_BOARD}.config
 CONFIG_$(echo ${ACRN_SCENARIO} | tr '[:lower:]' '[:upper:]')=y
 CONFIG_UEFI_OS_LOADER_NAME="\\\\EFI\\\\BOOT\\\\bootx64.efi"
 EOF
-	cat ${B}/hypervisor/.config
-	oe_runmake -C hypervisor oldconfig
+	cat ${S}/hypervisor/arch/x86/configs/${ACRN_BOARD}.config
 }
 
 
