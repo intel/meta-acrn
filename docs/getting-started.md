@@ -28,6 +28,9 @@ CONTAINER_PACKAGE_MC = "uos"
 IMAGE_INSTALL_append_pn-acrn-image-base = " core-image-base-package"
 # Add core-image-weston-package to acrn-image-sato
 IMAGE_INSTALL_append_pn-acrn-image-sato = " core-image-weston-package"
+
+# set preferred kernel for sos
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
 ```
 
 Then this in `conf/multiconfig/uos.conf`:
@@ -35,6 +38,7 @@ Then this in `conf/multiconfig/uos.conf`:
 ```
 DISTRO = "acrn-demo-uos"
 TMPDIR = "${TOPDIR}/master-acrn-uos"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
 ```
 
 Note how the parent `local.conf` refers to what `DEPLOY_DIR_IMAGE` will be in `uos.conf`.  Remember to keep these in sync.
@@ -61,6 +65,25 @@ Building `acrn-image-base` will build a `wic.acrn` image that on first boot will
 ```
 
 GVT requires kernel options, these are enabled by default in the `acrn-demo-sos` distro. If these options cause problems then `LINUX_GVT_APPEND` can be overridden.
+
+### Kernel selection
+There are multiple kernel variant available for both SOS and UOS.
+
+#### SOS
+- linux-intel-acrn-sos : based on [Linux-intel 4.19 kernel](http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel/tree/recipes-kernel/linux/linux-intel_4.19.bb) from meta-intel
+- acrn-kernel-sos : based on [acrn-kernel](https://github.com/projectacrn/acrn-kernel) from [projectacrn](https://github.com/projectacrn)
+
+To switch to acrn-kernel, in 'local.conf' replace PREFERRED_PROVIDER_virtual/kernel with below line:
+```
+PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-sos"
+```
+
+#### UOS
+- linux-intel-acrn-uos : based on Linux-intel 4.19 kernel from meta-intel
+- linux-intel-rt-acrn-uos : based on [Linux-intel-rt 4.19 kernel](http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel/tree/recipes-kernel/linux/linux-intel-rt_4.19.bb) from meta-intel
+- acrn-kernel-uos : based on acrn-kernel from projectacrn
+
+To switch to different kernel, replace PREFERRED_PROVIDER_virtual/kernel in 'conf/multiconfig/uos.conf' with preferred kernel.
 
 ### Adding Guests
 
