@@ -6,7 +6,7 @@ SRC_URI_remove = "git://github.com/intel/linux-intel-lts.git;protocol=https;name
 SRC_URI_prepend = "git://github.com/projectacrn/acrn-kernel.git;protocol=https;name=machine;branch=${KBRANCH};"
 
 # tag: v1.5.1
-LINUX_VERSION = "4.19.73"
-SRCREV_machine = "0bf3d99ba46b80a87f7b0f2864ba0432e34a9070"
+LINUX_VERSION = "4.19.94"
+SRCREV_machine = "3f1f0b99eaae6b1ce9a1f2f9389a0040e19e0e39"
 
 KERNEL_EXTRA_FEATURES += " cfg/hv-guest.scc  cfg/paravirt_kvm.scc "
