@@ -3,14 +3,14 @@ HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
-SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.5 \
+SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=master \
 		   file://paths.patch \
                    file://0001-Modify-industry-config.patch"
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "1.5.1"
-SRCREV = "v1.5.1"
+PV = "master"
+SRCREV = "acrn-2020w07.3-140000p"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
