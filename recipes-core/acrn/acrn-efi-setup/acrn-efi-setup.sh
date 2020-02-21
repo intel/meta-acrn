@@ -13,4 +13,4 @@ done
 
 efibootmgr -c -l "\EFI\BOOT\acrn.efi" \
     -L "ACRN (Yocto)" \
-    -u "bootloader=\EFI\BOOT\bootx64.efi uart=disabled"
+    -u "bootloader=\EFI\BOOT\bootx64.efi"
