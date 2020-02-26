@@ -4,7 +4,7 @@ SRC_URI = "${KERNEL_SRC_URI}"
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-intel-rt-acrn-uos:"
 
 SRC_URI_append = " file://defconfig"
-SRCREV_machine ?= "acrn-2019w45.5-143000p"
+SRCREV_machine ?= "23e638496b6de442e7f1dc4e8b08d9c070e861ee"
 
 LINUX_VERSION ?= "4.19.72"
 LINUX_KERNEL_TYPE = "standard"

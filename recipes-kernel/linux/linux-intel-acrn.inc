@@ -6,7 +6,7 @@ KERNEL_SRC_URI ?= "git://github.com/projectacrn/acrn-kernel.git;protocol=https;b
 SRC_URI = "${KERNEL_SRC_URI}"
 
 SRC_URI_append = " file://defconfig"
-SRCREV_machine ?= "acrn-2020w07.3-140000p"
+SRCREV_machine ?= "acrn-2020w09.2-140000p"
 
 
 inherit kernel
