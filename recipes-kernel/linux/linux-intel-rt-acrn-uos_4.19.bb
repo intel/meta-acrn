@@ -1,4 +1,4 @@
-KERNEL_SRC_URI ?= "git://github.com/projectacrn/acrn-kernel.git;protocol=https;branch=4.19/preempt-rt;name=machine"
+KERNEL_SRC_URI ?= "git://github.com/projectacrn/acrn-kernel.git;protocol=https;nobranch=1;name=machine"
 SRC_URI = "${KERNEL_SRC_URI}"
 
 FILESEXTRAPATHS_prepend := "${THISDIR}/linux-intel-rt-acrn-uos:"

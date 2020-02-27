@@ -3,7 +3,7 @@ HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
-SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=master \
+SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;nobranch=1 \
 		   file://paths.patch"
 
 # Snapshot tags are of the format:
