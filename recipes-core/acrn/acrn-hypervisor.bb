@@ -18,7 +18,7 @@ DEPENDS += "${@'gnu-efi' if d.getVar('ACRN_FIRMWARE') == 'uefi' else ''}"
 do_configure() {
 	cat <<-EOF >> ${S}/hypervisor/arch/x86/configs/${ACRN_BOARD}.config
 CONFIG_$(echo ${ACRN_SCENARIO} | tr '[:lower:]' '[:upper:]')=y
-CONFIG_UEFI_OS_LOADER_NAME="\\\\EFI\\\\BOOT\\\\bootx64.efi"
+CONFIG_UEFI_OS_LOADER_NAME="\\\\EFI\\\\BOOT\\\\bootloaderx64.efi"
 EOF
 	cat ${S}/hypervisor/arch/x86/configs/${ACRN_BOARD}.config
 }
