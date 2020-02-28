@@ -1,0 +1,36 @@
+From a46a7b35249f5f6556b2a032ca15930210f125e5 Mon Sep 17 00:00:00 2001
+From: Yin Fengwei <fengwei.yin@intel.com>
+Date: Mon, 24 Feb 2020 09:37:59 +0800
+Subject: [PATCH] Makefile: Fix build issue if the ld is updated to 2.34
+
+We hit build issue if the ld version is 2.34:
+ error: PHDR segment not covered by LOAD segment
+
+One issue was created to binutils bugzilla system:
+ https://sourceware.org/bugzilla/show_bug.cgi?id=25585
+From the ld guys comment, this is not an issue of 2.34. It's an
+issue fixing of the old ld. He suggested to add option
+   --no-dynamic-linker
+to ld if we don't depend on dynamically linker to loader our binary.
+
+Upstream-Status: Backport
+[https://github.com/projectacrn/acrn-hypervisor/commit/a46a7b35249f5f6556b2a032ca15930210f125e5]
+
+Tracked-On: #4415
+Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+---
+ hypervisor/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index a802dc35a..967c34979 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -110,6 +110,7 @@ ASFLAGS += -m64 -nostdinc -nostdlib
+ 
+ LDFLAGS += -Wl,--gc-sections -nostartfiles -nostdlib
+ LDFLAGS += -Wl,-n,-z,max-page-size=0x1000
++LDFLAGS += -Wl,--no-dynamic-linker
+ 
+ ifeq (y, $(CONFIG_RELOC))
+ # on X86_64, when build with "-pie", GCC fails on linking R_X86_64_32
