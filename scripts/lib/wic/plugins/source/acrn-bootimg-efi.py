@@ -38,7 +38,7 @@ class BootimgEFIPlugin(SourcePlugin):
 
         grubefi_conf = ""
         grubefi_conf += "serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1\n"
-        grubefi_conf += "default=acrn\n"
+        grubefi_conf += "default=%s\n" % get_bitbake_var("DEFAULT_BOOT_OPTION")
         grubefi_conf += "timeout=%s\n" % bootloader.timeout
         grubefi_conf += "menuentry 'acrn'{ chainloader /EFI/BOOT/acrn.efi }\n"
         grubefi_conf += "menuentry 'native'{ chainloader /EFI/BOOT/bootloaderx64.efi }\n"
