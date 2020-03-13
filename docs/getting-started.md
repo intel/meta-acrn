@@ -57,13 +57,6 @@ $ bitbake acrn-image-base
 
 Note that thanks to a bug in bitbake if you go straight to `acrn-image-base` from an empty sstate then it will build a lot of recipes twice.  For speed, build the UOS image first and then the SOS, as the SOS image can re-use 99% of the sstate.
 
-Building `acrn-image-base` will build a `wic.acrn` image that on first boot will be normal Linux but will setup EFI entries so that subsequent boots are inside ACRN. Alternatively use the EFI shell, assuming you've got the image on a USB stick something like this works:
-
-```
-> fs1:
-> \EFI\BOOT\acrn.efi
-```
-
 GVT requires kernel options, these are enabled by default in the `acrn-demo-sos` distro. If these options cause problems then `LINUX_GVT_APPEND` can be overridden.
 
 ### Kernel selection
@@ -116,14 +109,12 @@ This forwards ports 1-1 and 1-2 into the UOS, which on Skull Canyon is the two f
 
 To install the image on to NUC, you could burn the .wic.acrn image to the target NUC internal storage.
 
-Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, add below lines to `local.conf`:
+Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, create `conf/multiconfig/sos.conf` with these content:
 
 ```
 # use the installer wks file
-WKS_FILE = "image-installer.wks.in"
-
-# do not need to convert wic to wic.acrn
-IMAGE_FSTYPES_remove="wic.acrn"
+# this need to change according to SOS image in form of WKS_FILE_pn-<image-name>
+WKS_FILE_pn-acrn-image-base = "image-installer.wks.in"
 
 # build initramsfs to start the installation
 INITRD_IMAGE_LIVE="core-image-minimal-initramfs"
@@ -132,17 +123,35 @@ INITRD_IMAGE_LIVE="core-image-minimal-initramfs"
 do_image_wic[depends] += "${INITRD_IMAGE_LIVE}:do_image_complete"
 IMAGE_TYPEDEP_wic = "ext4"
 
-# content to be install
+# content to be install  
 IMAGE_BOOT_FILES_append = "\
     ${KERNEL_IMAGETYPE} \
     microcode.cpio \
     acrn.efi;EFI/BOOT/acrn.efi \
-    systemd-bootx64.efi;EFI/BOOT/bootx64.efi \
+    grub-efi-bootx64.efi;EFI/BOOT/bootx64.efi \
+    ${IMGDEPLOYDIR}/grub.cfg;EFI/BOOT/grub.cfg \
+    systemd-bootx64.efi;EFI/BOOT/bootloaderx64.efi \
     ${IMAGE_ROOTFS}/boot/loader/loader.conf;loader/loader.conf \
     ${IMAGE_ROOTFS}/boot/loader/entries/boot.conf;loader/entries/boot.conf \
     ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img \
 "
+
+# create the grub.cfg before building the installer image 
+IMAGE_CMD_wic_prepend += "\
+echo 'serial --unit=0 --speed=115200 --word=8 --parity=no --stop=1' > '${IMGDEPLOYDIR}/grub.cfg' && \
+echo 'default=${DEFAULT_BOOT_OPTION}' >> '${IMGDEPLOYDIR}/grub.cfg' && \
+echo 'timeout=10' >> '${IMGDEPLOYDIR}/grub.cfg' && \
+echo 'menuentry acrn { chainloader /EFI/BOOT/acrn.efi }' >> '${IMGDEPLOYDIR}/grub.cfg' && \
+echo 'menuentry native { chainloader /EFI/BOOT/bootloaderx64.efi }' >> '${IMGDEPLOYDIR}/grub.cfg' && \
+"
 ```
+
+now build the image again with the `sos.conf` configuration:
+
+```
+$ bitbake multiconfig:sos:core-image-base
+```
+
 
 ### Things That Break
 
