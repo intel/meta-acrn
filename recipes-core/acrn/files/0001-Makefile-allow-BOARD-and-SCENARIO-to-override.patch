@@ -1,0 +1,50 @@
+From 2295475630f09621d910cafe3d60cef149cb720c Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Sat, 21 Mar 2020 21:27:03 +0800
+Subject: [PATCH] Makefile: allow BOARD and SCENARIO to override
+
+If BOARD and SCENARIO is updated by menuconfig, then
+mismatch occurs. So allow the override for xml paths
+
+Upstream-Status: Pending
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ Makefile            | 2 ++
+ hypervisor/Makefile | 3 +++
+ 2 files changed, 5 insertions(+)
+
+diff --git a/Makefile b/Makefile
+index 0eab2e64..98f15156 100644
+--- a/Makefile
++++ b/Makefile
+@@ -71,10 +71,12 @@ ifeq ($(DEFAULT_MENU_CONFIG_FILE), $(wildcard $(DEFAULT_MENU_CONFIG_FILE)))
+ 
+   ifneq ($(BOARD_IN_MENUCONFIG),$(BOARD))
+     override BOARD := $(BOARD_IN_MENUCONFIG)
++    override BOARD_FILE := ${T}/misc/acrn-config/xmls/board-xmls/${BOARD}.xml
+   endif
+ 
+   ifneq ($(SCENARIO_IN_MENUCONFIG),$(SCENARIO))
+     override SCENARIO := $(SCENARIO_IN_MENUCONFIG)
++    override SCENARIO_FILE := ${T}/misc/acrn-config/xmls/config-xmls/${BOARD}/${SCENARIO}.xml
+   endif
+ 
+ endif
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index aa282d19..2442c7cd 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -20,6 +20,9 @@ HV_MODDIR ?= $(HV_OBJDIR)/modules
+ HV_FILE := acrn
+ SUB_MAKEFILES := $(wildcard */Makefile)
+ 
++BOARD ?= kbl-nuc-i7
++SCENARIO ?= sdc
++
+ LIB_MOD = $(HV_MODDIR)/lib_mod.a
+ BOOT_MOD = $(HV_MODDIR)/boot_mod.a
+ HW_MOD = $(HV_MODDIR)/hw_mod.a
+-- 
+2.17.1
+
