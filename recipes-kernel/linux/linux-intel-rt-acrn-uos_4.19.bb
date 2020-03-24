@@ -25,3 +25,5 @@ SRCREV_machine ?= "5bffd5bf8a51a0b0a81267616cdeceef06466561"
 SRCREV_meta ?= "4f5d761316a9cf14605e5d0cc91b53c1b2e9dc6a"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-preempt-rt-acrn-uos"
+
+LINUX_KERNEL_TYPE = "preempt-rt"
