@@ -7,7 +7,7 @@ if [ -e "/dev/acrn_hsm" ]; then
 offline_path="/sys/class/acrn/acrn_hsm"
 fi
 
-function launch_clear()
+function launch_UOS()
 {
 mac=$(cat /sys/class/net/e*/address)
 vm_name=vm$1
@@ -15,22 +15,33 @@ mac_seed=${mac:9:8}-${vm_name}
 
 #check if the vm is running or not
 vm_ps=$(pgrep -a -f acrn-dm)
-result=$(echo $vm_ps | grep "${vm_name}")
+result=$(echo $vm_ps | grep -w "${vm_name}")
 if [[ "$result" != "" ]]; then
   echo "$vm_name is running, can't create twice!"
   exit
 fi
 
+#logger_setting, format: logger_name,level; like following
+logger_setting="--logger_setting console,level=4;kmsg,level=3;disk,level=5"
+
+#for pm by vuart setting
+pm_channel="--pm_notify_channel uart "
+pm_by_vuart="--pm_by_vuart pty,/run/acrn/life_mngr_"$vm_name
+pm_vuart_node=" -s 1:0,lpc -l com2,/run/acrn/life_mngr_"$vm_name
+
 #for memsize setting
 mem_size=2048M
 
-acrn-dm -A -m $mem_size -s 0:0,hostbridge -s 1:0,lpc -l com1,stdio \
-  -s 2,pci-gvt -G "$3" \
-  -s 5,virtio-console,@pty:pty_port \
+acrn-dm -A -m $mem_size -s 0:0,hostbridge \
+  -s 2,pci-gvt -G "$2" \
+  -s 5,virtio-console,@stdio:stdio_port \
   -s 6,virtio-hyper_dmabuf \
   -s 3,virtio-blk,/var/lib/machines/core-image-weston.wic \
   -s 4,virtio-net,tap0 \
+  -s 7,virtio-rnd \
   --ovmf /usr/share/acrn/bios/OVMF.fd \
+  $pm_channel $pm_by_vuart $pm_vuart_node \
+  $logger_setting \
   --mac_seed $mac_seed \
   $vm_name
 }
@@ -52,4 +63,4 @@ for i in `ls -d /sys/devices/system/cpu/cpu[1-99]`; do
         fi
 done
 
-launch_clear 1 1 "64 448 8" 0x070F00
+launch_UOS 1 "64 448 8"
