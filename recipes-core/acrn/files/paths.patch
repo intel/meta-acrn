@@ -1,4 +1,4 @@
-From 05e8a1013695bbdb25889b6adcfa0eb59b6ac5ba Mon Sep 17 00:00:00 2001
+From 637769558ae2427ccca84a4711891fca07718785 Mon Sep 17 00:00:00 2001
 From: Naveen Saini <naveen.kumar.saini@intel.com>
 Date: Thu, 26 Dec 2019 16:24:20 +0800
 Subject: [PATCH] XXX tools: don't hardcode install paths
@@ -71,7 +71,7 @@ index 7213642a..33fe1e5a 100644
 +	install -d $(DESTDIR)$(datadir)/acrn/bios
 +	install -D --mode=0664 -t $(DESTDIR)$(datadir)/acrn/bios $^
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 4a6569d0..9bed1d67 100644
+index e8694eef..f649782f 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
 @@ -63,6 +63,8 @@ else ifeq ($(CONFIG_HYBRID),y)
@@ -83,7 +83,7 @@ index 4a6569d0..9bed1d67 100644
  LD_IN_TOOL = scripts/genld.sh
  BASH = $(shell which bash)
  
-@@ -370,11 +372,11 @@ endif
+@@ -371,11 +373,11 @@ endif
  all: pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
  
  install: $(HV_OBJDIR)/$(HV_FILE).32.out
@@ -161,14 +161,14 @@ index 02688eec..32b6f0b7 100644
 +	install -p -D -m 0644 $(OUT_DIR)/tap0.netdev $(DESTDIR)$(systemd_unitdir)/network/50-tap0.netdev
 +	install -p -D -m 0644 $(OUT_DIR)/eth.network $(DESTDIR)$(systemd_unitdir)/network/50-eth.network
 diff --git a/misc/tools/acrn-crashlog/Makefile b/misc/tools/acrn-crashlog/Makefile
-index 05345088..a8123686 100644
+index 05345088..479ee468 100644
 --- a/misc/tools/acrn-crashlog/Makefile
 +++ b/misc/tools/acrn-crashlog/Makefile
 @@ -2,6 +2,8 @@
  # ACRN-Crashlog Makefile
  #
  
-+include ../../paths.make
++include ../../../paths.make
 +
  BASEDIR 	:= $(shell pwd)
  OUT_DIR 	?= $(BASEDIR)

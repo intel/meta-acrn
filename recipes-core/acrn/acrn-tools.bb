@@ -1,10 +1,9 @@
 require acrn-common.inc
 
-SRC_URI += "file://no-crashlog.patch"
-
 inherit pkgconfig systemd
 
-DEPENDS += "numactl"
+DEPENDS += "numactl systemd e2fsprogs libevent"
+RDEPENDS_${PN} += "bash"
 
 do_compile() {
 	oe_runmake tools
@@ -20,7 +19,8 @@ do_install() {
 }
 
 SYSTEMD_SERVICE_${PN} = "acrnd.service"
-# Add usercrash.service acrnprobe.service below when enabling crashlog
 SYSTEMD_SERVICE_${PN} += "${@'acrnlog.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
+SYSTEMD_SERVICE_${PN} += "${@'acrnprobe.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
+SYSTEMD_SERVICE_${PN} += "${@'usercrash.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
 
 FILES_${PN} += "${systemd_unitdir} ${libdir}/tmpfiles.d ${datadir}/acrn ${datadir}/defaults"
