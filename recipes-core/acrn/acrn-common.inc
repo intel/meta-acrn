@@ -43,3 +43,6 @@ do_configure[cleandirs] = "${B}"
 do_configure[dirs] = "${S}"
 do_compile[dirs] = "${S}"
 do_install[dirs] = "${S}"
+
+# Fixed in v1.2 and onward
+CVE_CHECK_WHITELIST += "CVE-2019-18844"
