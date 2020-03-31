@@ -19,6 +19,8 @@ UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
 S = "${WORKDIR}/git/"
 
+CVE_PRODUCT = "acrn"
+
 # 1 for release build, 0 for debug build.
 ACRN_RELEASE ?= "0"
 
