@@ -1,0 +1,68 @@
+From c1c59a3103b75d6939845cd4352e31278171406f Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Tue, 7 Apr 2020 17:47:23 +0800
+Subject: [PATCH] acrnprobe: avoid race condition
+
+main.c is compiled while version.h being generated. This will
+result following error:
+
+| main.c: In function 'main':
+| main.c:95:5: error: 'AP_MAJOR_VERSION' undeclared (first use in this function)
+|    95 |     AP_MAJOR_VERSION, AP_MINOR_VERSION,
+|       |     ^~~~~~~~~~~~~~~~
+| main.c:95:5: note: each undeclared identifier is reported only once for each function it appears in
+| main.c:95:23: error: 'AP_MINOR_VERSION' undeclared (first use in this function)
+|    95 |     AP_MAJOR_VERSION, AP_MINOR_VERSION,
+|       |                       ^~~~~~~~~~~~~~~~
+| main.c:96:5: error: 'AP_BUILD_VERSION' undeclared (first use in this function)
+|    96 |     AP_BUILD_VERSION, AP_BUILD_USER,
+|       |     ^~~~~~~~~~~~~~~~
+| main.c:96:23: error: 'AP_BUILD_USER' undeclared (first use in this function)
+|    96 |     AP_BUILD_VERSION, AP_BUILD_USER,
+|       |                       ^~~~~~~~~~~~~
+| main.c:97:5: error: 'AP_BUILD_TIME' undeclared (first use in this function)
+|    97 |     AP_BUILD_TIME);
+|       |     ^~~~~~~~~~~~~
+
+Similar issues observed with usercrash too.
+
+To fix this, add version.h header as dependency, to make sure
+it is generated successfully.
+
+Upstream-Status: Submitted [https://github.com/projectacrn/acrn-hypervisor/pull/4619]
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ misc/tools/acrn-crashlog/acrnprobe/Makefile | 2 +-
+ misc/tools/acrn-crashlog/usercrash/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/misc/tools/acrn-crashlog/acrnprobe/Makefile b/misc/tools/acrn-crashlog/acrnprobe/Makefile
+index d1ee072e..7bc25674 100644
+--- a/misc/tools/acrn-crashlog/acrnprobe/Makefile
++++ b/misc/tools/acrn-crashlog/acrnprobe/Makefile
+@@ -18,7 +18,7 @@ TARGET		= $(BUILDDIR)/acrnprobe/bin/acrnprobe
+ all: $(VERSION_H) check_dirs $(TARGET)
+ 	rm -f $(VERSION_H)
+ 
+-$(BUILDDIR)/acrnprobe/obj/%.o:%.c
++$(BUILDDIR)/acrnprobe/obj/%.o:%.c $(VERSION_H)
+ 	$(CC) -c $(CFLAGS) $< -o $@
+ 
+ $(BUILDDIR)/acrnprobe/bin/acrnprobe: $(BUILDDIR)/acrnprobe/obj/main.o \
+diff --git a/misc/tools/acrn-crashlog/usercrash/Makefile b/misc/tools/acrn-crashlog/usercrash/Makefile
+index 836c2117..dec5a0f9 100644
+--- a/misc/tools/acrn-crashlog/usercrash/Makefile
++++ b/misc/tools/acrn-crashlog/usercrash/Makefile
+@@ -34,7 +34,7 @@ debugger: $(BUILDDIR)/usercrash/obj/debugger.o \
+ 	$(BUILDDIR)/common/obj/strutils.o
+ 	$(CC) -g $(CFLAGS) $(INCLUDE) $^ -o $(BUILDDIR)/usercrash/bin/$@ $(LIBS) $(LDFLAGS)
+ 
+-$(BUILDDIR)/usercrash/obj/%.o:%.c
++$(BUILDDIR)/usercrash/obj/%.o:%.c $(VERSION_H)
+ 	$(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
+ 
+ $(VERSION_H):
+-- 
+2.17.1
+
