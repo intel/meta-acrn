@@ -6,6 +6,7 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.6 \
            file://paths.patch \
            file://0001-hypervisor-Makefile-do-not-strip.patch \
+           file://0001-acrn-config-append-kconfig-setting-on-new-board.patch \
 "
 
 # Snapshot tags are of the format:
