@@ -1,6 +1,6 @@
 require linux-intel-acrn.inc
 
-SRC_URI_append = "  file://sos.cfg"
+SRC_URI_append = "  file://sos_4.19.scc"
 
 LINUX_VERSION_EXTENSION ?= "-linux-intel-acrn-sos"
 

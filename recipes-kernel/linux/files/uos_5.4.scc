@@ -1,0 +1,5 @@
+define KFEATURE_DESCRIPTION "Add required kernel features for 5.4 UOS kernel"
+define KFEATURE_COMPATIBILITY board
+
+kconf non-hardware acrn-common.cfg
+kconf non-hardware uos_5.4.cfg

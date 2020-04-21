@@ -12,4 +12,4 @@ SRC_URI_remove = "file://0002-Add-the-change-for-gvt-g-on-SKL.patch"
 LINUX_VERSION = "4.19.106"
 SRCREV_machine = "02751a90703b49423905a7a1030816527f5e9c86"
 
-KERNEL_EXTRA_FEATURES += " cfg/hv-guest.scc  cfg/paravirt_kvm.scc "
+KERNEL_FEATURES_append = " cfg/hv-guest.scc  cfg/paravirt_kvm.scc "
