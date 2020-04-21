@@ -19,8 +19,8 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
-KERNEL_EXTRA_FEATURES ?= "features/netfilter/netfilter.scc \
-                          features/security/security.scc  \
-                          cfg/hv-guest.scc \
-                          cfg/paravirt_kvm.scc \
-                          "
+KERNEL_FEATURES_append = " features/netfilter/netfilter.scc \
+                           features/security/security.scc  \
+                           cfg/hv-guest.scc \
+                           cfg/paravirt_kvm.scc \
+"
