@@ -1,4 +1,4 @@
-require linux-intel-acrn.inc
+require linux-intel-acrn_4.19.inc
 
 KBRANCH = "release_1.6"
 
@@ -11,5 +11,3 @@ SRC_URI_remove = "file://0002-Add-the-change-for-gvt-g-on-SKL.patch"
 # tag: v1.6
 LINUX_VERSION = "4.19.106"
 SRCREV_machine = "02751a90703b49423905a7a1030816527f5e9c86"
-
-KERNEL_FEATURES_append = " cfg/hv-guest.scc  cfg/paravirt_kvm.scc "
