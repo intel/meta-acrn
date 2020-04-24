@@ -1,4 +1,4 @@
-SUMMARY = "Linux Kernel with ACRN enabled"
+SUMMARY = "Linux Kernel 4.19 with ACRN enabled"
 
 require recipes-kernel/linux/linux-intel.inc
 
