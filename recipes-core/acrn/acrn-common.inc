@@ -3,16 +3,15 @@ HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
-SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.6 \
-           file://paths.patch \
+SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git; \
+           file://paths-master-01802e9134d8623f46684512eb0ceed863f0e8c9.patch \
            file://0001-hypervisor-Makefile-do-not-strip.patch \
-           file://0001-acrn-config-append-kconfig-setting-on-new-board.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "1.6"
-SRCREV = "9b6fa69552466eccba81a3e7f15aa19b524949c9"
+PV = "1.7"
+SRCREV = "01802e9134d8623f46684512eb0ceed863f0e8c9"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
