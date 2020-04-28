@@ -7,6 +7,7 @@ SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.6 \
            file://paths.patch \
            file://0001-hypervisor-Makefile-do-not-strip.patch \
            file://0001-acrn-config-append-kconfig-setting-on-new-board.patch \
+           file://hv-lapic-minor-refine-about-init_lapic.patch \
 "
 
 # Snapshot tags are of the format:
