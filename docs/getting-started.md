@@ -4,8 +4,8 @@ Really rough getting started brain dump.
 
 ### Build Requirements
 
-* openembedded-core, branch master or warrior
-* meta-intel, branch master or warrior
+* openembedded-core, branch master or dunfell
+* meta-intel, branch master or dunfell
 * meta-acrn, branch master
 
 ### Setup
@@ -70,20 +70,48 @@ GVT requires kernel options, these are enabled by default in the `acrn-demo-sos`
 There are multiple kernel variant available for both SOS and UOS.
 
 #### SOS
-- linux-intel-acrn-sos : based on [Linux-intel 4.19 kernel](http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel/tree/recipes-kernel/linux/linux-intel_4.19.bb) from meta-intel
-- acrn-kernel-sos : based on [acrn-kernel](https://github.com/projectacrn/acrn-kernel) from [projectacrn](https://github.com/projectacrn)
 
-To switch to acrn-kernel, in 'local.conf' replace PREFERRED_PROVIDER_virtual/kernel with below line:
+To switch to linux-intel-acrn-sos LTS 5.4 kernel (default), in 'local.conf' replace with below lines:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
+PREFERRED_PROVIDER_linux-intel-acrn-sos = "5.4%"
+```
+
+To switch to linux-intel-acrn-sos LTS 4.19 kernel, in 'local.conf' replace with below lines:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
+PREFERRED_PROVIDER_linux-intel-acrn-sos = "4.19%"
+```
+
+To switch to acrn-kernel-sos LTS 4.19 kernel from (https://github.com/projectacrn/acrn-kernel), in 'local.conf' replace with below line:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-sos"
 ```
 
 #### UOS
-- linux-intel-acrn-uos : based on Linux-intel 4.19 kernel from meta-intel
-- linux-intel-rt-acrn-uos : based on [Linux-intel-rt 4.19 kernel](http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel/tree/recipes-kernel/linux/linux-intel-rt_4.19.bb) from meta-intel
-- acrn-kernel-uos : based on acrn-kernel from projectacrn
 
-To switch to different kernel, replace PREFERRED_PROVIDER_virtual/kernel in 'conf/multiconfig/uos.conf' with preferred kernel.
+
+To switch to linux-intel-acrn-uos LTS 5.4 kernel (default), in 'conf/multiconfig/uos.conf' replace with below lines:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
+PREFERRED_PROVIDER_linux-intel-acrn-uos = "5.4%"
+```
+
+To switch to linux-intel-acrn-uos LTS 4.19 kernel, in 'conf/multiconfig/uos.conf' replace with below lines:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
+PREFERRED_PROVIDER_linux-intel-acrn-uos = "4.19%"
+```
+
+To switch to linux-intel-rt-acrn-uos Preempt-RT 4.19 kernel, in 'conf/multiconfig/uos.conf' replace with below line:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
+```
+
+To switch to acrn-kernel-uos LTS 4.19 kernel from (https://github.com/projectacrn/acrn-kernel), in 'conf/multiconfig/uos.conf' replace with below line:
+```
+PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-uos"
+```
 
 ### Adding Guests
 
