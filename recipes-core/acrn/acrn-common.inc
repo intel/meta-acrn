@@ -6,14 +6,13 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.6 \
            file://paths.patch \
            file://0001-hypervisor-Makefile-do-not-strip.patch \
-           file://0001-acrn-config-append-kconfig-setting-on-new-board.patch \
            file://hv-lapic-minor-refine-about-init_lapic.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
 PV = "1.6"
-SRCREV = "9b6fa69552466eccba81a3e7f15aa19b524949c9"
+SRCREV = "77b7721fd0c6d8b92af1d06a9e3f9886cefb5745"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
