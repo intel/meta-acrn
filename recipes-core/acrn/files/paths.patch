@@ -1,4 +1,4 @@
-From 637769558ae2427ccca84a4711891fca07718785 Mon Sep 17 00:00:00 2001
+From b1c8ca576b51aef35ab95d3f7ff534748d8c8604 Mon Sep 17 00:00:00 2001
 From: Naveen Saini <naveen.kumar.saini@intel.com>
 Date: Thu, 26 Dec 2019 16:24:20 +0800
 Subject: [PATCH] XXX tools: don't hardcode install paths
@@ -17,6 +17,7 @@ TODO replace hard-coded paths in files too
 
 Signed-off-by: Ross Burton <ross.burton@intel.com>
 Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+
 ---
  devicemodel/Makefile              | 18 ++++---
  hypervisor/Makefile               |  8 +--
@@ -71,11 +72,11 @@ index 7213642a..33fe1e5a 100644
 +	install -d $(DESTDIR)$(datadir)/acrn/bios
 +	install -D --mode=0664 -t $(DESTDIR)$(datadir)/acrn/bios $^
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index e8694eef..f649782f 100644
+index 902f224e..64a7dcd5 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -63,6 +63,8 @@ else ifeq ($(CONFIG_HYBRID),y)
- SCENARIO_NAME := hybrid
+@@ -64,6 +64,8 @@ else
+   SCENARIO_CFG_DIR := $(TARGET_DIR)/$(SCENARIO)
  endif
  
 +include ../paths.make
@@ -83,18 +84,18 @@ index e8694eef..f649782f 100644
  LD_IN_TOOL = scripts/genld.sh
  BASH = $(shell which bash)
  
-@@ -371,11 +373,11 @@ endif
+@@ -398,11 +400,11 @@ endif
  all: pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
  
  install: $(HV_OBJDIR)/$(HV_FILE).32.out
--	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).32.out
-+	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).32.out
+-	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).32.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).32.out
  
  install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
--	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).out
--	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).map
-+	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).out
-+	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO_NAME).map
+-	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).out
+-	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).map
++	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).out
++	install -D $(HV_OBJDIR)/$(HV_FILE).map $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).map
  
  .PHONY: pre_build
  pre_build: $(PRE_BUILD_OBJS)
@@ -330,6 +331,3 @@ index 00000000..65a23582
 +datadir ?= $(prefix)/share
 +includedir ?= $(prefix)/include
 +systemd_unitdir ?= $(prefix)/lib/systemd
--- 
-2.17.1
-
