@@ -147,6 +147,12 @@ To install the image on to NUC, you could burn the .wic.acrn image to the target
 Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, add below lines to `local.conf`:
 
 ```
+BBMULTICONFIG_append  = " installer "
+```
+
+Then this in `conf/multiconfig/installer.conf`:
+
+```
 # use the installer wks file
 WKS_FILE = "image-installer.wks.in"
 
@@ -170,6 +176,12 @@ IMAGE_BOOT_FILES_append = "\
     ${IMAGE_ROOTFS}/boot/loader/entries/boot.conf;loader/entries/boot.conf \
     ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img \
 "
+```
+
+Now build the installer image:
+
+```
+$ bitbake mc:installer:acrn-image-base
 ```
 
 ### Things That Break
