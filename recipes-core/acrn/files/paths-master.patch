@@ -17,20 +17,21 @@ TODO replace hard-coded paths in files too
 
 Signed-off-by: Ross Burton <ross.burton@intel.com>
 Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+Signed-off-by: Chee Yang Lee <chee.yang.lee@intel.com>
 ---
  devicemodel/Makefile              | 18 ++++---
- hypervisor/Makefile               |  8 +--
+ hypervisor/Makefile               | 10 ++--
  misc/acrn-manager/Makefile        | 22 ++++----
  misc/acrnbridge/Makefile          | 12 ++---
  misc/tools/acrn-crashlog/Makefile | 86 ++++++++++++++++---------------
  misc/tools/acrnlog/Makefile       | 10 ++--
  misc/tools/acrntrace/Makefile     |  6 ++-
  paths.make                        |  8 +++
- 8 files changed, 95 insertions(+), 75 deletions(-)
+ 8 files changed, 96 insertions(+), 76 deletions(-)
  create mode 100644 paths.make
 
 diff --git a/devicemodel/Makefile b/devicemodel/Makefile
-index 7213642a..33fe1e5a 100644
+index f864bfff..b6824fa7 100644
 --- a/devicemodel/Makefile
 +++ b/devicemodel/Makefile
 @@ -2,6 +2,8 @@
@@ -42,8 +43,8 @@ index 7213642a..33fe1e5a 100644
  FULL_VERSION=$(MAJOR_VERSION).$(MINOR_VERSION)$(EXTRA_VERSION)
  BASEDIR := $(shell pwd)
  DM_OBJDIR ?= $(CURDIR)/build
-@@ -226,19 +228,19 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
- 	$(CC) $(CFLAGS) -c $< -o $@
+@@ -227,19 +229,19 @@ $(DM_OBJDIR)/%.o: %.c $(HEADERS)
+ 	$(CC) $(CFLAGS) -c $< -o $@ -MMD -MT $@
  
  install: $(DM_OBJDIR)/$(PROGRAM) install-samples-nuc install-samples-mrb install-bios install-samples-up2
 -	install -D --mode=0755 $(DM_OBJDIR)/$(PROGRAM) $(DESTDIR)/usr/bin/$(PROGRAM)
@@ -71,10 +72,10 @@ index 7213642a..33fe1e5a 100644
 +	install -d $(DESTDIR)$(datadir)/acrn/bios
 +	install -D --mode=0664 -t $(DESTDIR)$(datadir)/acrn/bios $^
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 99ffcdda..0568afc3 100644
+index 47f7ba31..49733ead 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -64,6 +64,8 @@ else
+@@ -63,6 +63,8 @@ else
    SCENARIO_CFG_DIR := $(TARGET_DIR)/$(SCENARIO)
  endif
  
@@ -83,12 +84,14 @@ index 99ffcdda..0568afc3 100644
  LD_IN_TOOL = scripts/genld.sh
  BASH = $(shell which bash)
  
-@@ -402,11 +404,11 @@ endif
+@@ -403,12 +405,12 @@ endif
  all: pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
  
  install: $(HV_OBJDIR)/$(HV_FILE).32.out
 -	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).32.out
+-	install -D $(HV_OBJDIR)/$(HV_FILE).bin $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).bin
 +	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).32.out
++	install -D $(HV_OBJDIR)/$(HV_FILE).bin $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).bin
  
  install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
 -	install -D $(HV_OBJDIR)/$(HV_FILE).out $(DESTDIR)/usr/lib/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).out
@@ -331,6 +334,5 @@ index 00000000..65a23582
 +includedir ?= $(prefix)/include
 +systemd_unitdir ?= $(prefix)/lib/systemd
 -- 
-2.20.1
-
+2.17.1
 
