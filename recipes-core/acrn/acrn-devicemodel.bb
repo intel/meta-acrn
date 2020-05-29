@@ -11,9 +11,12 @@ EXTRA_OEMAKE += "TOOLS_OUT=${STAGING_DIR_TARGET}${includedir}/acrn"
 
 EXTRA_OEMAKE += "ASL_COMPILER=${bindir}/iasl"
 
-RDEPENDS_${PN} += "acpica"
+PACKAGES += "${PN}-sample"
 
-FILES_${PN} += "${datadir}/acrn"
+RDEPENDS_${PN} += "acpica"
+RDEPENDS_${PN}-sample += "bash"
+
+FILES_${PN} += "${datadir}/acrn/bios"
 
 do_compile() {
 	oe_runmake devicemodel
@@ -30,6 +33,7 @@ do_install() {
 	# Remove samples, these should be packaged separately.
 	rm -rf ${D}${systemd_unitdir}
 	rmdir --ignore-fail-on-non-empty `dirname ${D}${systemd_unitdir}`
-	rm -rf ${D}${datadir}/acrn/samples
 	rmdir --ignore-fail-on-non-empty ${D}${datadir}
 }
+
+FILES_${PN}-sample += "${datadir}/acrn/samples"
