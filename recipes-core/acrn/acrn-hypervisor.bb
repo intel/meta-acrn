@@ -32,15 +32,16 @@ do_compile() {
 }
 
 do_install() {
+	oe_runmake -C hypervisor install install-debug
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
 		oe_runmake -C misc/efi-stub install install-debug
-	else
-		oe_runmake -C hypervisor install install-debug
 	fi
 
 	# Remove sample files
 	rm -rf ${D}${datadir}/acrn
-	rmdir --ignore-fail-on-non-empty ${D}${datadir}
+	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
+		rmdir --ignore-fail-on-non-empty ${D}${datadir}
+	fi
 }
 
 FILES_${PN} += "${libdir}/acrn/"
@@ -54,3 +55,5 @@ do_deploy() {
 		lnr ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.efi ${DEPLOYDIR}/acrn.efi
 	fi
 }
+
+INSANE_SKIP_${PN} += "arch already-stripped"
