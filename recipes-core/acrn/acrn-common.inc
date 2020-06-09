@@ -3,16 +3,15 @@ HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
-SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=release_1.6 \
-           file://paths.patch \
-           file://hv-lapic-minor-refine-about-init_lapic.patch \
+SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH} \
            file://gcc-10-disable-array-bounds-warning-for-now.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "1.6.1"
-SRCREV = "3c64d59a18240637153942df5f647fed85ea69ac"
+PV = "2.0rc"
+SRCREV = "e3fe3da2732682cbb53e79675851ab33c54b7d8b"
+SRCBRANCH = "release_2.0"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 

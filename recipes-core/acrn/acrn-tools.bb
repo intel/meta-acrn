@@ -2,8 +2,6 @@ require acrn-common.inc
 
 inherit pkgconfig systemd
 
-SRC_URI += "file://avoid-race-condition.patch"
-
 DEPENDS += "numactl systemd e2fsprogs libevent libxml2 openssl"
 RDEPENDS_${PN} += "bash"
 
