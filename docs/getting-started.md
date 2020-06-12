@@ -83,11 +83,6 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
 PREFERRED_VERSION_linux-intel-acrn-sos = "4.19%"
 ```
 
-To switch to acrn-kernel-sos LTS 4.19 kernel from (https://github.com/projectacrn/acrn-kernel), in 'local.conf' replace with below line:
-```
-PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-sos"
-```
-
 #### UOS
 
 
@@ -113,11 +108,6 @@ To switch to linux-intel-rt-acrn-uos Preempt-RT 4.19 kernel, in 'conf/multiconfi
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
 PREFERRED_VERSION_linux-intel-rt-acrn-uos = "4.19%"
-```
-
-To switch to acrn-kernel-uos LTS 4.19 kernel from (https://github.com/projectacrn/acrn-kernel), in 'conf/multiconfig/uos.conf' replace with below line:
-```
-PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-uos"
 ```
 
 ### Adding Guests
