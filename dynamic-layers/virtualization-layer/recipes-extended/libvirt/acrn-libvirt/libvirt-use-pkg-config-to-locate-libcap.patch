@@ -1,0 +1,43 @@
+From 57b645c6db405bf2e22f4589ea5560a14975058f Mon Sep 17 00:00:00 2001
+From: Bruce Ashfield <bruce.ashfield@windriver.com>
+Date: Wed, 8 Apr 2015 13:03:03 -0400
+Subject: [PATCH] libvirt: use pkg-config to locate libcap
+
+libvirt wants to use pcap-config to locate the exisence and location
+of libpcap. oe-core stubs this script and replaces it with pkg-config,
+which can lead to the host pcap-config triggering and either breaking
+the build or introducing host contamination.
+
+To fix this issue, we patch configure to use 'pkg-config libcap' to
+locate the correct libraries.
+
+Signed-off-by: Bruce Ashfield <bruce.ashfield@windriver.com>
+[MA: Update to apply agains v4.3.0]
+Signed-off-by: Mark Asselstine <mark.asselstine@windriver.com>
+
+---
+ m4/virt-libpcap.m4 | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/m4/virt-libpcap.m4 b/m4/virt-libpcap.m4
+index 605c2fd..e0ab018 100644
+--- a/m4/virt-libpcap.m4
++++ b/m4/virt-libpcap.m4
+@@ -23,14 +23,14 @@ AC_DEFUN([LIBVIRT_ARG_LIBPCAP], [
+ 
+ AC_DEFUN([LIBVIRT_CHECK_LIBPCAP], [
+   LIBPCAP_REQUIRED="1.5.0"
+-  LIBPCAP_CONFIG="pcap-config"
++  LIBPCAP_CONFIG="pkg-config libpcap"
+   LIBPCAP_CFLAGS=""
+   LIBPCAP_LIBS=""
+ 
+   if test "x$with_libpcap" != "xno"; then
+     case $with_libpcap in
+-      ''|yes|check) LIBPCAP_CONFIG="pcap-config" ;;
+-      *)      LIBPCAP_CONFIG="$with_libpcap/bin/pcap-config" ;;
++      ''|yes|check) LIBPCAP_CONFIG="pkg-config libpcap" ;;
++      *)      LIBPCAP_CONFIG="$with_libpcap/bin/pkg-config libpcap" ;;
+     esac
+     AS_IF([test "x$LIBPCAP_CONFIG" != "x"], [
+       AC_MSG_CHECKING(libpcap $LIBPCAP_CONFIG >= $LIBPCAP_REQUIRED )
