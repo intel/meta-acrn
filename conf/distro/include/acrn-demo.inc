@@ -26,3 +26,7 @@ TCLIBCAPPEND = ""
 # The SOS needs to use networkd to get the bridges working correctly, and
 # networkd makes guest networking trivial.
 NETWORK_MANAGER = "systemd"
+
+PREFERRED_PROVIDER_libvirt = "acrn-libvirt"
+PREFERRED_PROVIDER_libvirt-native = "acrn-libvirt-native"
+PREFERRED_PROVIDER_nativesdk-libvirt = "nativesdk-acrn-libvirt"
