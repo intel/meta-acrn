@@ -1,0 +1,38 @@
+From 198d9b85bb397fb0e14bf1f064336108dc7bad40 Mon Sep 17 00:00:00 2001
+From: Lee Chee Yang <chee.yang.lee@intel.com>
+Date: Wed, 2 Sep 2020 11:36:51 +0800
+Subject: [PATCH] add fcommon to CFLAGS
+
+fix build error due to gcc10 changes in OE-core
+
+error:
+| /yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/recipe-sysroot-native/usr/bin/x86_64-oe-linux/../../libexec/x86_64-oe-linux/gcc/x86_64-oe-linux/10.2.0/ld: /yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/build/misc/tools/acrn-crashlog/acrnprobe/obj/android_events.o:/yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/git/misc/tools/acrn-crashlog/acrnprobe/include/load_conf.h:155: multiple definition of `conf'; /yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/build/misc/tools/acrn-crashlog/acrnprobe/obj/main.o:/yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/git/misc/tools/acrn-crashlog/acrnprobe/include/load_conf.h:155: first defined here
+| collect2: error: ld returned 1 exit status
+| Makefile:42: recipe for target '/yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/build/misc/tools/acrn-crashlog/acrnprobe/bin/acrnprobe' failed
+| make[3]: *** [/yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/build/misc/tools/acrn-crashlog/acrnprobe/bin/acrnprobe] Error 1
+| make[3]: Leaving directory '/yocto/poky-master/build-acrn/master-acrn-sos/work/corei7-64-oe-linux/acrn-tools/2.1-r0/git/misc/tools/acrn-crashlog/acrnprobe'
+
+Upstream-Status: Inappropriate
+[This is to fix the build error for now.
+A long term fix needs to upstream to acrn-hypervisor
+allowing CFLAGS from env to take place in all Makefile.]
+
+Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+---
+ misc/tools/acrn-crashlog/acrnprobe/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/misc/tools/acrn-crashlog/acrnprobe/Makefile b/misc/tools/acrn-crashlog/acrnprobe/Makefile
+index 7bc25674..86f6f49e 100644
+--- a/misc/tools/acrn-crashlog/acrnprobe/Makefile
++++ b/misc/tools/acrn-crashlog/acrnprobe/Makefile
+@@ -9,6 +9,7 @@ INCLUDE		+= -I $(CURDIR)/include -I $(SYSROOT)/usr/include/libxml2
+ INCLUDE		+= -I $(BUILDDIR)/include/acrnprobe
+ CFLAGS 		+= $(INCLUDE)
+ CFLAGS 		+= -fdata-sections
++CFLAGS 		+= -fcommon
+
+ LDFLAGS 	+= $(LIBS) -Wl,--gc-sections
+
+--
+2.25.1
