@@ -1,4 +1,4 @@
-require acrn-kernel.inc
+require acrn-kernel_4.19.inc
 
 SRC_URI_append = "  file://uos_4.19.scc"
 
