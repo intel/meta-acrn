@@ -44,7 +44,7 @@ SRC_URI = "git://github.com/projectacrn/acrn-libvirt.git;branch=${SRCBRANCH};des
 
 SRCBRANCH = "dev-acrn-v6.1.0"
 # with acrn v6.1.0
-SRCREV_libvirt = "51be5dbc7dc8fe3142ec23aebf314aa23e109554"
+SRCREV_libvirt = "5da2711f895a8a4bcdda16243e0f3d6134c83cf1"
 SRCREV_keycodemapdb = "27acf0ef828bf719b2053ba398b195829413dbdd"
 
 inherit autotools gettext update-rc.d pkgconfig ptest systemd useradd perlnative
@@ -196,11 +196,13 @@ PRIVATE_LIBS_${PN}-ptest = " \
 # full config
 PACKAGECONFIG ??= "qemu yajl openvz vmware vbox esx iproute2 lxc test \
                    remote macvtap libvirtd netcf udev python ebtables \
-                   fuse iproute2 firewalld libpcap \
+                   fuse iproute2 firewalld libpcap acrn \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'selinux', 'selinux audit libcap-ng', '', d)} \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'xen', 'libxl', '', d)} \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'polkit', 'polkit', '', d)} \
                   "
+# acrn config recommended from ACRN Team
+PACKAGECONFIG = "acrn remote macvtap libvirtd netcf udev ebtables fuse iproute2 firewalld libpcap test python "
 
 # qemu is NOT compatible with mips64
 PACKAGECONFIG_remove_mipsarchn32 = "qemu"
@@ -244,6 +246,7 @@ PACKAGECONFIG[apparmor-profiles] = "--with-apparmor-profiles, --without-apparmor
 PACKAGECONFIG[firewalld] = "--with-firewalld, --without-firewalld,"
 PACKAGECONFIG[libpcap] = "--with-libpcap, --without-libpcap,libpcap,libpcap"
 PACKAGECONFIG[numad] = "--with-numad, --without-numad,"
+PACKAGECONFIG[acrn] = "--with-acrn,--without-acrn,,acrn-devicemodel acrn-tools"
 
 # Enable the Python tool support
 require libvirt-python.inc
@@ -263,7 +266,7 @@ do_compile() {
 	# in the source tree, generation of files fails.
 	for i in access admin logging esx locking rpc hyperv lxc \
 		    remote network storage interface nwfilter node_device \
-		    secret vbox qemu; do
+		    secret vbox qemu acrn; do
 		mkdir -p $i;
 	done
 
@@ -355,9 +358,11 @@ do_install_append() {
 			break
 			;;
 		*)
-			chown -R qemu:qemu ${D}/${localstatedir}/lib/libvirt/qemu
-			echo "d qemu qemu 0755 ${localstatedir}/cache/libvirt/qemu none" \
-			    >> ${D}${sysconfdir}/default/volatiles/99_libvirt
+			if ${@bb.utils.contains('PACKAGECONFIG','qemu','true','false',d)}; then
+			    chown -R qemu:qemu ${D}/${localstatedir}/lib/libvirt/qemu
+			    echo "d qemu qemu 0755 ${localstatedir}/cache/libvirt/qemu none" \
+			        >> ${D}${sysconfdir}/default/volatiles/99_libvirt
+			fi
 			break
 			;;
 	esac
