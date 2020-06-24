@@ -1,0 +1,33 @@
+From 4945576d6c5c7cc9a21a58aaa312829567af13db Mon Sep 17 00:00:00 2001
+From: Bruce Ashfield <bruce.ashfield@gmail.com>
+Date: Sat, 7 Mar 2020 21:36:27 -0500
+Subject: [PATCH] build: drop unnecessary libgnu.la reference
+
+Signed-off-by: Bruce Ashfield <bruce.ashfield@gmail.com>
+---
+ tools/Makefile.am | 2 --
+ 1 file changed, 2 deletions(-)
+
+diff --git a/tools/Makefile.am b/tools/Makefile.am
+index 2a0a989..93fe283 100644
+--- a/tools/Makefile.am
++++ b/tools/Makefile.am
+@@ -168,7 +168,6 @@ virt_host_validate_LDADD = \
+ 
+ if WITH_GNUTLS
+ virt_host_validate_LDADD += ../src/libvirt-net-rpc.la \
+-                            ../gnulib/lib/libgnu.la   \
+                             $(NULL)
+ endif
+ 
+@@ -270,7 +269,6 @@ BUILT_SOURCES =
+ 
+ if WITH_GNUTLS
+ virsh_LDADD += ../src/libvirt-net-rpc.la \
+-               ../gnulib/lib/libgnu.la   \
+                $(NULL)
+ endif
+ 
+-- 
+2.19.1
+
