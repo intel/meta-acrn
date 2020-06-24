@@ -133,6 +133,20 @@ PREFERRED_PROVIDER_acrn-tools = "acrn-tools-dev"
 
 Note: Yocto does not support provider switching, always clean previous build before switching provider/version.
 
+### Acrn libvirt configuration
+libvirt (acrn-libvirt) is currenly supported by linux-intel-kernel-sos 5.4% and ACRN 2.0. It should be build only for SOS.
+To build libvirt recipe, add meta-virtualization and its dependency layers in bblayers.conf.
+To build and ship in SOS image, add below line in local.conf:
+
+```
+# Add to acrn-image-base
+IMAGE_INSTALL_append_pn-acrn-image-base = " libvirt libvirt-libvirtd libvirt-virsh"
+# Add to acrn-image-sato
+IMAGE_INSTALL_append_pn-acrn-image-sato = " libvirt libvirt-libvirtd libvirt-virsh"
+# Add to acrn-image-weston
+IMAGE_INSTALL_append_pn-acrn-image-weston = " libvirt libvirt-libvirtd libvirt-virsh"
+```
+
 ### Adding Guests
 
 The multiconfig/package magic works with a `<image>-package.bb` recipe that inherits `container-package`. This puts the image, kernel, and launcher script into a package which can be added as usual.
