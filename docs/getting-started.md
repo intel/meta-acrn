@@ -120,6 +120,19 @@ To switch to acrn-kernel-uos LTS 4.19 kernel from (https://github.com/projectacr
 PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-uos"
 ```
 
+### Acrn hypervisor version selection
+There are two acrn-hypervisor version available, 1.6.1 and 2.0(-dev). by default it build for v1.6.1.
+
+to switch to 2.0, add below line in local.conf:
+
+```
+PREFERRED_PROVIDER_acrn-hypervisor = "acrn-hypervisor-dev"
+PREFERRED_PROVIDER_acrn-devicemodel = "acrn-devicemodel-dev"
+PREFERRED_PROVIDER_acrn-tools = "acrn-tools-dev"
+```
+
+Note: Yocto does not support provider switching, always clean previous build before switching provider/version.
+
 ### Adding Guests
 
 The multiconfig/package magic works with a `<image>-package.bb` recipe that inherits `container-package`. This puts the image, kernel, and launcher script into a package which can be added as usual.
