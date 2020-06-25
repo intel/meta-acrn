@@ -145,10 +145,10 @@ $ export XDG_RUNTIME_DIR=/run/user/$(id -u)
 That will let you start applications but you still can't interact with them: good enough for running glmark2 but not for anything interactive.  For this, USB host virtualisation lets you pass specific USB ports through to the guest.  Start by using `lsusb` to identify the bus and port you want to forward, and then edit `launch-weston.sh` or similar to pass another option to `acrn-dm`:
 
 ```
--s 7,xhci,1-1,1-2
+-s 8,xhci,1-2,1-3
 ```
 
-This forwards ports 1-1 and 1-2 into the UOS, which on Skull Canyon is the two front ports (1-1 on the left, 1-2 on the right).  You'll need two input devices for this to work, obviously.
+This forwards ports 1-2 and 1-3 into the UOS, which on NUC7I7DNH1E is the two front ports (1-2 on the left, 1-3 on the right). 
 
 
 ### Install onto NUC
