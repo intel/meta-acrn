@@ -11,8 +11,6 @@ python () {
 
 SRC_URI_append = "  file://perf-fix-build-with-binutils.patch \
                     file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
-                    file://0001-Add-the-plane-restrictionfor-SKL.-Otherwise-there-is.patch \
-                    file://0002-Add-the-change-for-gvt-g-on-SKL.patch \
                     file://uos_rt_4.19.scc \
 "
 
@@ -23,8 +21,8 @@ KMETA_BRANCH = "yocto-4.19"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
-LINUX_VERSION ?= "4.19.94"
-SRCREV_machine ?= "5bffd5bf8a51a0b0a81267616cdeceef06466561"
+LINUX_VERSION ?= "4.19.127"
+SRCREV_machine ?= "bf082d422eeb3454c18a47aef3fb33c7a31d50cf"
 SRCREV_meta ?= "4f5d761316a9cf14605e5d0cc91b53c1b2e9dc6a"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-preempt-rt-acrn-uos"
@@ -36,3 +34,7 @@ KERNEL_FEATURES_append = "features/netfilter/netfilter.scc \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
 "
+
+# This configuration does not applies to current 4.19 rt kernel
+SRC_URI_remove = "file://enable_lynxpoint_gpio.cfg"
+
