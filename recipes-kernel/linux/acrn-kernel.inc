@@ -7,4 +7,4 @@ SRC_URI_prepend = "git://github.com/projectacrn/acrn-kernel.git;protocol=https;n
 
 # tag: v1.6
 LINUX_VERSION = "4.19.106"
-SRCREV_machine = "02751a90703b49423905a7a1030816527f5e9c86"
+SRCREV_machine = "33161e280f2bd056175ae608581d86d27c862fc1"
