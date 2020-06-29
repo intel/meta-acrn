@@ -202,7 +202,7 @@ PACKAGECONFIG ??= "qemu yajl openvz vmware vbox esx iproute2 lxc test \
                    ${@bb.utils.contains('DISTRO_FEATURES', 'polkit', 'polkit', '', d)} \
                   "
 # acrn config recommended from ACRN Team
-PACKAGECONFIG = "acrn remote macvtap libvirtd netcf udev ebtables fuse iproute2 firewalld libpcap test python "
+PACKAGECONFIG = "acrn remote macvtap libvirtd netcf udev ebtables fuse iproute2 firewalld libpcap test python storage-dir storage-fs storage-lvm "
 
 # qemu is NOT compatible with mips64
 PACKAGECONFIG_remove_mipsarchn32 = "qemu"
@@ -247,6 +247,10 @@ PACKAGECONFIG[firewalld] = "--with-firewalld, --without-firewalld,"
 PACKAGECONFIG[libpcap] = "--with-libpcap, --without-libpcap,libpcap,libpcap"
 PACKAGECONFIG[numad] = "--with-numad, --without-numad,"
 PACKAGECONFIG[acrn] = "--with-acrn,--without-acrn,,acrn-devicemodel acrn-tools"
+PACKAGECONFIG[storage-dir] = "--with-storage-dir,--without-storage-dir,,"
+PACKAGECONFIG[storage-fs] = "--with-storage-fs, --without-storage-fs,,"
+PACKAGECONFIG[storage-lvm] = "--with-storage-lvm, --without-storage-lvm,,"
+
 
 # Enable the Python tool support
 require libvirt-python.inc
