@@ -38,7 +38,6 @@ SRC_URI = "git://github.com/projectacrn/acrn-libvirt.git;branch=${SRCBRANCH};des
            file://0001-ptest-Remove-Windows-1252-check-from-esxutilstest.patch \
            file://configure.ac-search-for-rpc-rpc.h-in-the-sysroot.patch \
            file://0001-build-drop-unnecessary-libgnu.la-reference.patch \
-           file://hook_support.py \
            file://gnutls-helper.py \
           "
 
@@ -337,13 +336,6 @@ do_install_append() {
 	   sed -i '/^#seccomp_sandbox = 1/aseccomp_sandbox = 0' \
 	       ${D}${sysconfdir}/libvirt/qemu.conf
         fi
-
-	# Add hook support for libvirt
-	mkdir -p ${D}/etc/libvirt/hooks
-	for hook in "daemon" "lxc" "network" "qemu"
-	do
-		install -m 0755 ${WORKDIR}/hook_support.py ${D}/etc/libvirt/hooks/${hook}
-	done
 
 	# Force the main dnsmasq instance to bind only to specified interfaces and
 	# to not bind to virbr0. Libvirt will run its own instance on this interface.
