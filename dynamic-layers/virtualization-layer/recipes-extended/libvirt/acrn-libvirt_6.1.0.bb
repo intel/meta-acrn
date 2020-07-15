@@ -456,3 +456,42 @@ PROVIDES_${PN}-python = "libvirt-python"
 RPROVIDES_${PN}-python += " libvirt-python"
 
 RPROVIDES_${PN}-ptest += " libvirt-ptest "
+
+CVE_CHECK_WHITELIST += "CVE-2014-8135 CVE-2014-8136 CVE-2015-5313 CVE-2017-1000256 CVE-2018-5748 CVE-2018-6764 CVE-2019-3886"
+
+#CVE-2014-8135:
+#Fixed in v1.2.11
+#Fixed by: https://libvirt.org/git/?p=libvirt.git;a=commit;h=87b9437f8951f9d24f9a85c6bbfff0e54df8c984
+#Ref: https://security.libvirt.org/2014/0009.html
+
+#CVE-2014-8136:
+#Fixed in v1.2.11
+#Fixed by: https://libvirt.org/git/?p=libvirt.git;a=commit;h=2bdcd29c713dfedd813c89f56ae98f6f3898313d
+#Ref: https://security.libvirt.org/2014/0010.html
+
+#CVE-2015-5313:
+#Fixed in v1.3.1
+#Fixed by: https://libvirt.org/git/?p=libvirt.git;a=commit;h=034e47c338b13a95cf02106a3af912c1c5f818d7
+#Ref: https://security.libvirt.org/2015/0004.html
+
+#CVE-2017-1000256
+#Fixed in v3.9.0
+#Fixed by: https://libvirt.org/git/?p=libvirt.git;a=commit;h=441d3eb6d1be940a67ce45a286602a967601b157
+#Ref: https://security.libvirt.org/2017/0002.html
+
+#CVE-2018-5748:
+#Fixed in v4.0.0
+#Fixed by: https://libvirt.org/git/?p=libvirt.git;a=commit;h=bc251ea91bcfddd2622fce6bce701a438b2e7276
+#Ref: https://security.libvirt.org/2018/0002.html
+
+#CVE-2018-6764:
+#Fixed in v4.1.0
+#Fixed by: https://libvirt.org/git/?p=libvirt.git;a=commit;h=c2dc6698c88fb591639e542c8ecb0076c54f3dfb
+#Ref: https://security.libvirt.org/2018/0003.html
+
+#CVE-2019-3886:
+#Fixed in v5.3.0
+#Fixed by: https://libvirt.org/git/?p=libvirt.git;a=commit;h=ae076bb40e0e150aef41361b64001138d04d6c60
+#and
+#https://libvirt.org/git/?p=libvirt.git;a=commit;h=2a07c990bd9143d7a0fe8d1b6b7c763c52185240
+#Ref: https://security.libvirt.org/2019/0001.html
