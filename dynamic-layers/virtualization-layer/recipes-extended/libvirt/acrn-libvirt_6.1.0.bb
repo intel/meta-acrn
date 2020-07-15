@@ -22,6 +22,8 @@ RDEPENDS_${PN}-libvirtd += "bridge-utils iptables pm-utils dnsmasq netcat-openbs
 RDEPENDS_${PN}-libvirtd_append_x86-64 = " dmidecode"
 RDEPENDS_${PN}-libvirtd_append_x86 = " dmidecode"
 
+CVE_PRODUCT = "libvirt"
+
 #connman blocks the 53 port and libvirtd can't start its DNS service
 RCONFLICTS_${PN}_libvirtd = "connman"
 
