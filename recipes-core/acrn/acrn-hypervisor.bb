@@ -15,12 +15,9 @@ PACKAGE_ARCH = "${MACHINE_ARCH}"
 DEPENDS += "python3-kconfiglib-native"
 DEPENDS += "${@'gnu-efi' if d.getVar('ACRN_FIRMWARE') == 'uefi' else ''}"
 
-do_configure() {
-	cat <<-EOF >> ${S}/hypervisor/arch/x86/configs/${ACRN_BOARD}.config
-CONFIG_BOARD="${ACRN_BOARD}"
-EOF
-	cat ${S}/hypervisor/arch/x86/configs/${ACRN_BOARD}.config
-}
+# parallel build could face build failure in case of config-tool method:
+#    | .config does not exist and no defconfig available for BOARD...
+PARALLEL_MAKE = ""
 
 do_compile() {
 	oe_runmake -C hypervisor
