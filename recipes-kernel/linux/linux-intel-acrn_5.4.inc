@@ -19,6 +19,7 @@ KERNEL_FEATURES_append = "features/netfilter/netfilter.scc \
                           features/security/security.scc  \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
+                          features/net/stmicro/stmmac.cfg \
 "
 # Kernel config 'CONFIG_GPIO_LYNXPOINT' goes by a different name 'CONFIG_PINCTRL_LYNXPOINT' in
 # linux-intel. This cause warning during kernel config audit. So suppress the harmless warning for now.
