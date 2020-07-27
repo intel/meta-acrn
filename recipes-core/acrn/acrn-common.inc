@@ -4,13 +4,12 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH}; \
-           file://paths-master.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "1.7"
-SRCREV = "0f6d11866b41d54044bbe9ac16f3cfbe039d0fd9"
+PV = "2.1"
+SRCREV = "6cafb9cf01d7029fd05713c04c9a61883e81358d"
 SRCBRANCH = "master"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
