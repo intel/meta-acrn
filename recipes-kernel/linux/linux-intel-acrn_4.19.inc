@@ -9,9 +9,9 @@ SRC_URI_append = "  file://perf-fix-build-with-binutils.patch \
 KBRANCH = "4.19/base"
 KMETA_BRANCH = "yocto-4.19"
 
-LINUX_VERSION ?= "4.19.127"
-SRCREV_machine ?= "5fb01362d28430df1fc12b09898510f0e78812be"
-SRCREV_meta ?= "7cb520d405cd5ca8f21a333941fbc0861bbb36b0"
+LINUX_VERSION ?= "4.19.130"
+SRCREV_machine ?= "4e145fffdc2a5cfca90f90608f8ce4358b770bd9"
+SRCREV_meta ?= "da9dc60f735e5805c254bb5b9b4fa3b355023da5"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
