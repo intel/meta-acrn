@@ -6,4 +6,7 @@ LINUX_VERSION_EXTENSION = "-linux-intel-acrn-sos"
 
 SUMMARY = "Linux Kernel with ACRN enabled (SOS)"
 
-KERNEL_FEATURES_append = " sos_5.4.scc "
+KERNEL_FEATURES_append = "features/criu/criu-enable.scc \
+                          cgl/cfg/iscsi.scc \
+                          sos_5.4.scc \
+"
