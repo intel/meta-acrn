@@ -4,14 +4,13 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH} \
-           file://gcc-10-disable-array-bounds-warning-for-now.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "2.0"
-SRCREV = "9c1f1a0dba6e59e4be9e2f5b70a06cf89c577ecb"
-SRCBRANCH = "release_2.0"
+PV = "2.1"
+SRCREV = "70e70fa3167888a5d95c235354462f23aa748c7e"
+SRCBRANCH = "release_2.1"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
