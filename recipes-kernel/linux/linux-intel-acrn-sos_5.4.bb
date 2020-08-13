@@ -10,3 +10,7 @@ KERNEL_FEATURES_append = "features/criu/criu-enable.scc \
                           cgl/cfg/iscsi.scc \
                           sos_5.4.scc \
 "
+
+# sos_5.4.scc override CONFIG_REFCOUNT_FULL set in security.scc is causing warning during
+# config audit. Suppress this harmless warning.
+KCONF_AUDIT_LEVEL = "0"
