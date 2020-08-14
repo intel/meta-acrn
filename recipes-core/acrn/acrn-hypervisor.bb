@@ -8,25 +8,29 @@ EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor EFI_OBJDIR=${B}/efi-stub"
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} FIRMWARE=${ACRN_FIRMWARE} SCENARIO=${ACRN_SCENARIO}"
 EXTRA_OEMAKE += "BOARD_FILE=${S}/misc/acrn-config/xmls/board-xmls/${ACRN_BOARD}.xml SCENARIO_FILE=${S}/misc/acrn-config/xmls/config-xmls/${ACRN_BOARD}/${ACRN_SCENARIO}.xml"
 
+SRC_URI += "file://hypervisor-dont-build-pre_build.patch"
+
 inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-DEPENDS += "python3-kconfiglib-native"
+DEPENDS += "python3-kconfiglib-native acrn-hypervisor-native"
 DEPENDS += "${@'gnu-efi' if d.getVar('ACRN_FIRMWARE') == 'uefi' else ''}"
 
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
 PARALLEL_MAKE = ""
 
-do_compile() {
+do_compile_class-target() {
+	# Execute natively build sanity check for ACRN configurations
+	hv_prebuild_check.out
 	oe_runmake -C hypervisor
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
 		oe_runmake -C misc/efi-stub
 	fi
 }
 
-do_install() {
+do_install_class-target() {
 	oe_runmake -C hypervisor install install-debug
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
 		oe_runmake -C misc/efi-stub install install-debug
@@ -52,3 +56,19 @@ do_deploy() {
 }
 
 INSANE_SKIP_${PN} += "arch already-stripped"
+
+do_compile_class-native() {
+	oe_runmake -C hypervisor pre_build
+}
+
+do_install_class-native(){
+	install -d ${D}/${bindir}
+	install -m 755 ${B}/hypervisor/hv_prebuild_check.out ${D}/${bindir}/hv_prebuild_check.out
+}
+
+# no action required for native to deploy
+do_deploy_class-native(){
+	:
+}
+
+BBCLASSEXTEND = "native "
