@@ -48,6 +48,9 @@ FILES_${PN}-dbg += "${libdir}/acrn/*.efi.*"
 
 addtask deploy after do_install before do_build
 do_deploy() {
+	install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_FIRMWARE}.${ACRN_SCENARIO}.32.out ${DEPLOYDIR}
+	rm -f ${DEPLOYDIR}/acrn.32.out
+	lnr ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_FIRMWARE}.${ACRN_SCENARIO}.32.out ${DEPLOYDIR}/acrn.32.out
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
 		install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.efi ${DEPLOYDIR}
 		rm -f ${DEPLOYDIR}/acrn.efi
