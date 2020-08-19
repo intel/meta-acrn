@@ -14,6 +14,9 @@ SRC_URI_append = "  file://perf-fix-build-with-binutils.patch \
                     file://uos_rt_4.19.scc \
 "
 
+# this patch in meta-intel linux-intel.inc does not compatible with 4.19 kernel
+SRC_URI_remove = "file://libtraceevent-fix-build-with-binutils-25.patch"
+
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
 KBRANCH = "4.19/preempt-rt"
