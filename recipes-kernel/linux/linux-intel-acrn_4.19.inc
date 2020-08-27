@@ -2,16 +2,15 @@ SUMMARY = "Linux Kernel 4.19 with ACRN enabled"
 
 require recipes-kernel/linux/linux-intel.inc
 
-SRC_URI_append = "  file://perf-fix-build-with-binutils.patch \
-                    file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
+SRC_URI_append = " file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
 "
 
 KBRANCH = "4.19/base"
 KMETA_BRANCH = "yocto-4.19"
 
-LINUX_VERSION ?= "4.19.130"
-SRCREV_machine ?= "4e145fffdc2a5cfca90f90608f8ce4358b770bd9"
-SRCREV_meta ?= "da9dc60f735e5805c254bb5b9b4fa3b355023da5"
+LINUX_VERSION ?= "4.19.140"
+SRCREV_machine ?= "5050af27abd725b69e5a2867194db6d66e5c8896"
+SRCREV_meta ?= "6dd03685eaf5d27cd6e88ee888c0d42e09befd17"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
