@@ -2,7 +2,7 @@ require acrn-common.inc
 
 ACRN_BOARD ?= "nuc7i7dnb"
 ACRN_FIRMWARE ?= "uefi"
-ACRN_SCENARIO  ?= "sdc"
+ACRN_SCENARIO  ?= "industry"
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor EFI_OBJDIR=${B}/efi-stub"
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} FIRMWARE=${ACRN_FIRMWARE} SCENARIO=${ACRN_SCENARIO}"
