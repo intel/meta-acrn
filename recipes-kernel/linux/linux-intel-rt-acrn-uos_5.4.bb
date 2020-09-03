@@ -20,9 +20,9 @@ KMETA_BRANCH = "yocto-5.4"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
-LINUX_VERSION ?= "5.4.44"
-SRCREV_machine ?= "2e8933a927e7de6ca0e6191c90666a5f00fd7241"
-SRCREV_meta ?= "b8c82ba37370e4698ff0c42f3e54b8b4f2fb4ac0"
+LINUX_VERSION ?= "5.4.58"
+SRCREV_machine ?= "2046457bf9f4a420f69e915453d59db5b38edbaa"
+SRCREV_meta ?= "5d52d9eea95fa09d404053360c2351b2b91b323b"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-preempt-rt-acrn-uos"
 
@@ -35,3 +35,6 @@ KERNEL_FEATURES_append = "features/netfilter/netfilter.scc \
                           features/net/stmicro/stmmac.cfg \
 "
 
+# Kernel config 'CONFIG_GPIO_LYNXPOINT' goes by a different name 'CONFIG_PINCTRL_LYNXPOINT' in
+# # linux-intel. This cause warning during kernel config audit. So suppress the harmless warning for now.
+KCONF_BSP_AUDIT_LEVEL = "0"
