@@ -1,0 +1,4 @@
+define KFEATURE_DESCRIPTION "Add required kernel features for 5.4 SOS kernel in hybrid_rt_fusa scenario"
+define KFEATURE_COMPATIBILITY board
+
+kconf non-hardware sos_5.4_hybrid_rt_fusa.cfg
