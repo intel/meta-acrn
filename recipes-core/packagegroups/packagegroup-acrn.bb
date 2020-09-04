@@ -9,5 +9,4 @@ RDEPENDS_${PN} = "\
     acrn-hypervisor \
     acrn-tools \
     acrn-devicemodel \
-    acrn-efi-setup \
     "
