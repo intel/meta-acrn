@@ -2,12 +2,8 @@ SUMMARY = "Linux Kernel 4.19 with ACRN enabled"
 
 require recipes-kernel/linux/linux-intel.inc
 
-SRC_URI_append = "  file://perf-fix-build-with-binutils.patch \
-                    file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
+SRC_URI_append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
 "
-
-# This patch in meta-intel linux-intel.inc does not compatible with 4.19 kernel
-SRC_URI_remove = "file://libtraceevent-fix-build-with-binutils-25.patch"
 
 KBRANCH = "4.19/base"
 KMETA_BRANCH = "yocto-4.19"
