@@ -1,34 +1,35 @@
-From e6bdce0651cda22f8186471a89a781c017fd06c2 Mon Sep 17 00:00:00 2001
-From: Lee Chee Yang <chee.yang.lee@intel.com>
-Date: Thu, 6 Aug 2020 10:49:00 +0800
-Subject: [PATCH] hypervisor: dont build pre_build
+From 29939f8e4c06bf8a1c5d32b95fce367e245d3508 Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Tue, 8 Sep 2020 13:24:03 +0800
+Subject: [PATCH] hypervisor: dont build pre_build for target
 
 Execute pre_build_check during hypervisor build is causing error :
 
 | make: /data/yocto/poky/build-acrn/master-acrn-sos/work/intel_corei7_64-oe-linux/acrn-hypervisor/2.1-r0/build//hypervisor/hv_prebuild_check.out: Command not found
 
-It is not build as native tools so it cant be execute during build.
-Hence, dont build it during hypervisor build.
+Build and execute as native.
 
 Upstream-Status: Inappropriate
 
-Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
 ---
- hypervisor/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ hypervisor/Makefile | 3 ---
+ 1 file changed, 3 deletions(-)
 
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 625cb9a6..25d31702 100644
+index e28dc63d..19c3d36e 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
-@@ -379,7 +379,7 @@ VERSION := $(HV_OBJDIR)/include/version.h
- PRE_BUILD_DIR := ../misc/hv_prebuild
+@@ -395,9 +395,6 @@ install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
+ 
+ .PHONY: pre_build
+ pre_build: $(HV_OBJDIR)/$(HV_CONFIG_H)
+-	@echo "Start pre-build static check ..."
+-	$(MAKE) -C $(PRE_BUILD_DIR) BOARD=$(BOARD) SCENARIO=$(SCENARIO) TARGET_DIR=$(TARGET_DIR)
+-	@$(HV_OBJDIR)/hv_prebuild_check.out
+ 	@echo "generate the binary of ACPI tables for pre-launched VMs ..."
+ 	python3 ../misc/acrn-config/acpi_gen/bin_gen.py --board $(BOARD) --scenario $(SCENARIO) --asl $(TARGET_DIR) --out $(HV_OBJDIR)/acpi
+ 
+-- 
+2.17.1
 
- .PHONY: all
--all: pre_build $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
-+all: $(HV_OBJDIR)/$(HV_FILE).32.out $(HV_OBJDIR)/$(HV_FILE).bin
-
- install: $(HV_OBJDIR)/$(HV_FILE).32.out
- 	install -D $(HV_OBJDIR)/$(HV_FILE).32.out $(DESTDIR)$(libdir)/acrn/$(HV_FILE).$(BOARD).$(FIRMWARE).$(SCENARIO).32.out
---
-2.25.1
