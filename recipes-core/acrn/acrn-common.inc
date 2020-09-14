@@ -9,7 +9,7 @@ SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH};
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
 PV = "2.2"
-SRCREV = "8b86714af8ccf3fb1b313428c5bc88d9977524f9"
+SRCREV = "6b8bfcb957857f3ce6bd8e49debbc01e4257ae61"
 SRCBRANCH = "master"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
