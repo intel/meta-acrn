@@ -9,8 +9,7 @@ python () {
         raise bb.parse.SkipPackage("Set PREFERRED_PROVIDER_virtual/kernel to linux-intel-rt-acrn-uos to enable it")
 }
 
-SRC_URI_append = "  file://perf-fix-build-with-binutils.patch \
-                    file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
+SRC_URI_append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
                     file://uos_rt_4.19.scc \
 "
 
@@ -21,9 +20,9 @@ KMETA_BRANCH = "yocto-4.19"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
-LINUX_VERSION ?= "4.19.130"
-SRCREV_machine ?= "f7a7451e9e6338f1325990a17df30acd257d3638"
-SRCREV_meta ?= "da9dc60f735e5805c254bb5b9b4fa3b355023da5"
+LINUX_VERSION ?= "4.19.142"
+SRCREV_machine ?= "dbbcca28fca97bcc6c8518aae859a69a6d487363"
+SRCREV_meta ?= "6dd03685eaf5d27cd6e88ee888c0d42e09befd17"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-preempt-rt-acrn-uos"
 
