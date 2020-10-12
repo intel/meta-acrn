@@ -14,7 +14,7 @@ SRCBRANCH = "release_2.2"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
-S = "${WORKDIR}/git/"
+S = "${WORKDIR}/git"
 
 CVE_PRODUCT = "acrn"
 
@@ -35,7 +35,7 @@ EXTRA_OEMAKE += "RELEASE=${ACRN_RELEASE} \
 
 # acrn supports build objects out-of-tree but builds must be performed from
 # inside the source
-B = "${WORKDIR}/build/"
+B = "${WORKDIR}/build"
 do_configure[cleandirs] = "${B}"
 do_configure[dirs] = "${S}"
 do_compile[dirs] = "${S}"
