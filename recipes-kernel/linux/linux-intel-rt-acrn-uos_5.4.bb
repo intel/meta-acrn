@@ -32,6 +32,7 @@ KERNEL_FEATURES_append = "features/netfilter/netfilter.scc \
                           features/security/security.scc  \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
+                          features/tpm/tpm.scc \
                           features/net/stmicro/stmmac.cfg \
 "
 
