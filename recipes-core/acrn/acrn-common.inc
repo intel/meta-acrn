@@ -10,7 +10,7 @@ SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH};
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
 PV = "2.2"
 SRCREV = "5289a3eb97fed9dc5726cc683ab5263725c0c136"
-SRCBRANCH = "release_2.2"
+SRCBRANCH = "master"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
