@@ -1,0 +1,10 @@
+# short-description: Create an dm-verity EFI disk image with acrn and grub-efi
+# long-description: Creates a partitioned dm-verity EFI disk image with acrn-hypervisor.
+
+part /boot --source acrn-bootimg-efi --sourceparams="initrd=microcode.cpio" --ondisk sda --active --align 1024 --use-uuid
+
+part / --source rawcopy --ondisk sda  --sourceparams="file=${IMGDEPLOYDIR}/${DM_VERITY_IMAGE}-${MACHINE}.${DM_VERITY_IMAGE_TYPE}.verity" --use-uuid
+
+part swap --ondisk sda --size 44 --label swap1 --fstype=swap --use-uuid
+
+bootloader --ptable gpt --timeout=5 --append=" "
