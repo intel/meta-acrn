@@ -36,7 +36,6 @@ DM_VERITY_IMAGE_TYPE = "ext4"
 INITRAMFS_IMAGE = "dm-verity-image-initramfs"
 INITRAMFS_FSTYPES = "cpio.gz"
 INITRAMFS_IMAGE_BUNDLE = "1"
-WKS_FILE = "systemd-bootdisk-dmverity.wks.in"
 ```
 
 conf/local.conf should enable multiconfig build for sos
