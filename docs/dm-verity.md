@@ -36,6 +36,9 @@ DM_VERITY_IMAGE_TYPE = "ext4"
 INITRAMFS_IMAGE = "dm-verity-image-initramfs"
 INITRAMFS_FSTYPES = "cpio.gz"
 INITRAMFS_IMAGE_BUNDLE = "1"
+
+# update the ACRN_EFI_BOOT_CONF for the kernel image with initramfs bundled
+ACRN_EFI_BOOT_CONF = "${KERNEL_IMAGETYPE}-${INITRAMFS_LINK_NAME}.bin:Linux_bzImage;"
 ```
 
 conf/local.conf should enable multiconfig build for sos
