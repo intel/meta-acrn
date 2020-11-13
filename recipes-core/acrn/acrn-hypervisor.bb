@@ -51,6 +51,9 @@ do_deploy() {
 	install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_FIRMWARE}.${ACRN_SCENARIO}.32.out ${DEPLOYDIR}
 	rm -f ${DEPLOYDIR}/acrn.32.out
 	lnr ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_FIRMWARE}.${ACRN_SCENARIO}.32.out ${DEPLOYDIR}/acrn.32.out
+	install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_FIRMWARE}.${ACRN_SCENARIO}.bin ${DEPLOYDIR}
+	rm -f ${DEPLOYDIR}/acrn.bin
+	lnr ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_FIRMWARE}.${ACRN_SCENARIO}.bin ${DEPLOYDIR}/acrn.bin
 	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
 		install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.efi ${DEPLOYDIR}
 		rm -f ${DEPLOYDIR}/acrn.efi
