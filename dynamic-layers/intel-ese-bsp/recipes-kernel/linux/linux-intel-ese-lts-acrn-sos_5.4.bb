@@ -6,6 +6,10 @@ LINUX_VERSION_EXTENSION = "-linux-intel-ese-lts-acrn-sos"
 
 SUMMARY = "Linux Intel ESE Kernel with ACRN enabled (SOS)"
 
+KERNEL_FEATURES_append = " features/criu/criu-enable.scc \
+                          cgl/cfg/iscsi.scc \
+"
+
 SRC_URI_append = " ${@get_scenario_cfg(d)}"
 
 def get_scenario_cfg(d):
