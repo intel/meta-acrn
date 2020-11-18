@@ -25,6 +25,11 @@ export LIBVIRT_CFLAGS = "-I${S}/include"
 export LIBVIRT_LIBS = "-L${B}/src/.libs -lvirt -ldl"
 export LDFLAGS="-L${B}/src/.libs"
 
+export LDSHARED  = "${CCLD} -shared"
+export LDCXXSHARED  = "${CXX} -shared"
+export CCSHARED  = "-fPIC -DPIC"
+export LINKFORSHARED = "${SECURITY_CFLAGS} -Xlinker -export-dynamic"
+
 LIBVIRT_INSTALL_ARGS = "--root=${D} \
     --prefix=${prefix} \
     --install-lib=${PYTHON_SITEPACKAGES_DIR} \
