@@ -4,9 +4,9 @@ Really rough getting started brain dump.
 
 ### Build Requirements
 
-* openembedded-core, branch master or dunfell
-* meta-intel, branch master or dunfell
-* meta-acrn, branch master
+* openembedded-core, branch gatesgarth
+* meta-intel, branch gatesgarth
+* meta-acrn, branch gatesgarth
 
 ### Setup
 
@@ -111,17 +111,17 @@ PREFERRED_VERSION_linux-intel-rt-acrn-uos = "4.19%"
 ```
 
 ### Acrn libvirt configuration
-libvirt (acrn-libvirt) is currenly supported by linux-intel-kernel-sos 5.4% and ACRN 2.0. It should be build only for SOS.
+libvirt (acrn-libvirt) is currenly supported by linux-intel-kernel-sos 5.4%, ACRN 2.0 and above. It should be build only for SOS.
 To build libvirt recipe, add meta-virtualization and its dependency layers in bblayers.conf.
 To build and ship in SOS image, add below line in local.conf:
 
 ```
 # Add to acrn-image-base
-IMAGE_INSTALL_append_pn-acrn-image-base = " libvirt libvirt-libvirtd libvirt-virsh"
+IMAGE_INSTALL_append_pn-acrn-image-base = " libvirt libvirt-libvirtd libvirt-virsh libvirt-python"
 # Add to acrn-image-sato
-IMAGE_INSTALL_append_pn-acrn-image-sato = " libvirt libvirt-libvirtd libvirt-virsh"
+IMAGE_INSTALL_append_pn-acrn-image-sato = " libvirt libvirt-libvirtd libvirt-virsh libvirt-python"
 # Add to acrn-image-weston
-IMAGE_INSTALL_append_pn-acrn-image-weston = " libvirt libvirt-libvirtd libvirt-virsh"
+IMAGE_INSTALL_append_pn-acrn-image-weston = " libvirt libvirt-libvirtd libvirt-virsh libvirt-python"
 ```
 
 ### Adding Guests

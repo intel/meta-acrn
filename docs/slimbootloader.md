@@ -2,9 +2,9 @@
 ACRN Hypervisor can boot with Slim Bootloader. This page shows a workflow to generate the multiboot compliant container image to boot ACRN Hypervisor in the hybrid scenario with Slim Bootloader.
 
 ### Build Requirements
-* openembedded-core, branch master
-* meta-intel, branch master
-* meta-acrn, branch master
+* openembedded-core, branch gatesgarth
+* meta-intel, branch gatesgarth
+* meta-acrn, branch gatesgarth
 
 ### 1. Setup project
 ```
