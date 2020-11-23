@@ -49,11 +49,14 @@ Test that you can build multiconfigs:
 $ bitbake multiconfig:uos:core-image-base
 ```
 
-This should build you a `core-image-base.ext4` in the UOS work directory. Now build your acrn image:
+This should build you a `core-image-base.wic` in the UOS work directory. Now build your acrn image:
 
 ```
 $ bitbake acrn-image-base
 ```
+
+Due to recent changes, you need to add 'pam' to DISTRO_FETARUTES for weston images in local.conf or uos.conf.
+DISTRO_FEATURES_append = " pam"
 
 Note that thanks to a bug in bitbake if you go straight to `acrn-image-base` from an empty sstate then it will build a lot of recipes twice.  For speed, build the UOS image first and then the SOS, as the SOS image can re-use 99% of the sstate.
 
