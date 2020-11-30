@@ -20,8 +20,14 @@ logger_setting="--logger_setting console,level=4;kmsg,level=3;disk,level=5"
 #for memsize setting
 mem_size=2048M
 
+gpudevice=`cat /sys/bus/pci/devices/0000:00:02.0/device`
+
+echo "8086 $gpudevice" > /sys/bus/pci/drivers/pci-stub/new_id
+echo "0000:00:02.0" > /sys/bus/pci/devices/0000:00:02.0/driver/unbind
+echo "0000:00:02.0" > /sys/bus/pci/drivers/pci-stub/bind
+
 acrn-dm -A -m $mem_size  -s 0:0,hostbridge \
-  -s 2,pci-gvt -G "$2" \
+  -s 2,passthru,0/2/0,gpu \
   -s 5,virtio-console,@stdio:stdio_port \
   -s 6,virtio-hyper_dmabuf \
   -s 3,virtio-blk,/var/lib/machines/core-image-sato.wic \
