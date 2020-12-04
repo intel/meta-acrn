@@ -7,7 +7,6 @@ SRC_URI_append = "  file://uos_rt_5.4.scc"
 KERNEL_FEATURES_append = "features/netfilter/netfilter.scc \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
-                          features/net/stmicro/stmmac.cfg \
 "
 
 LINUX_VERSION_EXTENSION = "-linux-intel-ese-lts-preempt-rt-acrn-uos"
