@@ -15,7 +15,7 @@ SRCREV_meta ?= "8d0ed83a864cc91eef4d2abbc90f13d4ecd1c213"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
-KERNEL_FEATURES_append = "features/netfilter/netfilter.scc \
+KERNEL_FEATURES_append = " features/netfilter/netfilter.scc \
                           features/security/security.scc  \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
