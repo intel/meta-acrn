@@ -4,7 +4,7 @@ FILESEXTRAPATHS_prepend := "${LAYERDIR-ese-bsp}/recipes-kernel/linux/linux-confi
 
 SRC_URI_append = "  file://uos_rt_5.4.scc"
 
-KERNEL_FEATURES_append = "features/netfilter/netfilter.scc \
+KERNEL_FEATURES_append = " features/netfilter/netfilter.scc \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
 "
