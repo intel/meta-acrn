@@ -9,6 +9,8 @@ EXTRA_OEMAKE += "BOARD_FILE=${S}/misc/acrn-config/xmls/board-xmls/${ACRN_BOARD}.
 
 SRC_URI_append_class-target += "file://hypervisor-dont-build-pre_build.patch"
 
+SRC_URI_append = " file://acrn-config-update-function-for-xml-etree-ElementTree.patch "
+
 inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
