@@ -7,6 +7,7 @@ LINUX_VERSION_EXTENSION = "-linux-intel-ese-lts-acrn-sos"
 SUMMARY = "Linux Intel ESE Kernel with ACRN enabled (SOS)"
 
 KERNEL_FEATURES_append = " features/criu/criu-enable.scc \
+                           features/docker/docker.scc \
                           cgl/cfg/iscsi.scc \
 "
 
