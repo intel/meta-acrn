@@ -1,6 +1,0 @@
-define KFEATURE_DESCRIPTION "Add required kernel features for 4.19 UOS kernel"
-define KFEATURE_COMPATIBILITY board
-
-kconf non-hardware acrn-common.cfg
-kconf non-hardware uos.cfg
-kconf non-hardware uos_4.19.cfg
