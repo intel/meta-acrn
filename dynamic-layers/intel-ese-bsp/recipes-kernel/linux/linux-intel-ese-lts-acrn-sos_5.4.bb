@@ -8,7 +8,8 @@ SUMMARY = "Linux Intel ESE Kernel with ACRN enabled (SOS)"
 
 KERNEL_FEATURES_append = " features/criu/criu-enable.scc \
                            features/docker/docker.scc \
-                          cgl/cfg/iscsi.scc \
+                           cgl/cfg/iscsi.scc \
+                           sos_5.4.scc \
 "
 
 SRC_URI_append = " ${@get_scenario_cfg(d)}"
