@@ -75,12 +75,6 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
 PREFERRED_VERSION_linux-intel-acrn-sos = "5.4%"
 ```
 
-To switch to linux-intel-acrn-sos LTS 4.19 kernel, in 'local.conf' replace with below lines:
-```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "4.19%"
-```
-
 #### UOS
 
 
@@ -90,26 +84,14 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
 PREFERRED_VERSION_linux-intel-acrn-uos = "5.4%"
 ```
 
-To switch to linux-intel-acrn-uos LTS 4.19 kernel, in 'conf/multiconfig/uos.conf' replace with below lines:
-```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
-PREFERRED_VERSION_linux-intel-acrn-uos = "4.19%"
-```
-
 To switch to linux-intel-rt-acrn-uos Preempt-RT 5.4 kernel (default), in 'conf/multiconfig/uos.conf' replace with below line:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
 PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.4%"
 ```
 
-To switch to linux-intel-rt-acrn-uos Preempt-RT 4.19 kernel, in 'conf/multiconfig/uos.conf' replace with below line:
-```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
-PREFERRED_VERSION_linux-intel-rt-acrn-uos = "4.19%"
-```
-
 ### Acrn libvirt configuration
-libvirt (acrn-libvirt) is currenly supported by linux-intel-kernel-sos 5.4% and ACRN 2.0. It should be build only for SOS.
+libvirt (acrn-libvirt) is currenly supported by linux-intel-kernel-sos 5.4% and ACRN 2.0 and higher. It should be build only for SOS.
 To build libvirt recipe, add meta-virtualization and its dependency layers in bblayers.conf.
 To build and ship in SOS image, add below line in local.conf:
 
