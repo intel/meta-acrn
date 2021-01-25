@@ -4,8 +4,8 @@ Really rough getting started brain dump.
 
 ### Build Requirements
 
-* openembedded-core, branch master or dunfell
-* meta-intel, branch master or dunfell
+* openembedded-core, branch master
+* meta-intel, branch master
 * meta-acrn, branch master
 
 ### Setup
@@ -97,11 +97,11 @@ To build and ship in SOS image, add below line in local.conf:
 
 ```
 # Add to acrn-image-base
-IMAGE_INSTALL_append_pn-acrn-image-base = " libvirt libvirt-libvirtd libvirt-virsh"
+IMAGE_INSTALL_append_pn-acrn-image-base = " libvirt libvirt-libvirtd libvirt-virsh libvirt-python"
 # Add to acrn-image-sato
-IMAGE_INSTALL_append_pn-acrn-image-sato = " libvirt libvirt-libvirtd libvirt-virsh"
+IMAGE_INSTALL_append_pn-acrn-image-sato = " libvirt libvirt-libvirtd libvirt-virsh libvirt-python"
 # Add to acrn-image-weston
-IMAGE_INSTALL_append_pn-acrn-image-weston = " libvirt libvirt-libvirtd libvirt-virsh"
+IMAGE_INSTALL_append_pn-acrn-image-weston = " libvirt libvirt-libvirtd libvirt-virsh libvirt-python"
 ```
 
 ### Adding Guests
@@ -175,8 +175,14 @@ Now build the installer image:
 $ bitbake mc:installer:acrn-image-base
 ```
 
+### Override Distro Configuration
+
+Due to parsing sequence conflict with meta-intel, weak assingments are not used in acrn-demo-sos and acrn-demo-uos distros. So to override distro configuration in local.conf, override syntex can be used i.e
+
+WKS_FILE_acrn-demo-sos = "your-custom.wks.in"
+
 ### Things That Break
 
 If a guest kernel sits at `vhm: initializing` and then restarts then I think the problem is that the UOS is trying to boot with the SOS kernel.
 
-If `acrn-dm` segfaults on startup then that is usually that it is trying to do VGT-g but the SOS doesn't have `i915.enable_gvt=1` and friends turned on.
+If `acrn-dm` segfaults on startup then that is usually that it is trying to do GVT-g but the SOS doesn't have `i915.enable_gvt=1` and friends turned on.
