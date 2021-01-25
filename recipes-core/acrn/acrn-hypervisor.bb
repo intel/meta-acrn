@@ -13,7 +13,7 @@ inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-DEPENDS += "python3-kconfiglib-native acrn-hypervisor-native acpica-native python3-lxml-native"
+DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native"
 
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
