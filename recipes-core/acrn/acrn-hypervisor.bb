@@ -2,10 +2,12 @@ require acrn-common.inc
 
 ACRN_BOARD ?= "nuc7i7dnb"
 ACRN_SCENARIO  ?= "industry"
+ACRN_BOARD_FILE ?= ""
+ACRN_SCENARIO_FILE ?= ""
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor "
-EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} SCENARIO=${ACRN_SCENARIO}"
-EXTRA_OEMAKE += "BOARD_FILE=${S}/misc/acrn-config/xmls/board-xmls/${ACRN_BOARD}.xml SCENARIO_FILE=${S}/misc/acrn-config/xmls/config-xmls/${ACRN_BOARD}/${ACRN_SCENARIO}.xml"
+EXTRA_OEMAKE += "${@bb.utils.contains('ACRN_BOARD_FILE', '', 'BOARD_FILE=${ACRN_BOARD_FILE}', 'BOARD=${ACRN_BOARD}', d)}"
+EXTRA_OEMAKE += "${@bb.utils.contains('ACRN_SCENARIO_FILE', '', 'SCENARIO_FILE=${ACRN_SCENARIO_FILE}', 'SCENARIO=${ACRN_SCENARIO}', d)} "
 
 SRC_URI_append_class-target += "file://hypervisor-dont-build-pre_build.patch"
 
