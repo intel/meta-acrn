@@ -7,7 +7,7 @@ REQUIRED_DISTRO_FEATURES = "systemd"
 EXTRA_OEMAKE += " OUT_DIR=${B} "
 
 do_compile() {
-	oe_runmake -C misc/life_mngr
+	oe_runmake -C misc/services/life_mngr
 }
 
 do_install() {
