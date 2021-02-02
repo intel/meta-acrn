@@ -16,7 +16,7 @@ IMAGE_NAME := "${@d.getVar('PN').replace('-package', '')}"
 # Where to install the image
 containerdir ?= "${localstatedir}/lib/machines"
 
-do_install[mcdepends] += "multiconfig::${CONTAINER_PACKAGE_MC}:${IMAGE_NAME}:do_image_complete"
+do_install[mcdepends] += "multiconfig:${BB_CURRENT_MC}:${CONTAINER_PACKAGE_MC}:${IMAGE_NAME}:do_image_complete"
 
 do_install () {
 	install -d ${D}${containerdir}
