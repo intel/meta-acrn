@@ -100,3 +100,7 @@ bzImage bzImage-5.4.52-linux-intel-acrn-sos EFI loader sbl_os
 
 * PREGENERATED_SIGNING_KEY_SLIMBOOT_KEY_SHA256  
   Set the path to the image signing key. Default is "${TOPDIR}/cert/TestSigningPrivateKey.pem"
+
+* BB_CURRENT_MC
+  Get the Current Configuration using this variable when multiple configuration have specified in conf/local.conf using BBMULTICONFIG variable.
+  Example: currentMultibootConfig = d.getVar('BB_CURRENT_MC')

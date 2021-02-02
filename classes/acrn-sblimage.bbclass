@@ -9,6 +9,7 @@ MB_ACRN_MODULES  ?= "${TOPDIR}/conf/linux.txt;${DEPLOY_DIR_IMAGE}/${KERNEL_IMAGE
 BASE_SBLIMAGE    ?= "sbl_os"
 SBLIMAGE_NAME    ?= "${BASE_SBLIMAGE}"
 PREGENERATED_SIGNING_KEY_SLIMBOOT_KEY_SHA256 ?= "${TOPDIR}/cert/TestSigningPrivateKey.pem"
+BB_CURRENT_MC    ?= ""
 
 python do_acrn_sblimage() {
     import re
@@ -62,6 +63,7 @@ python do_acrn_sblimage() {
 python() {
     import re
 
+    currentMultibootConfig = d.getVar('BB_CURRENT_MC')
     multibootPackageDependencyList = re.split(" +", d.getVar('MB_DEPENDENCY').lstrip().rstrip())
     multibootPackageMcDependencyList = re.split(" +", d.getVar('MB_MC_DEPENDENCY').lstrip().rstrip())
 
@@ -75,7 +77,7 @@ python() {
 
     for multibootPackageMcDependency in multibootPackageMcDependencyList:
         if multibootPackageMcDependency:
-            mcdependency = "multiconfig::%s" % (multibootPackageMcDependency)
+            mcdependency = "multiconfig:%s:%s" % (currentMultibootConfig, multibootPackageMcDependency)
             bb.debug(1, "MultibootMcDependency: %s" % (mcdependency))
             d.appendVarFlag('do_acrn_sblimage', 'mcdepends', ' ' + mcdependency)
 
