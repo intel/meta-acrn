@@ -118,7 +118,7 @@ This forwards ports 1-1 and 1-2 into the UOS, which on Skull Canyon is the two f
 
 ### Install onto NUC
 
-To install the image on to NUC, you could burn the .wic.acrn image to the target NUC internal storage.
+To install the image on to NUC, you could burn the .wic image to the target NUC internal storage.
 
 Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, add below lines to `local.conf`:
 
@@ -130,10 +130,7 @@ Then this in `conf/multiconfig/installer.conf`:
 
 ```
 # use the installer wks file
-WKS_FILE = "image-installer.wks.in"
-
-# do not need to convert wic to wic.acrn
-IMAGE_FSTYPES_remove="wic.acrn"
+WKS_FILE_pn-acrn-image-base = "image-installer.wks.in"
 
 # build initramsfs to start the installation
 INITRD_IMAGE_LIVE="core-image-minimal-initramfs"
@@ -145,11 +142,10 @@ IMAGE_TYPEDEP_wic = "ext4"
 # content to be install
 IMAGE_BOOT_FILES_append = "\
     ${KERNEL_IMAGETYPE} \
-    microcode.cpio \
-    acrn.efi;EFI/BOOT/acrn.efi \
-    systemd-bootx64.efi;EFI/BOOT/bootx64.efi \
-    ${IMAGE_ROOTFS}/boot/loader/loader.conf;loader/loader.conf \
-    ${IMAGE_ROOTFS}/boot/loader/entries/boot.conf;loader/entries/boot.conf \
+    acrn.bin;esp/acrn.bin \
+    microcode.cpio;esp/microcode.cpio \
+    grub-efi-bootx64.efi;EFI/BOOT/bootx64.efi \
+    ${IMAGE_ROOTFS}/boot/EFI/BOOT/grub.cfg;esp/EFI/BOOT/grub.cfg \
     ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img \
 "
 ```
