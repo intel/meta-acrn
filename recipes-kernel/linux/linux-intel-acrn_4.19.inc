@@ -8,9 +8,9 @@ SRC_URI_append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncur
 KBRANCH = "4.19/base"
 KMETA_BRANCH = "yocto-4.19"
 
-LINUX_VERSION ?= "4.19.163"
-SRCREV_machine ?= "e96097be885e02da48a972a0b0d2dd27d8e00e57"
-SRCREV_meta ?= "6dd03685eaf5d27cd6e88ee888c0d42e09befd17"
+LINUX_VERSION ?= "4.19.174"
+SRCREV_machine ?= "61682da75b19bdf464c7f8c5e78af0548a89d91c"
+SRCREV_meta ?= "147f6b827c6e7766cb2b61da4e17479ffcd216c2"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
