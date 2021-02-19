@@ -98,7 +98,16 @@ class BootimgEFIPlugin(SourcePlugin):
 
             grubefi_conf += "}\n"
             grubefi_conf += "menuentry 'ACRN (Yocto)'{\n"
-            grubefi_conf += "multiboot2 /acrn.bin %s %s \n" % \
+
+            aux_modules = get_bitbake_var("ACRN_EFI_GRUB2_MOD_CFG")
+            if aux_modules:
+                aux_modules = aux_modules.split(";")
+                for aux_module in aux_modules:
+                    if not aux_module:
+                        continue
+                    grubefi_conf += "%s\n" % aux_module
+
+            grubefi_conf += "\nmultiboot2 /acrn.bin %s %s \n" % \
                 (label_conf, bootloader.append)
 
             boot_confs = get_bitbake_var("ACRN_EFI_BOOT_CONF").split(";")
