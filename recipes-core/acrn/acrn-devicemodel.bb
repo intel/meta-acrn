@@ -1,13 +1,15 @@
 require acrn-common.inc
 
-SRC_URI += "file://dont-build-tools.patch"
+SRC_URI += "file://dont-build-tools.patch \
+            file://allow-to-pass-compiler-and-linker-flags.patch \
+            "
 
 inherit python3native
 
 DEPENDS += "util-linux libusb1 openssl libpciaccess acrn-tools"
 
 # Tell the build where to find acrn-tools
-EXTRA_OEMAKE += "TOOLS_OUT=${STAGING_DIR_TARGET}${includedir}/acrn"
+EXTRA_OEMAKE += "COPTS=${STAGING_DIR_TARGET}${includedir}/acrn"
 
 EXTRA_OEMAKE += "ASL_COMPILER=${bindir}/iasl"
 
