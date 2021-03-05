@@ -1,0 +1,52 @@
+From d6efac85c700ea4595b8b56df8458c461ff77b26 Mon Sep 17 00:00:00 2001
+From: Geoffroy Van Cutsem <geoffroy.vancutsem@intel.com>
+Date: Wed, 3 Mar 2021 10:24:38 +0100
+Subject: [PATCH] tools: do not build life_mngr by default
+
+Do not build (or install) the ACRN life_mngr by default as this is
+a User VM tool, not one to be used and run in the Service VM.
+
+The component can still be built independantly by invoking
+'make -C misc life_mngr' (components will be built and placed in
+'misc/build/services/' by default).
+
+Upstream-Status: Pending
+
+Tracked-On: #5660
+Signed-off-by: Geoffroy Van Cutsem <geoffroy.vancutsem@intel.com>
+---
+ misc/Makefile | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/misc/Makefile b/misc/Makefile
+index 317490b9e..8a2bc5024 100644
+--- a/misc/Makefile
++++ b/misc/Makefile
+@@ -21,9 +21,9 @@ endif
+ 
+ .PHONY: all acrn-manager acrnbridge life_mngr acrn-crashlog acrnlog acrntrace
+ ifeq ($(RELEASE),n)
+-all: acrn-manager acrnbridge life_mngr acrn-crashlog acrnlog acrntrace
++all: acrn-manager acrnbridge acrn-crashlog acrnlog acrntrace
+ else
+-all: acrn-manager acrnbridge life_mngr
++all: acrn-manager acrnbridge
+ endif
+ 
+ acrn-manager:
+@@ -55,10 +55,10 @@ clean:
+ 
+ .PHONY: install
+ ifeq ($(RELEASE),n)
+-install: acrn-manager-install acrnbridge-install acrn-life-mngr-install acrn-crashlog-install \
++install: acrn-manager-install acrnbridge-install acrn-crashlog-install \
+ 	acrnlog-install acrntrace-install
+ else
+-install: acrn-manager-install acrnbridge-install acrn-life-mngr-install
++install: acrn-manager-install acrnbridge-install
+ endif
+ 
+ acrn-manager-install:
+-- 
+2.25.1
+
