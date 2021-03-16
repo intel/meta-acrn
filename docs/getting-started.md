@@ -159,11 +159,45 @@ Now build the installer image:
 ```
 $ bitbake mc:installer:acrn-image-base
 ```
-### Override distro configuration
+
+
+### Override distro configuration
 
 Due to parsing sequence conflict with meta-intel, weak assingments are not used in acrn-demo-sos and acrn-demo-uos distros. So to override distro configuration in local.conf, override syntex can be used i.e
 
 WKS_FILE_acrn-demo-sos = "your-custom.wks.in"
+
+
+### Optional GRUB Configuration Variables
+
+Below variables are used to generate grub.cfg. These variables can be overwrite in your local config.
+
+* VMFLAGS - list of pre-launched VMs including Service vm
+    For example: VMFLAGS = "vm0 vm1 ... vmx"
+
+* VM_APPEND - VM kernel commandline
+* KERNEL_IMAGE - kernel image like bzImage for each vm
+* KERNEL_MOD - kern_mod tag in acrn scenario xml for each
+* ACPI_TAG - ACPI tag for specific VM
+* ACPI_BIN - binary of ACPI tables for a specific vm
+
+For example, using hybrid scenario for nuc7i7dnb:
+
+     VMFLAGS = "vm0 vm1"
+     # vm0 (prelaunch vm zephyr)
+     VM_APPEND_vm0 = "xxx"
+     KERNEL_IMAGE_vm0 = "zephyr.bin"
+     KERNEL_MOD_vm0 = "Zephyr_RawImage"
+     ACPI_TAG_vm0 = "ACPI_VM0"
+     ACPI_BIN_vm0 = "ACPI_VM0.bin"
+
+     # vm1 (sos)
+     VM_APPEND_vm1 = "xxx"
+     KERNEL_IMAGE_vm1 = "bzImage"
+     KERNEL_MOD_vm1 = "Linux_bzImage"
+
+* ACRN_EFI_GRUB2_MOD_CFG wic variable (semicolon (;) sperated list)
+    to make additional entries in grub.cfg i.e insmod ext3
 
 
 ### Things That Break
