@@ -1,18 +1,144 @@
 # Getting Started
 
-Really rough getting started brain dump.
+This guide will show how to set up the host machine for Yocto build and then how to build and boot ACRN Hypervisor, Service VM and User VMs on Intel platforms.
 
-### Build Requirements
+## Table of Contents
+=================
 
-* openembedded-core, branch master or dunfell
-* meta-intel, branch master or dunfell
-* meta-oe, branch master or dunfell
-* meta-python, branch master or dunfell
-* meta-acrn, branch master
+I.   [Overview](#overview)
 
-### Setup
+II.  [Set Up Build Host](#set-up-build-host)
+ * [Compatible Linux Distribution](#compatible-linux-distribution)
+ * [Required Packages for Build Host](#required-packages-for-build-host)
 
-There is now a prototype example distro called `acrn-demo` that uses multiconfig to build the SOS and UOS. Something like this in `local.conf`:
+III. [Building ACRN Bootable Image](#building-acrn-bootable-image)
+ * [Dependencies](#dependencies)
+ * [Build Image](#build-image)
+   - [Download Layers and Initialize Build Environment](#download-layers-and-initialize-build-environment)
+   - [Configure Service VM (SOS)](#configure-service-vm-sos)
+   - [Configure Post-launched User VM (UOS)](#configure-post-launched-user-vm-uos)
+   - [Build User VM (UOS) image via multiconfig](#build-uos-image-via-multiconfig)
+   - [Build ACRN image](#build-acrn-image)
+
+IV.  [Booting ACRN Image](#booting-acrn-image)
+ * [Boot ACRN and SOS](#boot-acrn-and-sos)
+ * [Launching UOS](#launching-uos)
+   - [USB Passthrough](#usb-passthrough)
+
+V.   [Configurations](#configurations)
+ * [MACHINE Configuration](#machine-configuration)
+ * [Adding Guests](#adding-guests)
+ * [ACRN Configuration](#acrn-configuration)
+   - [ACRN BOARD Configuration](#acrn-board-configuration)
+   - [ACRN SCENARIO Configuration](#acrn-scenario-configuration)
+   - [ACRN BUILD MODE Configuration](#acrn-build-mode-configuration)
+ * [Kernel Configuration](#kernel-configuration)
+   - [SOS](#sos)
+   - [UOS](#uos)
+ * [GRUB Configuration](#grub-configuration)
+ * [Override distro configuration](#override-distro-configuration)
+
+VI.  [Build WIC Installer Image](#build-wic-installer-image)
+
+VII. [Tested Hardware](#tested-hardware)
+
+VIII.[Contributing](#contributing)
+
+## Overview
+This layer provides ACRN Hypvervisor integration with Yocto Project.
+
+## Supported Hardware
+
+ACRN is supported on the following Intel platforms:
+* Kaby Lake
+* Whiskey Lake
+* Tiger Lake
+* Elkhart Lake
+
+About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/latest/reference/hardware.html)
+
+
+## Set Up Build Host
+
+### Compatible Linux Distribution
+Make sure your build host meets the following requirements:
+
+- 50 Gbytes of free disk space
+- Runs a supported Linux distribution
+
+Currently, the Yocto Project is supported on a number of Linux Distributions. This guide covers only for Ubuntu 18.04 (LTS). To know more about the complete list of    supported Linux distributions, please visit [Supported Linux Distributions](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#detailed-supported-distros)
+- Git 1.8.3.1 or greater
+- tar 1.28 or greater
+- Python 3.5.0 or greater
+- gcc 5.0 or greater
+
+### Required Packages for Build Host
+Install essential host packages on your build host (Ubuntu):
+
+```
+$ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm
+```
+
+## Building ACRN Bootable Image
+
+
+### Dependencies
+
+meta-acrn layer depends on:
+* [poky](https://git.yoctoproject.org/git/poky), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-virtualization](https://git.yoctoproject.org/git/meta-virtualization), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-intel](https://git.yoctoproject.org/git/meta-intel), branch master [or hardknott/gatesgarth/dunfell]
+
+### Build Image
+
+#### Download Layers and Initialize Build Environment
+
+* Create build workspace
+```
+$ mkdir workspace
+```
+
+* Clone poky
+```
+$ cd workspace
+$ git clone https://git.yoctoproject.org/git/poky
+```
+* Clone all dependent layers
+```
+$ cd poky
+$ git clone https://github.com/openembedded/meta-openembedded.git
+$ git clone https://git.yoctoproject.org/git/meta-virtualization
+$ git clone https://git.yoctoproject.org/git/meta-intel
+$ git clone https://github.com/intel/meta-acrn.git
+```
+* Initialize build environment
+```
+$ source oe-init-build-env
+```
+
+* Add layers to build environment `conf/bblayers.conf`
+```
+$ bitbake-layers add-layer ../meta-openembedded/meta-oe
+$ bitbake-layers add-layer ../meta-openembedded/meta-python
+$ bitbake-layers add-layer ../meta-openembedded/meta-filesystems
+$ bitbake-layers add-layer ../meta-openembedded/meta-networking
+$ bitbake-layers add-layer ../meta-virtualization
+$ bitbake-layers add-layer ../meta-intel
+$ bitbake-layers add-layer ../meta-acrn
+```
+
+#### Configure Service VM (SOS)
+
+meta-acrn maintains prototype DISTRO configurations for both Servcie VM OS (SOS) and User VM OS (UOS). `acrn-demo-sos` for Service VM OS and `acrn-demo-uos` for User VM OS.
+`local.conf` carries the common configuration, which can be overwritten by individual multiconfigs `conf/multiconfig/xxx.conf`
+For the Service VM OS, we carry configuration in `conf/local.conf` and for User VM OS we carry in `conf/multiconfig/uos.conf`
+
+
+Append the following configuration in `conf/local.conf`:
 
 ```
 MACHINE = "intel-corei7-64"
@@ -35,7 +161,9 @@ IMAGE_INSTALL_append_pn-acrn-image-sato = " core-image-weston-package"
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
 ```
 
-Then this in `conf/multiconfig/uos.conf`:
+#### Configure Post-launched User VM (UOS)
+
+Add the following in `conf/multiconfig/uos.conf`:
 
 ```
 DISTRO = "acrn-demo-uos"
@@ -43,15 +171,28 @@ TMPDIR = "${TOPDIR}/master-acrn-uos"
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
 ```
 
-Note how the parent `local.conf` refers to what `DEPLOY_DIR_IMAGE` will be in `uos.conf`.  Remember to keep these in sync.
+> Note how the parent `local.conf` refers to what `DEPLOY_DIR_IMAGE` will be in `uos.conf`.  Remember to keep these in sync.
 
-Test that you can build multiconfigs:
+#### Build UOS image via multiconfig
+
+> Based on your target image. It can be:
+>  - core-image-base
+>  - core-image-sato
+>  - core-image-weston
 
 ```
-$ bitbake multiconfig:uos:core-image-base
+$ bitbake mc:uos:core-image-base
 ```
 
-This should build you a `core-image-base.ext4` in the UOS work directory. Now build your acrn image:
+This should build you a `core-image-base-intel-corei7-64.wic` can be located at `build/master-acrn-uos/deploy/images/intel-corei7-64/`.
+
+#### Build ACRN image
+
+> Based on your target image, It can be:
+>  - acrn-image-base
+>  - acrn-image-sato
+>  - acrn-image-weston
+>  - acrn-image-minimal
 
 ```
 $ bitbake acrn-image-base
@@ -59,43 +200,47 @@ $ bitbake acrn-image-base
 
 Note that thanks to a bug in bitbake if you go straight to `acrn-image-base` from an empty sstate then it will build a lot of recipes twice.  For speed, build the UOS image first and then the SOS, as the SOS image can re-use 99% of the sstate.
 
-By default, building `acrn-image-base` will build a `.wic` image that gives two boot option, 'boot' and 'ACRN (Yocto)'. Select 'ACRN (Yocto)' to spawn hypervisor, while 'boot' to boot as normal Linux.
+By default, building `acrn-image-base` will build a `.wic` image and can be located at `build/master-acrn-sos/deploy/images/intel-corei7-64/`.
 
-GVT requires kernel options, these are enabled by default in the `acrn-demo-sos` distro. If these options cause problems then `LINUX_GVT_APPEND` can be overridden.
 
-### Kernel selection
-There are multiple kernel variant available for both SOS and UOS.
+## Booting ACRN Image
 
-#### SOS
+### Boot ACRN and SOS
 
-To switch to linux-intel-acrn-sos LTS 5.4 kernel (default), in 'local.conf' replace with below lines:
+On successful build, you will find the ACRN bootable image `acrn-image-base-intel-corei7-64.wic` in the `build/master-acrn-sos/deploy/images/intel-corei7-64/` directory.
+
+Under Linux, insert a USB flash drive.  Assuming the USB flash drive
+takes device `/dev/sdf`, use `dd` to copy the image to it.  Before the image
+can be burned onto a USB drive, it should be un-mounted. Some Linux distros
+may automatically mount a USB drive when it is plugged in. Using USB device
+/dev/sdf as an example, find all mounted partitions:
 ```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "5.4%"
+    $ mount | grep sdf
+```
+and un-mount those that are mounted, for example:
+```
+    $ umount /dev/sdf1
+    $ umount /dev/sdf2
+```
+Now burn the image onto the USB drive:
+```
+    $ sudo dd if=acrn-image-base-intel-corei7-64.wic of=/dev/sdf status=progress
+    $ sync
+    $ eject /dev/sdf
+```
+This should give you a bootable USB flash device.  Insert the device into a bootable USB socket on the target, and power on. It should give two boot options, 'boot' and 'ACRN (Yocto)'. Select 'ACRN (Yocto)' to spawn hypervisor, while 'boot' to boot as normal Linux.
+
+### Launching UOS
+
+```
+$ /var/lib/machines/launch-base.sh
 ```
 
-#### UOS
+#### USB Passthrough
 
+Once a graphical UOS has been started you'll want to interact with it.  One simple solution is to set the relevant variables so that logging into the console can access the display.
 
-To switch to linux-intel-acrn-uos LTS 5.4 kernel (default), in 'conf/multiconfig/uos.conf' replace with below lines:
-```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
-PREFERRED_VERSION_linux-intel-acrn-uos = "5.4%"
-```
-
-To switch to linux-intel-rt-acrn-uos Preempt-RT 5.4 kernel (default), in 'conf/multiconfig/uos.conf' replace with below line:
-```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
-PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.4%"
-```
-
-### Adding Guests
-
-The multiconfig/package magic works with a `<image>-package.bb` recipe that inherits `container-package`. This puts the image, kernel, and launcher script into a package which can be added as usual.
-
-### USB Passthrough
-
-Once a graphical UOS has been started you'll want to interact with it.  One simple solution is to set the relevant variables so that logging into the console can access the display.  For X:
+For X:
 
 ```
 $ export DISPLAY=:1
@@ -116,59 +261,151 @@ That will let you start applications but you still can't interact with them: goo
 This forwards ports 1-1 and 1-2 into the UOS, which on Skull Canyon is the two front ports (1-1 on the left, 1-2 on the right).  You'll need two input devices for this to work, obviously.
 
 
-### Install onto NUC
 
-To install the image on to NUC, you could burn the .wic image to the target NUC internal storage.
+## Configurations
 
-Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, add below lines to `local.conf`:
+### MACHINE Configuration
 
+[meta-intel](https://git.yoctoproject.org/git/meta-intel) provides the following machine configurations:
+
+* intel-corei7-64
+
+* intel-skylake-64
+
+> intel-skylake-64 is 64-bit machine with -march=skylake and avx2 instruction-set set up. For more information, please check [intel-skylake-64.conf](http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel/tree/conf/machine/intel-skylake-64.conf)
+
+> intel-skylake-64 machine must be used for Skylake and successor platforms
+
+
+To configure MACHINE, set the following in your `conf/local.conf`
 ```
-BBMULTICONFIG_append  = " installer "
-```
-
-Then this in `conf/multiconfig/installer.conf`:
-
-```
-# use the installer wks file
-WKS_FILE_pn-acrn-image-base = "image-installer.wks.in"
-
-# build initramsfs to start the installation
-INITRD_IMAGE_LIVE="core-image-minimal-initramfs"
-
-# make sure initramfs and ext4 image are ready before building wic image
-do_image_wic[depends] += "${INITRD_IMAGE_LIVE}:do_image_complete"
-IMAGE_TYPEDEP_wic = "ext4"
-
-# content to be install
-IMAGE_BOOT_FILES_append = "\
-    ${KERNEL_IMAGETYPE} \
-    acrn.bin;esp/acrn.bin \
-    microcode.cpio;esp/microcode.cpio \
-    grub-efi-bootx64.efi;EFI/BOOT/bootx64.efi \
-    ${IMAGE_ROOTFS}/boot/EFI/BOOT/grub.cfg;esp/EFI/BOOT/grub.cfg \
-    ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img \
-"
+MACHINE = "intel-corei7-64"
 ```
 
-Now build the installer image:
+### Adding Guests
+
+The multiconfig/package magic works with a `<image>-package.bb` recipe that inherits `container-package`. This puts the wic image and launcher script into a package which can be added as usual.
+
+To add core-image-base.wic image into Service OS (Add core-image-base-package to your target ACRN image)
+```
+IMAGE_INSTALL_append_pn-acrn-image-base = " core-image-base-package"
+```
+
+To add core-image-weston-package to acrn-image-weston
+```
+IMAGE_INSTALL_append_pn-acrn-image-weston = " core-image-weston-package"
+```
+
+To add core-image-weston-package to acrn-image-base
+```
+IMAGE_INSTALL_append_pn-acrn-image-base = " core-image-weston-package"
+```
+
+### ACRN Configuration
+
+#### ACRN BOARD Configuration
+
+To build for your target board, set `ACRN_BOARD` in your `conf/local.conf`. By default it is set to `nuc7i7dnb`
+```
+ACRN_BOARD = "whl-ipc-i5"
+```
+
+Supported Boards:
+- apl-mrb
+- apl-up2-n3350
+- apl-up2
+- nuc6cayh
+- nuc7i7dnb
+- whl-ipc-i5
+- whl-ipc-i7
+
+For More information, Please check [Supported Hardware](https://projectacrn.github.io/latest/reference/hardware.html)
+
+#### ACRN SCENARIO Configuration
+
+To build for your acrn scenario, set `ACRN_SCENARIO` in your `conf/local.conf`. By default it is set to `industry` scenario.
+```
+ACRN_SCENARIO  = "hybrid"
+```
+Supported scenarios:
+- sdc
+- logical_partition
+- industry
+- hybrid
+- hybrid_rt
+
+For more information, please check [Build With the ACRN Scenario](https://projectacrn.github.io/latest/getting-started/building-from-source.html#build-with-the-acrn-scenario)
+
+To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/latest/tutorials/acrn_configuration_tool.html)
+
+#### ACRN BUILD MODE Configuration
+
+To build ACRN in `RELEASE` mode, set `y` to `ACRN_RELEASE` in your `conf/local.conf`. By default it is set to `n`
+```
+ACRN_RELEASE = "y"
+```
+
+To build ACRN in `DEBUG` mode, set `n` to `ACRN_RELEASE` in your `conf/local.conf`.
+```
+ACRN_RELEASE = "n"
+```
+
+### Kernel Configuration
+
+There are multiple kernel variant available for both SOS and UOS.
+
+#### SOS
+
+To switch to linux-intel-acrn-sos LTS 5.4 kernel (default), in 'local.conf' replace with the following lines:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
+PREFERRED_VERSION_linux-intel-acrn-sos = "5.4%"
+```
+
+To switch to acrn-kernel-sos, in 'local.conf' replace with the following lines:
 
 ```
-$ bitbake mc:installer:acrn-image-base
+PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-sos"
+```
+> linux-intel-acrn-sos kernel recipe fetch source from [linux-intel-lts](https://github.com/intel/linux-intel-lts) and build kernel for Service VM OS
+
+> acrn-kernel-sos kernel recipe fetch source from [acrn-kernel](https://github.com/projectacrn/acrn-kernel) and build kernel for Service VM OS
+
+> [acrn-kernel](https://github.com/projectacrn/acrn-kernel) source repo is forked from [linux-intel-lts](https://github.com/intel/linux-intel-lts) and maintained by ACRN team for ACRN development. It may have some additional kernel patches, which are not yet available on [linux-intel-lts](https://github.com/intel/linux-intel-lts). It is purely for development purpose.
+
+#### UOS
+
+
+To switch to linux-intel-acrn-uos LTS 5.4 kernel (default), in 'conf/multiconfig/uos.conf' replace with following lines:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
+PREFERRED_VERSION_linux-intel-acrn-uos = "5.4%"
 ```
 
+To switch to linux-intel-rt-acrn-uos Preempt-RT 5.4 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
+PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.4%"
+```
 
-### Override distro configuration
+To switch to acrn-kernel-uos, in 'conf/multiconfig/uos.conf' replace with the following line:
 
-Due to parsing sequence conflict with meta-intel, weak assingments are not used in acrn-demo-sos and acrn-demo-uos distros. So to override distro configuration in local.conf, override syntex can be used i.e
+```
+PREFERRED_PROVIDER_virtual/kernel = "acrn-kernel-uos"
+```
 
-WKS_FILE_acrn-demo-sos = "your-custom.wks.in"
+> linux-intel-acrn-uos kernel recipe fetch source from [linux-intel-lts](https://github.com/intel/linux-intel-lts) and build kernel for User VM OS
 
+> acrn-kernel-uos kernel recipe fetch source from [acrn-kernel](https://github.com/projectacrn/acrn-kernel) and build kernel for User VM OS
 
-### Optional GRUB Configuration Variables
+> [acrn-kernel](https://github.com/projectacrn/acrn-kernel) source repo is forked from [linux-intel-lts](https://github.com/intel/linux-intel-lts) and maintained by ACRN team for ACRN development. It may have some additional kernel patches, which are not yet available on [linux-intel-lts](https://github.com/intel/linux-intel-lts). It is purely for development purpose.
 
-Below variables are used to generate grub.cfg. These variables can be overwrite in your local config.
+### GRUB Configuration
 
-* VMFLAGS - list of pre-launched VMs including Service vm
+Following variables are used to prepare kernel command lines for Pre-launched User VMs and Service VM. Based on these variables an ACRN specific `grub.cfg` gets generated.
+These variables can be overwritten in your local config.
+
+* VMFLAGS - list of pre-launched VMs including Service VM
     For example: VMFLAGS = "vm0 vm1 ... vmx"
 
 * VM_APPEND - VM kernel commandline
@@ -192,12 +429,74 @@ For example, using hybrid scenario for nuc7i7dnb:
      KERNEL_IMAGE_vm1 = "bzImage"
      KERNEL_MOD_vm1 = "Linux_bzImage"
 
-* ACRN_EFI_GRUB2_MOD_CFG wic variable (semicolon (;) sperated list)
+* ACRN_EFI_GRUB2_MOD_CFG wic variable (semicolon (;) separated list)
     to make additional entries in grub.cfg i.e insmod ext3
 
+For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/latest/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub)
+and [acrn-bootconf.bbclass](https://github.com/intel/meta-acrn/blob/master-next/classes/acrn-bootconf.bbclass)
 
-### Things That Break
 
-If a guest kernel sits at `vhm: initializing` and then restarts then I think the problem is that the UOS is trying to boot with the SOS kernel.
+### Override distro configuration
 
-If `acrn-dm` segfaults on startup then that is usually that it is trying to do GVT-g but the SOS doesn't have `i915.enable_gvt=1` and friends turned on.
+Due to parsing sequence conflict with `meta-intel`, weak assignments are not used in `acrn-demo-sos` and `acrn-demo-uos` distros. So to override distro configuration in `conf/local.conf`, override syntax can be used i.e
+```
+WKS_FILE_acrn-demo-sos = "your-custom.wks.in"
+```
+
+
+## Build WIC Installer Image
+
+To install the image on to NUC, you could burn the .wic image to the target hardware's internal storage.
+
+Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, add the following lines to `conf/local.conf`:
+
+```
+BBMULTICONFIG_append  = " installer "
+```
+
+Add followings in `conf/multiconfig/installer.conf`:
+
+```
+# use the installer wks file
+WKS_FILE_pn-acrn-image-base = "image-installer.wks.in"
+
+# build initramsfs to start the installation
+INITRD_IMAGE_LIVE="core-image-minimal-initramfs"
+
+# make sure initramfs and ext4 image are ready before building wic image
+do_image_wic[depends] += "${INITRD_IMAGE_LIVE}:do_image_complete"
+IMAGE_TYPEDEP_wic = "ext4"
+
+# content to be installed
+IMAGE_BOOT_FILES_append = "\
+    ${KERNEL_IMAGETYPE} \
+    acrn.bin;esp/acrn.bin \
+    microcode.cpio;esp/microcode.cpio \
+    grub-efi-bootx64.efi;EFI/BOOT/bootx64.efi \
+    ${IMAGE_ROOTFS}/boot/EFI/BOOT/grub.cfg;esp/EFI/BOOT/grub.cfg \
+    ${IMGDEPLOYDIR}/${IMAGE_BASENAME}-${MACHINE}.ext4;rootfs.img \
+"
+```
+
+Now build the installer image:
+
+```
+$ bitbake mc:installer:acrn-image-base
+```
+
+> Currently ACRN WIC Installer is supported only OE-Core(poky) `master`, `hardknott` and `gatesgarth`. Support for `dunfell` is still in progress.
+
+## Tested Hardware
+The following undergo regular basic testing with their respective MACHINE types.
+
+intel-corei7-64:
+    NUC7i7DNH
+
+intel-skylake-64:
+    NUC7i7DNH
+
+
+## Contributing
+You are encouraged to follow Github Pull request workflow to share changes and following commit message guidelines are recommended [OE patch guidelines](https://www.openembedded.org/wiki/Commit_Patch_Message_Guidelines)
+
+Layer Maintainer: Naveen Saini \<naveen.kumar.saini@intel.com\>
