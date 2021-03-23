@@ -18,8 +18,8 @@ S = "${WORKDIR}/git"
 
 CVE_PRODUCT = "acrn"
 
-# 1 for release build, 0 for debug build.
-ACRN_RELEASE ?= "0"
+# y for release build, n for debug build.
+ACRN_RELEASE ?= "n"
 
 EXTRA_OEMAKE += "RELEASE=${ACRN_RELEASE} \
                  SYSROOT=${STAGING_DIR_TARGET} \
