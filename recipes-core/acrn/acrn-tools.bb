@@ -22,8 +22,8 @@ do_install() {
 }
 
 SYSTEMD_SERVICE_${PN} = "acrnd.service"
-SYSTEMD_SERVICE_${PN} += "${@'acrnlog.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
-SYSTEMD_SERVICE_${PN} += "${@'acrnprobe.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
-SYSTEMD_SERVICE_${PN} += "${@'usercrash.service' if d.getVar('ACRN_RELEASE') == '0' else ''}"
+SYSTEMD_SERVICE_${PN} += "${@'acrnlog.service' if d.getVar('ACRN_RELEASE') == 'n' else ''}"
+SYSTEMD_SERVICE_${PN} += "${@'acrnprobe.service' if d.getVar('ACRN_RELEASE') == 'n' else ''}"
+SYSTEMD_SERVICE_${PN} += "${@'usercrash.service' if d.getVar('ACRN_RELEASE') == 'n' else ''}"
 
 FILES_${PN} += "${systemd_unitdir} ${libdir}/tmpfiles.d ${datadir}/acrn ${datadir}/defaults"
