@@ -85,13 +85,13 @@ $ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib bu
 ### Dependencies
 
 meta-acrn layer depends on:
-* [poky](https://git.yoctoproject.org/git/poky), branch master [or hardknott/gatesgarth/dunfell]
+* [poky](http://git.yoctoproject.org/cgit/cgit.cgi/poky), branch master [or hardknott/gatesgarth/dunfell]
 * [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch master [or hardknott/gatesgarth/dunfell]
 * [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch master [or hardknott/gatesgarth/dunfell]
 * [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch master [or hardknott/gatesgarth/dunfell]
 * [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-virtualization](https://git.yoctoproject.org/git/meta-virtualization), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-intel](https://git.yoctoproject.org/git/meta-intel), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-virtualization](http://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization), branch master [or hardknott/gatesgarth/dunfell]
+* [meta-intel](http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel), branch master [or hardknott/gatesgarth/dunfell]
 
 ### Build Image
 
@@ -266,7 +266,7 @@ This forwards ports 1-1 and 1-2 into the UOS, which on Skull Canyon is the two f
 
 ### MACHINE Configuration
 
-[meta-intel](https://git.yoctoproject.org/git/meta-intel) provides the following machine configurations:
+[meta-intel](http://git.yoctoproject.org/cgit/cgit.cgi/meta-intel) provides the following machine configurations:
 
 * intel-corei7-64
 
@@ -483,8 +483,6 @@ Now build the installer image:
 ```
 $ bitbake mc:installer:acrn-image-base
 ```
-
-> Currently ACRN WIC Installer is supported only OE-Core(poky) `master`, `hardknott` and `gatesgarth`. Support for `dunfell` is still in progress.
 
 ## Tested Hardware
 The following undergo regular basic testing with their respective MACHINE types.
