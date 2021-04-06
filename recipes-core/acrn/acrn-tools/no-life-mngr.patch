@@ -11,38 +11,40 @@ Upstream-Status: Inappropriate
 
 Signed-off-by: Lee Chee Yang <chee.yang.lee@intel.com>
 ---
- misc/Makefile | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ misc/Makefile | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
 diff --git a/misc/Makefile b/misc/Makefile
 index 1a510ad3..a65023ed 100644
 --- a/misc/Makefile
 +++ b/misc/Makefile
-@@ -2,9 +2,9 @@ T := $(CURDIR)
- OUT_DIR ?= $(shell mkdir -p $(T)/build;cd $(T)/build;pwd)
- RELEASE ?= 0
+@@ -14,11 +14,11 @@ else
+   endif
+ endif
  
 -.PHONY: all acrn-crashlog acrnlog acrn-manager acrntrace acrnbridge life_mngr
-+.PHONY: all acrn-crashlog acrnlog acrn-manager acrntrace acrnbridge 
- ifeq ($(RELEASE),0)
++.PHONY: all acrn-crashlog acrnlog acrn-manager acrntrace acrnbridge
+ ifeq ($(RELEASE),n)
 -all: acrn-crashlog acrnlog acrn-manager acrntrace acrnbridge life_mngr
-+all: acrn-crashlog acrnlog acrn-manager acrntrace acrnbridge 
++all: acrn-crashlog acrnlog acrn-manager acrntrace acrnbridge
  else
- all: acrn-manager acrnbridge life_mngr
+-all: acrn-manager acrnbridge life_mngr
++all: acrn-manager acrnbridge
  endif
-@@ -38,10 +38,9 @@ clean:
+ 
+ acrn-crashlog:
+@@ -50,10 +50,9 @@ clean:
  
  .PHONY: install
- ifeq ($(RELEASE),0)
+ ifeq ($(RELEASE),n)
 -install: acrn-crashlog-install acrnlog-install acrn-manager-install acrntrace-install acrnbridge-install \
 -	acrn-life-mngr-install
-+install: acrn-crashlog-install acrnlog-install acrn-manager-install acrntrace-install acrnbridge-install 
++install: acrn-crashlog-install acrnlog-install acrn-manager-install acrntrace-install acrnbridge-install
  else
 -install: acrn-manager-install acrnbridge-install acrn-life-mngr-install
-+install: acrn-manager-install acrnbridge-install 
++install: acrn-manager-install acrnbridge-install
  endif
  
  acrn-crashlog-install:
 -- 
 2.25.1
-

@@ -1,16 +1,16 @@
 SUMMARY = "A Type 1 hypervisor stack, running directly on the bare-metal hardware"
 HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=5732af37bf18525ed9d2b16985054901"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH} \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "2.3"
-SRCREV = "cfc3017a62ad0ad079a93172e83e17b30f59297f"
-SRCBRANCH = "release_2.3"
+PV = "2.4"
+SRCREV = "3991c48284c11b2e80fb144870b7c86bcd09b89b"
+SRCBRANCH = "release_2.4"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
