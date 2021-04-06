@@ -5,17 +5,14 @@ ACRN_SCENARIO  ?= "industry"
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor "
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} SCENARIO=${ACRN_SCENARIO}"
-EXTRA_OEMAKE += "BOARD_FILE=${S}/misc/acrn-config/xmls/board-xmls/${ACRN_BOARD}.xml SCENARIO_FILE=${S}/misc/acrn-config/xmls/config-xmls/${ACRN_BOARD}/${ACRN_SCENARIO}.xml"
 
 SRC_URI_append_class-target += "file://hypervisor-dont-build-pre_build.patch"
-
-SRC_URI_append = " file://acrn-config-update-function-for-xml-etree-ElementTree.patch "
 
 inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-DEPENDS += "python3-kconfiglib-native acrn-hypervisor-native acpica-native"
+DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native"
 
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
