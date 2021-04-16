@@ -85,13 +85,13 @@ $ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib bu
 ### Dependencies
 
 meta-acrn layer depends on:
-* [poky](https://git.yoctoproject.org/cgit/cgit.cgi/poky), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-virtualization](https://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-intel](https://git.yoctoproject.org/cgit/cgit.cgi/meta-intel), branch master [or hardknott/gatesgarth/dunfell]
+* [poky](https://git.yoctoproject.org/cgit/cgit.cgi/poky), branch hardknott
+* [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch hardknott
+* [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch hardknott
+* [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch hardknott
+* [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch hardknott
+* [meta-virtualization](https://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization), branch hardknott
+* [meta-intel](https://git.yoctoproject.org/cgit/cgit.cgi/meta-intel), branch hardknott
 
 ### Build Image
 
@@ -460,8 +460,6 @@ Now build the installer image:
 ```
 $ bitbake mc:installer:acrn-image-base
 ```
-
-> Currently ACRN WIC Installer is supported only OE-Core(poky) `master`, `hardknott` and `gatesgarth`. Support for `dunfell` is still in progress.
 
 ## Tested Hardware
 The following undergo regular basic testing with their respective MACHINE types.
