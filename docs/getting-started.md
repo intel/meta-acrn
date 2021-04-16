@@ -55,7 +55,7 @@ ACRN is supported on the following Intel platforms:
 * Tiger Lake
 * Elkhart Lake
 
-About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/2.3/reference/hardware.html)
+About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/2.4/reference/hardware.html)
 
 
 ## Set Up Build Host
@@ -319,7 +319,7 @@ Supported Boards:
 - whl-ipc-i5
 - whl-ipc-i7
 
-For More information, Please check [Supported Hardware](https://projectacrn.github.io/2.3/reference/hardware.html)
+For More information, Please check [Supported Hardware](https://projectacrn.github.io/2.4/reference/hardware.html)
 
 #### ACRN SCENARIO Configuration
 
@@ -334,9 +334,9 @@ Supported scenarios:
 - hybrid
 - hybrid_rt
 
-For more information, please check [Build With the ACRN Scenario](https://projectacrn.github.io/2.3/getting-started/building-from-source.html#build-with-the-acrn-scenario)
+For more information, please check [Build With the ACRN Scenario](https://projectacrn.github.io/2.4/getting-started/building-from-source.html#build-with-the-acrn-scenario)
 
-To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/2.3/tutorials/acrn_configuration_tool.html)
+To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/2.4/tutorials/acrn_configuration_tool.html)
 
 #### ACRN BUILD MODE Configuration
 
@@ -409,7 +409,7 @@ For example, using hybrid scenario for nuc7i7dnb:
 * ACRN_EFI_GRUB2_MOD_CFG wic variable (semicolon (;) separated list)
     to make additional entries in grub.cfg i.e insmod ext3
 
-For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/2.3/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub)
+For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/2.4/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub)
 and [acrn-bootconf.bbclass](https://github.com/intel/meta-acrn/blob/master/classes/acrn-bootconf.bbclass)
 
 
