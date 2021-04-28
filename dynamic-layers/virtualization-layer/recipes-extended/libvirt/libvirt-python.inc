@@ -1,4 +1,4 @@
-inherit python3native python3-dir
+inherit python3native python3-dir python3targetconfig
 
 export STAGING_INCDIR
 export STAGING_LIBDIR
@@ -24,11 +24,6 @@ export LIBVIRT_API_PATH = "${S}/docs/libvirt-api.xml"
 export LIBVIRT_CFLAGS = "-I${S}/include"
 export LIBVIRT_LIBS = "-L${B}/src/.libs -lvirt -ldl"
 export LDFLAGS="-L${B}/src/.libs"
-
-export LDSHARED  = "${CCLD} -shared"
-export LDCXXSHARED  = "${CXX} -shared"
-export CCSHARED  = "-fPIC -DPIC"
-export LINKFORSHARED = "${SECURITY_CFLAGS} -Xlinker -export-dynamic"
 
 LIBVIRT_INSTALL_ARGS = "--root=${D} \
     --prefix=${prefix} \
