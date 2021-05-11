@@ -1,0 +1,54 @@
+From b13c5bd2077821514f7a00f3ea27110c4a9190f8 Mon Sep 17 00:00:00 2001
+From: Yin Fengwei <fengwei.yin@intel.com>
+Date: Mon, 10 May 2021 15:17:16 +0800
+Subject: [PATCH] build: fix dm and acrn_crashlog build error with gcc-11
+
+Unify two functions definitions/declarifications:
+  Update the parameters from char array to char pointer.
+to fix the build issue:
+  probeutils.c:61:29: error: argument 1 of type 'char *' declared
+  as a pointer [-Werror=array-parameter=]
+
+Initialize local variable "c" to fix build issue:
+  core/mevent.c:122:21: error: 'c' may be used uninitialized
+  [-Werror=maybe-uninitialized]
+
+Upstream-Status: Pending [Recived from ACRN team, available on ACRN mailing list]
+Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ devicemodel/core/mevent.c                                     | 2 +-
+ misc/debug_tools/acrn_crashlog/acrnprobe/include/probeutils.h | 4 ++--
+ 2 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/devicemodel/core/mevent.c b/devicemodel/core/mevent.c
+index 888ca8395..7dfa9cea8 100644
+--- a/devicemodel/core/mevent.c
++++ b/devicemodel/core/mevent.c
+@@ -112,7 +112,7 @@ mevent_pipe_read(int fd, enum ev_type type, void *param)
+ int
+ mevent_notify(void)
+ {
+-	char c;
++	char c = 0;
+ 
+ 	/*
+ 	 * If calling from outside the i/o thread, write a byte on the
+diff --git a/misc/debug_tools/acrn_crashlog/acrnprobe/include/probeutils.h b/misc/debug_tools/acrn_crashlog/acrnprobe/include/probeutils.h
+index f8c39edf5..a9846e716 100644
+--- a/misc/debug_tools/acrn_crashlog/acrnprobe/include/probeutils.h
++++ b/misc/debug_tools/acrn_crashlog/acrnprobe/include/probeutils.h
+@@ -38,8 +38,8 @@ enum key_type {
+ 	KEY_LONG,
+ };
+ 
+-int get_uptime_string(char newuptime[24], int *hours);
+-int get_current_time_long(char buf[32]);
++int get_uptime_string(char *newuptime, int *hours);
++int get_current_time_long(char *buf);
+ unsigned long long get_uptime(void);
+ char *generate_event_id(const char *seed1, size_t slen1, const char *seed2,
+ 			size_t slen2, enum key_type type);
+-- 
+2.30.2
+
