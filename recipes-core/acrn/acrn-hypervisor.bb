@@ -2,6 +2,7 @@ require acrn-common.inc
 
 ACRN_BOARD ?= "nuc7i7dnb"
 ACRN_SCENARIO  ?= "industry"
+ACRN_CONFIG_PATCH ?= ""
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor "
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} SCENARIO=${ACRN_SCENARIO}"
@@ -17,6 +18,19 @@ DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native"
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
 PARALLEL_MAKE = ""
+
+do_configure_class-target() {
+	# generate configuration and patch it when the configuration patch file is valid
+	# clang-format are not supported at this point, hence the patch file to use should not generate with clang-format
+	if [ -n "${ACRN_CONFIG_PATCH}" ]; then
+		if [ -f "${ACRN_CONFIG_PATCH}" ]; then
+			oe_runmake hvdefconfig
+			oe_runmake hvapplydiffconfig PATCH=${ACRN_CONFIG_PATCH}
+		else
+			bberror "ACRN_CONFIG_PATCH are set to ${ACRN_CONFIG_PATCH} but the file not found"
+		fi
+	fi
+}
 
 do_compile_class-target() {
 	# Execute natively build sanity check for ACRN configurations
