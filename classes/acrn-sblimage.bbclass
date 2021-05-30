@@ -10,6 +10,7 @@ BASE_SBLIMAGE    ?= "sbl_os"
 SBLIMAGE_NAME    ?= "${BASE_SBLIMAGE}"
 PREGENERATED_SIGNING_KEY_SLIMBOOT_KEY_SHA256 ?= "${TOPDIR}/cert/TestSigningPrivateKey.pem"
 BB_CURRENT_MC    ?= ""
+EFI_STUB_BINARY  ?= "${DEPLOY_DIR_IMAGE}/boot.efi"
 
 python do_acrn_sblimage() {
     import re
@@ -58,6 +59,11 @@ python do_acrn_sblimage() {
     bb.debug(1, "genContainerCmd: %s" % (genContainerCmd))
     subprocess.check_call(genContainerCmd, shell=True)
     subprocess.check_call("install -d %s/boot; install -m 644 %s/%s %s/boot" % (d.getVar('IMAGE_ROOTFS'), d.getVar('WORKDIR'), d.getVar('SBLIMAGE_NAME'), d.getVar('IMAGE_ROOTFS')), shell=True)
+
+    if d.getVar('ACRN_FIRMWARE') == 'uefi':
+        subprocess.check_call("objcopy --add-section .hv=%s/%s --change-section-vma .hv=0x6e000 --set-section-flags "\
+                              ".hv=alloc,data,contents,load --section-alignment 0x1000 %s/boot.efi %s/acrn.efi" %
+                              (d.getVar('WORKDIR'), d.getVar('SBLIMAGE_NAME'), d.getVar('DEPLOY_DIR_IMAGE'), d.getVar('DEPLOY_DIR_IMAGE')), shell=True)
 }
 
 python() {

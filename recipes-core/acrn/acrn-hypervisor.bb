@@ -6,6 +6,7 @@ ACRN_CONFIG_PATCH ?= ""
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor "
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} SCENARIO=${ACRN_SCENARIO}"
+EXTRA_OEMAKE += "EFI_OBJDIR=${B}/misc/efi-stub"
 
 SRC_URI_append_class-target += "file://hypervisor-dont-build-pre_build.patch"
 
@@ -13,7 +14,7 @@ inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native"
+DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi"
 
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
@@ -36,10 +37,18 @@ do_compile_class-target() {
 	# Execute natively build sanity check for ACRN configurations
 	hv_prebuild_check.out
 	oe_runmake -C hypervisor
+
+	if [ "${ACRN_FIRMWARE}" = "uefi" ]; then
+		oe_runmake -C misc/efi-stub
+	fi
 }
 
 do_install_class-target() {
 	oe_runmake -C hypervisor install install-debug
+
+	if [ -x ${B}/misc/efi-stub/boot.efi ]; then
+		install -m 0755 ${B}/misc/efi-stub/boot.efi ${D}${libdir}/acrn/
+	fi
 
 	# Remove sample files
 	rm -rf ${D}${datadir}/acrn
@@ -60,6 +69,10 @@ do_deploy() {
 	rm -f ${DEPLOYDIR}/ACPI_*.bin
 	if [ -x ${D}${libdir}/acrn/acpi ]; then
 		install -m 0755 ${D}${libdir}/acrn/acpi/ACPI_*.bin ${DEPLOYDIR}
+	fi
+
+	if [ -x ${D}${libdir}/acrn/boot.efi ]; then
+		install -m 0755 ${D}${libdir}/acrn/boot.efi ${DEPLOYDIR}
 	fi
 }
 
