@@ -37,8 +37,14 @@ INITRAMFS_IMAGE = "dm-verity-image-initramfs"
 INITRAMFS_FSTYPES = "cpio.gz"
 INITRAMFS_IMAGE_BUNDLE = "1"
 
+# list of pre-launched vm including Service vm
+VMFLAGS = " vm0 "
+
 # update the ACRN_EFI_BOOT_CONF for the kernel image with initramfs bundled
-ACRN_EFI_BOOT_CONF = "${KERNEL_IMAGETYPE}-${INITRAMFS_LINK_NAME}.bin:Linux_bzImage;"
+# default value for vm0 based on industry scenario for nuc7i7dnb
+VM_APPEND_vm0 = "${APPEND}"
+KERNEL_IMAGE_vm0 = "${KERNEL_IMAGETYPE}-${INITRAMFS_LINK_NAME}.bin"
+KERNEL_MOD_vm0 = "Linux_bzImage"
 ```
 
 conf/local.conf should enable multiconfig build for sos
@@ -56,4 +62,4 @@ $ bitbake mc:sos:acrn-image-base
 
 ```
 
-On Boot of *wic.acrn image, rootfs filesystem will be Read-only.
+On Boot of *.wic image, rootfs filesystem will be Read-only.
