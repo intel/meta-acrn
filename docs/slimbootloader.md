@@ -104,3 +104,8 @@ bzImage bzImage-5.4.52-linux-intel-acrn-sos EFI loader sbl_os
 * BB_CURRENT_MC
   Get the Current Configuration using this variable when multiple configuration have specified in conf/local.conf using BBMULTICONFIG variable.
   Example: currentMultibootConfig = d.getVar('BB_CURRENT_MC')
+
+* ACRN_FIRMWARE
+  Set ACRN_FIRMWARE="uefi" in your sos multiconfig file (Example: conf/multiconfig/sos.conf) to generate the ACRN EFI application which allows to boot your sbl_os image on UEFI-BIOS systems.
+  See the "Enable ACRN Secure Boot With EFI-Stub" page on the "Project ACRN Documentation" for the details.
+  The acrn.efi file will be generated in the deployment directory (Example: master-acrn-sos/deploy/images/intel-corei7-64/acrn.efi)
