@@ -4,14 +4,13 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH} \
-            file://0001-build-fix-dm-and-acrn_crashlog-build-error-with-gcc-.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "2.4"
-SRCREV = "ade36db37775c498d7d3a9322d9e69b37355b995"
-SRCBRANCH = "release_2.4"
+PV = "2.5"
+SRCREV = "2b913c39e61e11f4534cf8b17b79fd5546e9944b"
+SRCBRANCH = "release_2.5"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
