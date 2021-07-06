@@ -78,3 +78,4 @@ ACRN_EFI_BOOT_CONF ??= "${@get_acrn_efi_boot_conf(d)}"
 #    ..
 #   }
 ACRN_EFI_GRUB2_MOD_CFG ??= ""
+ACRN_HV_EFI_CFG ??= ""

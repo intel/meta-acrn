@@ -107,8 +107,13 @@ class BootimgEFIPlugin(SourcePlugin):
                         continue
                     grubefi_conf += "%s\n" % aux_module
 
-            grubefi_conf += "\nmultiboot2 /acrn.bin %s %s \n" % \
-                (label_conf, bootloader.append)
+            acrn_bootparams = get_bitbake_var("ACRN_HV_EFI_CFG")
+            if acrn_bootparams:
+                grubefi_conf += "\nmultiboot2 /acrn.bin %s %s \n" % \
+                    (label_conf, acrn_bootparams)
+            else:
+                grubefi_conf += "\nmultiboot2 /acrn.bin %s \n" % \
+                    (label_conf)
 
             boot_confs = get_bitbake_var("ACRN_EFI_BOOT_CONF").split(";")
             for boot_conf in boot_confs:
