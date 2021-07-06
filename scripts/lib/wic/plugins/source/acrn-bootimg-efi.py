@@ -121,9 +121,13 @@ class BootimgEFIPlugin(SourcePlugin):
                      continue
                 conf = boot_conf.split(":")
                 if len(conf) == 2:
-                    grubefi_conf += "module2 /%s %s\n" %(conf[0] ,conf[1])
+                    grubefi_conf += "search --file --set=mpath %s \n" %(conf[0])
+                    grubefi_conf += "set modbin=($mpath)%s \n" %(conf[0])
+                    grubefi_conf += "module2 $modbin %s\n" %(conf[1])
                 elif len(conf) == 3:
-                    grubefi_conf += "module2 /%s %s %s\n" %(conf[0] ,conf[1] ,conf[2])
+                    grubefi_conf += "search --file --set=mpath %s \n" %(conf[0])
+                    grubefi_conf += "set modbin=($mpath)%s \n" %(conf[0])
+                    grubefi_conf += "module2  $modbin %s %s\n" %(conf[1] ,conf[2])
                 else:
                     raise WicError("unable to parse ACRN_EFI_BOOT_CONF, in \"%s\" exiting" \
                         % boot_conf )
