@@ -51,7 +51,7 @@ VMFLAGS ??= " vm0 "
 
 # default value for vm0 based on industry scenario for nuc7i7dnb
 VM_APPEND_vm0 ??= "${APPEND}"
-KERNEL_IMAGE_vm0 ??= "${KERNEL_IMAGETYPE}"
+KERNEL_IMAGE_vm0 ??= "/${KERNEL_IMAGETYPE}"
 KERNEL_MOD_vm0 ??= "Linux_bzImage"
 ACPI_TAG_vm0 ??= ""
 ACPI_BIN_vm0 ??= ""
