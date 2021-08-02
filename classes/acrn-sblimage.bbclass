@@ -25,7 +25,7 @@ python do_acrn_sblimage() {
     if mbAcrnCmdlineDeployDir == "":
         hv_cmdline = d.getVar('WORKDIR') + "/hv_cmdline"
         bb.debug(1, "hv_cmdline: %s" % (hv_cmdline))
-        subprocess.check_call("echo 'uart=mmio@0xfe042000' > %s" % (hv_cmdline), shell=True)
+        subprocess.check_call("echo '' > %s" % (hv_cmdline), shell=True)
     else:
         hv_cmdline = mbAcrnCmdlineDeployDir
 
