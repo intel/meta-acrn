@@ -5,15 +5,15 @@ export STAGING_LIBDIR
 export BUILD_SYS 
 export HOST_SYS
 
-RDEPENDS_${PN}-python += "python3"
+RDEPENDS:${PN}-python += "python3"
 PACKAGECONFIG_${PN}-python[xen] = ",,,xen-python"
 
 PACKAGES += "${PN}-python-staticdev ${PN}-python-dev ${PN}-python-dbg ${PN}-python"
 
-FILES_${PN}-python-staticdev += "${PYTHON_SITEPACKAGES_DIR}/*.a"
-FILES_${PN}-python-dev += "${PYTHON_SITEPACKAGES_DIR}/*.la"
-FILES_${PN}-python-dbg += "${PYTHON_SITEPACKAGES_DIR}/.debug/"
-FILES_${PN}-python = "${bindir}/* ${libdir}/* ${libdir}/${PYTHON_DIR}/*"
+FILES:${PN}-python-staticdev += "${PYTHON_SITEPACKAGES_DIR}/*.a"
+FILES:${PN}-python-dev += "${PYTHON_SITEPACKAGES_DIR}/*.la"
+FILES:${PN}-python-dbg += "${PYTHON_SITEPACKAGES_DIR}/.debug/"
+FILES:${PN}-python = "${bindir}/* ${libdir}/* ${libdir}/${PYTHON_DIR}/*"
 
 SRC_URI += "http://libvirt.org/sources/python/libvirt-python-${PV}.tar.gz;name=libvirt_python"
 
@@ -38,7 +38,7 @@ python __anonymous () {
         d.setVar('LIBVIRT_PYTHON_ENABLE', '0')
 }
 
-do_compile_append() {
+do_compile:append() {
 	if [ "${LIBVIRT_PYTHON_ENABLE}" = "1" ]; then
 		# we need the python bindings to look into our source dir, not
 		# the syroot staged pkgconfig entries. So we clear the sysroot
@@ -49,7 +49,7 @@ do_compile_append() {
 	fi
 }
 
-do_install_append() {
+do_install:append() {
 	if [ "${LIBVIRT_PYTHON_ENABLE}" = "1" ]; then
 		# we need the python bindings to look into our source dir, not
 		# the syroot staged pkgconfig entries. So we clear the sysroot

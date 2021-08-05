@@ -1,6 +1,6 @@
 inherit image-acrn
 
-do_configure_append(){
+do_configure:append(){
     bb.build.exec_func('update_acrn_efi_cfg', d)
 }
 

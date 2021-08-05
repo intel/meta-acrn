@@ -1,10 +1,10 @@
 require recipes-kernel/linux/linux-intel-ese-lts-rt-5.4_git.bb
 
-FILESEXTRAPATHS_prepend := "${LAYERDIR-ese-bsp}/recipes-kernel/linux/linux-config:${LAYERDIR-ese-bsp}/recipes-kernel/linux/files:${LAYERDIR-acrn}/recipes-kernel/linux/files:"
+FILESEXTRAPATHS:prepend := "${LAYERDIR-ese-bsp}/recipes-kernel/linux/linux-config:${LAYERDIR-ese-bsp}/recipes-kernel/linux/files:${LAYERDIR-acrn}/recipes-kernel/linux/files:"
 
-SRC_URI_append = "  file://uos_rt_5.4.scc"
+SRC_URI:append = "  file://uos_rt_5.4.scc"
 
-KERNEL_FEATURES_append = " features/netfilter/netfilter.scc \
+KERNEL_FEATURES:append = " features/netfilter/netfilter.scc \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
 "
