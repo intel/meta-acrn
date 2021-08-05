@@ -17,4 +17,4 @@ do_install() {
 	install -m 0644 ${B}/life_mngr.service ${D}${systemd_unitdir}/system/
 }
 
-SYSTEMD_SERVICE_${PN} = "life_mngr.service"
+SYSTEMD_SERVICE:${PN} = "life_mngr.service"

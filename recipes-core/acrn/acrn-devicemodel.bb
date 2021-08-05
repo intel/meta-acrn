@@ -15,10 +15,10 @@ EXTRA_OEMAKE += "ASL_COMPILER=${bindir}/iasl"
 
 PACKAGES += "${PN}-sample"
 
-RDEPENDS_${PN} += "acpica"
-RDEPENDS_${PN}-sample += "bash"
+RDEPENDS:${PN} += "acpica"
+RDEPENDS:${PN}-sample += "bash"
 
-FILES_${PN} += "${datadir}/acrn/bios"
+FILES:${PN} += "${datadir}/acrn/bios"
 
 do_compile() {
 	oe_runmake devicemodel
@@ -38,4 +38,4 @@ do_install() {
 	rmdir --ignore-fail-on-non-empty ${D}${datadir}
 }
 
-FILES_${PN}-sample += "${datadir}/acrn/samples"
+FILES:${PN}-sample += "${datadir}/acrn/samples"

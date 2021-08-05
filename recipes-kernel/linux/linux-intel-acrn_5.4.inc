@@ -2,7 +2,7 @@ SUMMARY = "Linux Kernel 5.4 with ACRN enabled"
 
 require recipes-kernel/linux/linux-intel.inc
 
-SRC_URI_append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch"
+SRC_URI:append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch"
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=bbea815ee2795b2f4230826c0c6b8814"
 
@@ -15,7 +15,7 @@ SRCREV_meta ?= "76aa6f85d62f7fc05c4b3e371fafe74290fc2238"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
-KERNEL_FEATURES_append = " features/netfilter/netfilter.scc \
+KERNEL_FEATURES:append = " features/netfilter/netfilter.scc \
                           features/security/security.scc  \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \
