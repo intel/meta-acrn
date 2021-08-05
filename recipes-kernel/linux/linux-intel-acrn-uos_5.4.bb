@@ -1,6 +1,6 @@
 require linux-intel-acrn_5.4.inc
 
-SRC_URI_append = "  file://uos_5.4.scc"
+SRC_URI:append = "  file://uos_5.4.scc"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-acrn-uos"
 

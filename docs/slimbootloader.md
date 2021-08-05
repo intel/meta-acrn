@@ -38,7 +38,7 @@ PREFERRED_VERSION_linux-intel-acrn-sos = "5.4%"
 ACRN_BOARD = "ehl-crb-b"
 ACRN_SCENARIO = "hybrid"
 
-IMAGE_CLASSES_append = " acrn-sblimage"
+IMAGE_CLASSES:append = " acrn-sblimage"
 MB_ACRN_MODULES = "\
     ${TOPDIR}/conf/zephyr.txt;${TOPDIR}/conf/zephyr.bin \
     ${TOPDIR}/conf/linux.txt;${TMPDIR}/deploy/images/${MACHINE}/${KERNEL_IMAGETYPE} \

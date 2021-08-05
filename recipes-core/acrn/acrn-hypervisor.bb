@@ -8,7 +8,7 @@ EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor "
 EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} SCENARIO=${ACRN_SCENARIO}"
 EXTRA_OEMAKE += "EFI_OBJDIR=${B}/misc/efi-stub"
 
-SRC_URI_append_class-target += "file://hypervisor-dont-build-pre_build.patch"
+SRC_URI:append:class-target += "file://hypervisor-dont-build-pre_build.patch"
 
 inherit python3native deploy
 
@@ -20,7 +20,7 @@ DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi"
 #    | .config does not exist and no defconfig available for BOARD...
 PARALLEL_MAKE = ""
 
-do_configure_class-target() {
+do_configure:class-target() {
 	# generate configuration and patch it when the configuration patch file is valid
 	# clang-format are not supported at this point, hence the patch file to use should not generate with clang-format
 	if [ -n "${ACRN_CONFIG_PATCH}" ]; then
@@ -33,7 +33,7 @@ do_configure_class-target() {
 	fi
 }
 
-do_compile_class-target() {
+do_compile:class-target() {
 	# Execute natively build sanity check for ACRN configurations
 	hv_prebuild_check.out
 	oe_runmake -C hypervisor
@@ -43,7 +43,7 @@ do_compile_class-target() {
 	fi
 }
 
-do_install_class-target() {
+do_install:class-target() {
 	oe_runmake -C hypervisor install install-debug
 
 	if [ -x ${B}/misc/efi-stub/boot.efi ]; then
@@ -54,7 +54,7 @@ do_install_class-target() {
 	rm -rf ${D}${datadir}/acrn
 }
 
-FILES_${PN} += "${libdir}/acrn/"
+FILES:${PN} += "${libdir}/acrn/"
 
 addtask deploy after do_install before do_build
 do_deploy() {
@@ -76,19 +76,19 @@ do_deploy() {
 	fi
 }
 
-INSANE_SKIP_${PN} += "arch already-stripped"
+INSANE_SKIP:${PN} += "arch already-stripped"
 
-do_compile_class-native() {
+do_compile:class-native() {
 	oe_runmake -C hypervisor pre_build
 }
 
-do_install_class-native(){
+do_install:class-native(){
 	install -d ${D}/${bindir}
 	install -m 755 ${B}/hypervisor/hv_prebuild_check.out ${D}/${bindir}/hv_prebuild_check.out
 }
 
 # no action required for native to deploy
-do_deploy_class-native(){
+do_deploy:class-native(){
 	:
 }
 

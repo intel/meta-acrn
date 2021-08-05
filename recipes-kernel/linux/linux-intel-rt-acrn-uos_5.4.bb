@@ -9,7 +9,7 @@ python () {
         raise bb.parse.SkipPackage("Set PREFERRED_PROVIDER_virtual/kernel to linux-intel-rt-acrn-uos to enable it")
 }
 
-SRC_URI_append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
+SRC_URI:append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
                     file://uos_rt_5.4.scc \
 "
 
@@ -28,7 +28,7 @@ LINUX_VERSION_EXTENSION = "-linux-intel-preempt-rt-acrn-uos"
 
 LINUX_KERNEL_TYPE = "preempt-rt"
 
-KERNEL_FEATURES_append = " features/netfilter/netfilter.scc \
+KERNEL_FEATURES:append = " features/netfilter/netfilter.scc \
                           features/security/security.scc  \
                           cfg/hv-guest.scc \
                           cfg/paravirt_kvm.scc \

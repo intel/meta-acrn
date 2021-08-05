@@ -153,9 +153,9 @@ CONTAINER_PACKAGE_DEPLOY_DIR = "${TOPDIR}/master-acrn-uos/deploy/images/${MACHIN
 CONTAINER_PACKAGE_MC = "uos"
 
 # Add core-image-base-package to acrn-image-base
-IMAGE_INSTALL_append_pn-acrn-image-base = " core-image-base-package"
+IMAGE_INSTALL:append:pn-acrn-image-base = " core-image-base-package"
 # Add core-image-weston-package to acrn-image-sato
-IMAGE_INSTALL_append_pn-acrn-image-sato = " core-image-weston-package"
+IMAGE_INSTALL:append:pn-acrn-image-sato = " core-image-weston-package"
 
 # set preferred kernel for sos
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
@@ -288,17 +288,17 @@ The multiconfig/package magic works with a `<image>-package.bb` recipe that inhe
 
 To add core-image-base.wic image into Service OS (Add core-image-base-package to your target ACRN image)
 ```
-IMAGE_INSTALL_append_pn-acrn-image-base = " core-image-base-package"
+IMAGE_INSTALL:append:pn-acrn-image-base = " core-image-base-package"
 ```
 
 To add core-image-weston-package to acrn-image-weston
 ```
-IMAGE_INSTALL_append_pn-acrn-image-weston = " core-image-weston-package"
+IMAGE_INSTALL:append:pn-acrn-image-weston = " core-image-weston-package"
 ```
 
 To add core-image-weston-package to acrn-image-base
 ```
-IMAGE_INSTALL_append_pn-acrn-image-base = " core-image-weston-package"
+IMAGE_INSTALL:append:pn-acrn-image-base = " core-image-weston-package"
 ```
 
 ### ACRN Configuration
@@ -451,24 +451,24 @@ To install the image on to NUC, you could burn the .wic image to the target hard
 Alternatively, you could build a wic based installer image where you can burn the .wic image onto USB flash drive and use USB flash drive as installer. To build the installer image for ACRN, add the following lines to `conf/local.conf`:
 
 ```
-BBMULTICONFIG_append  = " installer "
+BBMULTICONFIG:append  = " installer "
 ```
 
 Add followings in `conf/multiconfig/installer.conf`:
 
 ```
 # use the installer wks file
-WKS_FILE_pn-acrn-image-base = "image-installer.wks.in"
+WKS_FILE:pn-acrn-image-base = "image-installer.wks.in"
 
 # build initramsfs to start the installation
 INITRD_IMAGE_LIVE="core-image-minimal-initramfs"
 
 # make sure initramfs and ext4 image are ready before building wic image
 do_image_wic[depends] += "${INITRD_IMAGE_LIVE}:do_image_complete"
-IMAGE_TYPEDEP_wic = "ext4"
+IMAGE_TYPEDEP:wic = "ext4"
 
 # content to be installed
-IMAGE_BOOT_FILES_append = "\
+IMAGE_BOOT_FILES:append = "\
     ${KERNEL_IMAGETYPE} \
     acrn.bin;esp/acrn.bin \
     microcode.cpio;esp/microcode.cpio \

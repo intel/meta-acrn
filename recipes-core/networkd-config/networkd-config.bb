@@ -9,4 +9,4 @@ do_install() {
     install -m644 ${WORKDIR}/*.network ${D}${nonarch_base_libdir}/systemd/network
 }
 
-FILES_${PN} = "${nonarch_base_libdir}/systemd/network"
+FILES:${PN} = "${nonarch_base_libdir}/systemd/network"
