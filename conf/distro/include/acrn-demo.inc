@@ -12,8 +12,8 @@ DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
 WARN_TO_ERROR_QA = "already-stripped compile-host-path install-host-path \
                     installed-vs-shipped ldflags pn-overrides rpaths staticdev \
                     unknown-configure-option useless-rpaths"
-WARN_QA_remove = "${WARN_TO_ERROR_QA}"
-ERROR_QA_append = " ${WARN_TO_ERROR_QA}"
+WARN_QA:remove = "${WARN_TO_ERROR_QA}"
+ERROR_QA:append = " ${WARN_TO_ERROR_QA}"
 
 require conf/distro/include/no-static-libs.inc
 require conf/distro/include/yocto-uninative.inc

@@ -5,7 +5,7 @@ inherit packagegroup features_check
 # Currently requires systemd as the networking glue is systemd-specific
 REQUIRED_DISTRO_FEATURES = "systemd"
 
-RDEPENDS_${PN} = "\
+RDEPENDS:${PN} = "\
     acrn-hypervisor \
     acrn-tools \
     acrn-devicemodel \

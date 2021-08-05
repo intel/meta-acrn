@@ -19,10 +19,10 @@ TMPDIR = "${TOPDIR}/master-acrn-vm0"
 ACRN_SCENARIO = "logical_partition"
 
 EFI_PROVIDER = "grub-efi"
-GRUB_BUILDIN_append = " multiboot2 "
+GRUB_BUILDIN:append = " multiboot2 "
 
 # required setting for ESP
-WICVARS_append = " ACRN_EFI_BOOT_CONF "
+WICVARS:append = " ACRN_EFI_BOOT_CONF "
 ACRN_EFI_BOOT_CONF = "${KERNEL_IMAGETYPE}:Linux_bzImage:root=/dev/sda2 ${APPEND};ACPI_VM0.bin:ACPI_VM0;ACPI_VM1.bin:ACPI_VM1;"
 IMAGE_EFI_BOOT_FILES = "ACPI_VM0.bin ACPI_VM1.bin"
 WKS_FILE = "acrn-bootdisk-microcode.wks.in"
