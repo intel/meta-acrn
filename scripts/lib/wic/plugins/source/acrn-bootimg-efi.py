@@ -120,17 +120,22 @@ class BootimgEFIPlugin(SourcePlugin):
                 if not boot_conf:
                      continue
                 conf = boot_conf.split(":")
-                if len(conf) == 2:
-                    grubefi_conf += "search --file --set=mpath %s \n" %(conf[0])
-                    grubefi_conf += "set modbin=($mpath)%s \n" %(conf[0])
-                    grubefi_conf += "module2 $modbin %s\n" %(conf[1])
-                elif len(conf) == 3:
-                    grubefi_conf += "search --file --set=mpath %s \n" %(conf[0])
-                    grubefi_conf += "set modbin=($mpath)%s \n" %(conf[0])
-                    grubefi_conf += "module2  $modbin %s %s\n" %(conf[1] ,conf[2])
-                else:
-                    raise WicError("unable to parse ACRN_EFI_BOOT_CONF, in \"%s\" exiting" \
-                        % boot_conf )
+                if not len(conf) in [2,3,4]:
+                    raise WicError("unable to parse ACRN_EFI_BOOT_CONF, in \"%s\" (unexpected parameter count: %i) exiting" \
+                        % boot_conf, len(conf) )
+
+                search_param = "--file %s" %(conf[0])
+                kernel_param = "%s" %(conf[0])
+                module_param = "%s" %(conf[1])
+
+                if len(conf) > 2 and conf[2] != "":
+                    module_param = "%s %s\n" %(conf[1] ,conf[2])
+                if len(conf) > 3 and conf[3] != "":
+                    search_param = "--label %s" %(conf[3])
+
+                grubefi_conf += "search --set=mpath %s \n" %(search_param)
+                grubefi_conf += "set modbin=($mpath)%s \n" %(kernel_param)
+                grubefi_conf += "module2 $modbin %s\n" %(module_param)
 
             grubefi_conf += "}\n"
 
