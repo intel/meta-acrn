@@ -1,6 +1,6 @@
-From 38806dce4e306862bb21a63697734fffaa67e02b Mon Sep 17 00:00:00 2001
+From b4ebadc216cc81e81edfe10cd0643429aa76bbee Mon Sep 17 00:00:00 2001
 From: Naveen Saini <naveen.kumar.saini@intel.com>
-Date: Mon, 9 Aug 2021 18:00:50 +0800
+Date: Tue, 17 Aug 2021 11:25:10 +0800
 Subject: [PATCH] Execute pre_build_check during hypervisor build is causing
  error
 
@@ -16,7 +16,7 @@ Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
  1 file changed, 3 deletions(-)
 
 diff --git a/hypervisor/Makefile b/hypervisor/Makefile
-index 85af66b81..52edd6c89 100644
+index 1e70bb5e0..ee1ae9920 100644
 --- a/hypervisor/Makefile
 +++ b/hypervisor/Makefile
 @@ -391,9 +391,6 @@ install-debug: $(HV_OBJDIR)/$(HV_FILE).map $(HV_OBJDIR)/$(HV_FILE).out
@@ -27,7 +27,7 @@ index 85af66b81..52edd6c89 100644
 -	$(MAKE) -C $(PRE_BUILD_DIR) BOARD=$(BOARD) SCENARIO=$(SCENARIO) TARGET_DIR=$(HV_CONFIG_DIR)
 -	@$(HV_OBJDIR)/hv_prebuild_check.out
  	@echo "generate the binary of ACPI tables for pre-launched VMs ..."
- 	python3 ../misc/config_tools/acpi_gen/bin_gen.py --board $(BOARD) --scenario $(SCENARIO) --asl $(HV_CONFIG_DIR) --out $(HV_OBJDIR)/acpi
+ 	python3 ../misc/config_tools/acpi_gen/bin_gen.py --board $(HV_OBJDIR)/.board.xml --scenario $(HV_OBJDIR)/.scenario.xml --asl $(HV_CONFIG_DIR) --out $(HV_OBJDIR)
  
 -- 
 2.17.1
