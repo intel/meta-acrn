@@ -6,4 +6,6 @@ LINUX_VERSION_EXTENSION = "-acrn-kernel-uos"
 
 SUMMARY = "ACRN Kernel (UOS)"
 
-KERNEL_FEATURES:append = " uos_5.10.scc "
+KERNEL_FEATURES:append = " features/module-signing/signing.scc \
+                        uos_5.10.scc \
+                        "
