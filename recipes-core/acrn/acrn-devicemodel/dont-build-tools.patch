@@ -1,12 +1,38 @@
-No need to build the tools as we can use the libraries already installed.
+From 071de6ed6e2eb84eccedfb6d2ce32048ddb1e3ac Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Tue, 17 Aug 2021 14:52:42 +0800
+Subject: [PATCH] No need to build & install the tools as we can use the
+ libraries already installed.
 
 Upstream-Status: Inappropriate
-Signed-off-by: Ross Burton <ross.burton@intel.com>
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ Makefile | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index f0bfd2d3..2440070c 100644
+index 808117ff..cc50052f 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -45 +45 @@ sbl-hypervisor:
+@@ -114,7 +114,7 @@ hvdiffconfig:
+ hvapplydiffconfig:
+ 	@$(MAKE) applydiffconfig $(HV_MAKEOPTS) PATCH=$(abspath $(PATCH))
+ 
 -devicemodel: tools
 +devicemodel:
+ 	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) DM_BUILD_VERSION=$(BUILD_VERSION) DM_BUILD_TAG=$(BUILD_TAG) DM_ASL_COMPILER=$(ASL_COMPILER) TOOLS_OUT=$(TOOLS_OUT) RELEASE=$(RELEASE)
+ 
+ tools:
+@@ -167,7 +167,7 @@ apl-up2-hybrid-install-debug:
+ sbl-hypervisor-install-debug: kbl-nuc-i7-industry-install-debug \
+ 			      apl-up2-hybrid-install-debug
+ 
+-devicemodel-install: tools-install devicemodel
++devicemodel-install: devicemodel
+ 	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) install
+ 
+ tools-install: tools
+-- 
+2.17.1
+
