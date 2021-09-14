@@ -38,7 +38,7 @@ python update_acrn_efi_cfg() {
              continue
         conf = boot_conf.split(":")
         if not len(conf) in [2,3,4]:
-            raise WicError("unable to parse ACRN_EFI_BOOT_CONF, in \"%s\" (unexpected parameter count: %i) exiting" \
+            raise bb.error("unable to parse ACRN_EFI_BOOT_CONF, in \"%s\" (unexpected parameter count: %i) exiting" \
                 % boot_conf, len(conf) )
 
         search_param = "--file %s" %(conf[0])
