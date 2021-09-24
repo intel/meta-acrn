@@ -50,9 +50,9 @@ python update_acrn_efi_cfg() {
         if len(conf) > 3 and conf[3] != "":
             search_param = "--label %s" %(conf[3])
 
-        cfg += "search --set=mpath %s \n" %(search_param)
-        cfg += "set modbin=($mpath)%s \n" %(kernel_param)
-        cfg += "module2 $modbin %s\n" %(module_param)
+        cfg.append("search --set=mpath %s \n" %(search_param))
+        cfg.append("set modbin=($mpath)%s \n" %(kernel_param))
+        cfg.append("module2 $modbin %s\n" %(module_param))
 
     cfg.append('\n}\n')
 
