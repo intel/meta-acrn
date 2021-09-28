@@ -14,7 +14,7 @@ KMETA_BRANCH = "yocto-5.10"
 
 
 LINUX_VERSION = "5.10.52"
-SRCREV_machine = "a827327e71e9b9bbedaf68780c799f0a6f597c28"
+SRCREV_machine = "1c1a7f4768f97aae3917f42e9adf7afd84c1561c"
 SRCREV_meta = "eb09284047fec2f09d62068c338ae320c6681bd1"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
