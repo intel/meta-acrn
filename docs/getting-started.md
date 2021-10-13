@@ -390,6 +390,8 @@ These variables can be overwritten in your local config.
 * KERNEL_MOD - kern_mod tag in acrn scenario xml for each
 * ACPI_TAG - ACPI tag for specific VM
 * ACPI_BIN - binary of ACPI tables for a specific vm
+* PART_LABEL - Partition Label, if set, it allow grub bootloader to pick modules/kernel binaries by partition label
+
 
 For example, using hybrid scenario for nuc7i7dnb:
 
@@ -400,11 +402,13 @@ For example, using hybrid scenario for nuc7i7dnb:
      KERNEL_MOD_vm0 = "Zephyr_RawImage"
      ACPI_TAG_vm0 = "ACPI_VM0"
      ACPI_BIN_vm0 = "ACPI_VM0.bin"
+     PART_LABEL_vm0 = "zephyr module partition label"
 
      # vm1 (sos)
      VM_APPEND_vm1 = "xxx"
      KERNEL_IMAGE_vm1 = "bzImage"
      KERNEL_MOD_vm1 = "Linux_bzImage"
+     PART_LABEL_vm1 = "boot"
 
 * ACRN_EFI_GRUB2_MOD_CFG wic variable (semicolon (;) separated list)
     to make additional entries in grub.cfg i.e insmod ext3
