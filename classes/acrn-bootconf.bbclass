@@ -9,6 +9,8 @@
 # KERNEL_MOD - kern_mod tag in acrn scenario xml for each
 # ACPI_TAG - ACPI tag for specific VM
 # ACPI_BIN - binary of ACPI tables for a specific vm
+# Optional:
+# PART_LABEL - Partition Label, if set, it allow grub bootloader to pick modules/kernel binaries by partition label
 #
 # using hybrid scenario for nuc7i7dnb as example:
 #  VMFLAGS = "vm0 vm1"
@@ -18,11 +20,13 @@
 #  KERNEL_MOD_vm0 = "Zephyr_RawImage"
 #  ACPI_TAG_vm0 = "ACPI_VM0"
 #  ACPI_BIN_vm0 = "ACPI_VM0.bin"
+#  PART_LABEL_vm0 = "boot"
 #
 #  # vm1
 #  VM_APPEND_vm1 = "xxx"
 #  KERNEL_IMAGE_vm1 = "bzImage"
 #  KERNEL_MOD_vm1 = "Linux_bzImage"
+#  PART_LABEL_vm1 = "boot"
 #
 
 
