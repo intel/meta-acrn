@@ -4,14 +4,15 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH}; \
-            file://0001-crashlog-fix-build-issue-with-e2fsprogs-v1.46.2.patch \
+           git://github.com/intel-innersource/virtualization.hypervisors.acrn.acrn-dev.acrn-offline-patch.git;protocol=https;branch=master;destsuffix=offline-patches;name=innersrc \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "2.6"
-SRCREV = "f5935afc4fe4143ce5ab31ee1ab87ecb07e9ac18"
-SRCBRANCH = "release_2.6"
+PV = "2.7"
+SRCREV = "79a5d7a787ea8923ba9859b1f1f88ad252796d49"
+SRCREV_innersrc = "91c34ec6b3628a0e4b077adf388978e1f5d358af"
+SRCBRANCH = "master"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
@@ -44,3 +45,8 @@ do_install[dirs] = "${S}"
 
 # Fixed in v1.2 and onward
 CVE_CHECK_WHITELIST += "CVE-2019-18844"
+
+copy_sources() {
+    cp -r -f ${WORKDIR}/offline-patches/boards/* ${S}/misc/config_tools/data/
+}
+do_patch[postfuncs] += "copy_sources"
