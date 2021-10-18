@@ -1,7 +1,7 @@
 require acrn-common.inc
 
-ACRN_BOARD ?= "nuc7i7dnb"
-ACRN_SCENARIO  ?= "industry"
+ACRN_BOARD ?= "nuc11tnbi5"
+ACRN_SCENARIO  ?= "shared"
 ACRN_CONFIG_PATCH ?= ""
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor "
