@@ -54,7 +54,7 @@ build$ echo Zephyr_RawImage > conf/zephyr.txt
 ```
 
 ### 5. Copy Zephyr image file to the conf/zephyr.bin
-Please refer to [Using Zephyr as User OS](https://projectacrn.github.io/1.6/tutorials/using_zephyr_as_uos.html) about how to build Zephyr
+Please refer to [Using Zephyr as User OS](https://projectacrn.github.io/2.5/tutorials/using_zephyr_as_uos.html) about how to build Zephyr
 
 ### 6. Generate SBL sign key file
 ```

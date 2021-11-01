@@ -55,7 +55,7 @@ ACRN is supported on the following Intel platforms:
 * Tiger Lake
 * Elkhart Lake
 
-About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/2.4/reference/hardware.html)
+About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/2.5/reference/hardware.html)
 
 
 ## Set Up Build Host
@@ -85,13 +85,13 @@ $ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib bu
 ### Dependencies
 
 meta-acrn layer depends on:
-* [poky](https://git.yoctoproject.org/cgit/cgit.cgi/poky), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-virtualization](https://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-intel](https://git.yoctoproject.org/cgit/cgit.cgi/meta-intel), branch master [or hardknott/gatesgarth/dunfell]
+* [poky](https://git.yoctoproject.org/cgit/cgit.cgi/poky), branch honister
+* [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch honister
+* [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch honister
+* [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch honister
+* [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch honister
+* [meta-virtualization](https://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization), branch honister
+* [meta-intel](https://git.yoctoproject.org/cgit/cgit.cgi/meta-intel), branch honister
 
 ### Build Image
 
@@ -318,8 +318,10 @@ Supported Boards:
 - nuc7i7dnb
 - whl-ipc-i5
 - whl-ipc-i7
+- nuc11tnbi5
 
-For More information, Please check [Supported Hardware](https://projectacrn.github.io/2.4/reference/hardware.html)
+
+For More information, Please check [Supported Hardware](https://projectacrn.github.io/2.5/reference/hardware.html)
 
 #### ACRN SCENARIO Configuration
 
@@ -334,9 +336,9 @@ Supported scenarios:
 - hybrid
 - hybrid_rt
 
-For more information, please check [Build With the ACRN Scenario](https://projectacrn.github.io/2.4/getting-started/building-from-source.html#build-with-the-acrn-scenario)
+For more information, please check [Build With the ACRN Scenario](https://projectacrn.github.io/2.5/getting-started/building-from-source.html#build-with-the-acrn-scenario)
 
-To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/2.4/tutorials/acrn_configuration_tool.html)
+To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/2.5/tutorials/acrn_configuration_tool.html)
 
 #### ACRN BUILD MODE Configuration
 
@@ -409,7 +411,7 @@ For example, using hybrid scenario for nuc7i7dnb:
 * ACRN_EFI_GRUB2_MOD_CFG wic variable (semicolon (;) separated list)
     to make additional entries in grub.cfg i.e insmod ext3
 
-For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/2.4/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub)
+For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/2.5/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub)
 and [acrn-bootconf.bbclass](https://github.com/intel/meta-acrn/blob/master/classes/acrn-bootconf.bbclass)
 
 
@@ -460,8 +462,6 @@ Now build the installer image:
 ```
 $ bitbake mc:installer:acrn-image-base
 ```
-
-> Currently ACRN WIC Installer is supported only OE-Core(poky) `master`, `hardknott` and `gatesgarth`. Support for `dunfell` is still in progress.
 
 ## Tested Hardware
 The following undergo regular basic testing with their respective MACHINE types.
