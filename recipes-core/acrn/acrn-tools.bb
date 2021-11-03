@@ -2,7 +2,7 @@ require acrn-common.inc
 
 inherit pkgconfig systemd
 
-DEPENDS += "numactl systemd e2fsprogs libevent libxml2 openssl"
+DEPENDS += "numactl systemd e2fsprogs libevent libxml2 openssl-native"
 RDEPENDS:${PN} += "bash"
 
 do_compile() {
