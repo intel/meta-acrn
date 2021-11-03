@@ -71,6 +71,11 @@ do_deploy() {
 		install -m 0755 ${D}${libdir}/acrn/acpi/ACPI_*.bin ${DEPLOYDIR}
 	fi
 
+	rm -f ${DEPLOYDIR}/serial.conf
+	if [ -x ${D}${libdir}/acrn/serial.conf ]; then
+		install -m 0755 ${D}${libdir}/acrn/serial.conf ${DEPLOYDIR}
+	fi
+
 	if [ -x ${D}${libdir}/acrn/boot.efi ]; then
 		install -m 0755 ${D}${libdir}/acrn/boot.efi ${DEPLOYDIR}
 	fi
