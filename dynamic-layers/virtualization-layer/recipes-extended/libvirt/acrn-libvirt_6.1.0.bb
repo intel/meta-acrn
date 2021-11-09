@@ -27,8 +27,8 @@ CVE_PRODUCT = "libvirt"
 #connman blocks the 53 port and libvirtd can't start its DNS service
 RCONFLICTS:${PN}_libvirtd = "connman"
 
-SRC_URI = "git://github.com/projectacrn/acrn-libvirt.git;branch=${SRCBRANCH};destsuffix=acrn-libvirt-${PV};name=libvirt \
-           git://gitlab.com/keycodemap/keycodemapdb.git;protocol=https;destsuffix=acrn-libvirt-${PV}/src/keycodemapdb;name=keycodemapdb \
+SRC_URI = "git://github.com/projectacrn/acrn-libvirt.git;protocol=https;branch=${SRCBRANCH};destsuffix=acrn-libvirt-${PV};name=libvirt \
+           git://gitlab.com/keycodemap/keycodemapdb.git;protocol=https;branch=master;destsuffix=acrn-libvirt-${PV}/src/keycodemapdb;name=keycodemapdb \
            file://tools-add-libvirt-net-rpc-to-virt-host-validate-when.patch \
            file://libvirtd.sh \
            file://libvirtd.conf \
@@ -389,6 +389,11 @@ do_install:append() {
 
 	# virt-login-shell needs to run with setuid permission
 	chmod 4755 ${D}${bindir}/virt-login-shell
+
+	# Remove /var/log/libvirt as anything created in /var/log will not be
+	# available when tmpfs is mounted at /var/volatile/log.
+	rm -rf ${D}${localstatedir}/log
+
 }
 
 EXTRA_OECONF += " \
