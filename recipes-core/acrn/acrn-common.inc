@@ -3,7 +3,7 @@ HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
 
-SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;branch=${SRCBRANCH} \
+SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH} \
             file://0001-crashlog-fix-build-issue-with-e2fsprogs-v1.46.2.patch \
             file://0001-acrnprobe-supress-openssl-3.0-deprecated-declaration.patch \
 "
