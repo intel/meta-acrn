@@ -1,0 +1,190 @@
+#! /bin/sh
+# /etc/rc.serial
+#	Initializes the serial ports on your system
+### BEGIN INIT INFO
+# Provides:		setserial
+# Required-Start:	$remote_fs
+# Required-Stop:	$remote_fs
+# Default-Start:	S
+# Default-Stop:		0 1 6
+# Short-Description:	controls configuration of serial ports
+# Description:		Set and/or report the configuration information
+#			associated with a serial port. This information
+#			includes what I/O port and which IRQ a particular
+#			serial port is using.
+### END INIT INFO
+# chkconfig: 2345 50 75
+# description: This initializes the settings of the serial port
+#
+# Distributed with setserial version 2.15
+#
+# XXXX note: as of 2.15, the autosave feature doesn't work if you are
+# using the multiport feature; it doesn't save the multiport configuration
+# (for now).  Autosave also doesn't work for the hayes devices.
+#Will fix later...
+#
+#
+# Note that this has been changed so that if /etc/serial.conf exists,
+# this script does not configure the ports. It uses
+# /var/lib/setserial/autoserial.conf # instead, which is handled by another
+# init.d script. However, the script is still used for module loads and
+# unloads, even if serial.conf exists.
+#
+
+SETSERIAL=@BINDIR@/setserial
+modconf=@LOCALSTATEDIR@/run/setserial.conf
+autoconfig=@LOCALSTATEDIR@/lib/setserial/autoserial.conf
+etcconfig=@SYSCONFDIR@/serial.conf
+
+# If the serial executable has been removed abort the configuration
+[ -x ${SETSERIAL} ] || exit 0
+
+#
+# make sure that a serial device is loaded...
+# insmod -k serial 2>/dev/null
+#
+
+#
+# Support devfs when it arrives.
+#
+if /bin/ls /dev/tts 2> /dev/null 1>&2 ; then
+	ALLDEVS="/dev/tts/*"
+else
+	# No devfs - old naming scheme
+	ALLDEVS="/dev/ttyS?"
+	if /bin/ls /dev/ttyS?? 2> /dev/null 1>&2 ; then
+		ALLDEVS="$ALLDEVS /dev/ttyS??"
+	fi
+fi
+
+#
+# Handle System V init conventions...
+#
+case $1 in
+start | restart | force-reload )
+	action="start";
+	;;
+stop)
+	action="stop";
+	;;
+status)
+	action="status";
+	;;
+modload)
+	action="modload";
+	;;
+modsave)
+	action="modsave";
+	;;
+*)
+	action="restart";
+esac
+
+if test $action  = modload ; then
+  echo "Restoring persistent state of serial.o module due to module reload... "
+  if test -f ${modconf} ; then
+        while read device args
+        do
+               case "$device" in
+                   ""|\#*)
+                       continue
+                       ;;
+               esac
+           ${SETSERIAL} -z $device $args
+        done < ${modconf}
+  else
+    echo "Warning - no module state found (ok if this is at bootup)"
+    echo "Using the bootup configuration instead."
+    action="start";
+  fi
+  exit 0
+fi
+
+if test $action  = stop ; then
+	if [ -e ${etcconfig} ]; then
+		#nothing to do
+		dummy=0;
+	elif test "`sed 1q $autoconfig`X" = "###AUTOSAVE###X" ; then
+		echo -n "Saving state of known serial devices... "
+		grep "^#" $autoconfig > ${autoconfig}.new
+		${SETSERIAL} -G -g ${ALLDEVS} | grep -v "uart unknown\|pcmcia" >> ${autoconfig}.new
+		echo -n "backing up $autoconfig"
+		mv $autoconfig ${autoconfig}.old
+		mv ${autoconfig}.new $autoconfig
+		echo " done."
+	elif test "`sed 1q $autoconfig`X" = "###AUTOSAVE-FULL###X" ; then
+		echo -n "Saving state (including unknowns) of serial devices... "
+		grep "^#" $autoconfig > ${autoconfig}.new
+		${SETSERIAL} -G -g ${ALLDEVS} | grep -v "pcmcia" >> ${autoconfig}.new
+		echo -n "backing up $autoconfig"
+		mv $autoconfig ${autoconfig}.old
+		mv ${autoconfig}.new $autoconfig
+		echo " done."
+	elif test "`sed 1q $autoconfig`X" = "###AUTOSAVE-ONCE###X" ; then
+		echo -n "Saving state of known serial devices... "
+		echo "###PORT STATE GENERATED USING AUTOSAVE-ONCE###" > ${autoconfig}.new
+		grep "^#" $autoconfig >> ${autoconfig}.new
+		${SETSERIAL} -G -g ${ALLDEVS} | grep -v "uart unknown\|pcmcia" >> ${autoconfig}.new
+		echo -n "backing up $autoconfig"
+		mv $autoconfig ${autoconfig}.old
+		mv ${autoconfig}.new $autoconfig
+		echo " done."
+	fi
+	exit 0
+fi
+
+#
+# Is it Start
+#
+
+if test $action  = start ; then
+  echo "start command"
+  outmsg=""
+  echo "Loading the saved-state of the serial devices... "
+  rm -f ${modconf}
+
+  if test -f $etcconfig ; then
+    readfrom=$etcconfig;
+  else
+    readfrom=$autoconfig;
+  fi
+  if test -f $readfrom ; then
+        while read device args
+        do
+               case "$device" in
+                  "#KERNEL")
+                       outmsg="... handled by kernel"
+                       continue
+                       ;;
+                   ""|\#*)
+                       continue
+                       ;;
+               esac
+           outmsg=""
+           ${SETSERIAL} -z $device $args
+           ${SETSERIAL} -bg $device
+        done < $readfrom
+        if test ! "$outmsg" = "" ; then
+          echo $outmsg
+        fi
+
+  else
+	echo "###AUTOSAVE###" > $autoconfig
+  fi
+fi
+
+if test $action  = modsave ; then
+	echo -n "Saving serial.o state to emulate module data persistence... "
+	rm -f ${modconf}
+	${SETSERIAL} -G -g ${ALLDEVS} | grep -v "uart unknown\|pcmcia" > ${modconf}
+	echo "done."
+	exit 0
+fi
+
+if test $action  = status ; then
+	echo "Status of serial devices: ${ALLDEVS}"
+       for d in ${ALLDEVS}; do
+	  ${SETSERIAL} -a ${d}
+       done
+	exit 0
+fi
