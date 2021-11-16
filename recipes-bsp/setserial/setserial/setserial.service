@@ -1,0 +1,13 @@
+[Unit]
+Documentation=man:setserial(8)
+Description=controls configuration of serial ports
+Before=system-getty.slice
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=@SYSCONFDIR@/setserial start
+ExecStop=@SYSCONFDIR@/setserial stop
+
+[Install]
+WantedBy=multi-user.target
