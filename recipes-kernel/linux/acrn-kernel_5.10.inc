@@ -9,12 +9,12 @@ SRC_URI:prepend = "git://github.com/projectacrn/acrn-kernel.git;protocol=https;n
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
-KBRANCH = "master"
+KBRANCH = "release_2.7"
 KMETA_BRANCH = "yocto-5.10"
 
 
-LINUX_VERSION = "5.10.52"
-SRCREV_machine = "1c1a7f4768f97aae3917f42e9adf7afd84c1561c"
+LINUX_VERSION = "5.10.65"
+SRCREV_machine = "9db1395ec52680d70c96b571abca7e0f79759e28"
 SRCREV_meta = "eb09284047fec2f09d62068c338ae320c6681bd1"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
