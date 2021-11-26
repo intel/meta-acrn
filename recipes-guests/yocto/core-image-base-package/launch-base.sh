@@ -28,6 +28,7 @@ acrn-dm -A -m $mem_size -s 0:0,hostbridge \
   -s 4,virtio-net,tap0 \
   -s 7,virtio-rnd \
   --ovmf /usr/share/acrn/bios/OVMF.fd \
+  --cpu_affinity 0,1 \
   $logger_setting \
   --mac_seed $mac_seed \
   $vm_name
