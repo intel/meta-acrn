@@ -4,14 +4,13 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
-           file://0001-acrnprobe-supress-openssl-3.0-deprecated-declaration.patch \
            git://github.com/intel-innersource/virtualization.hypervisors.acrn.acrn-dev.acrn-offline-patch.git;protocol=https;branch=master;destsuffix=offline-patches;name=innersrc \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
 PV = "2.7"
-SRCREV = "ee2eb2e8e3fe2252e25f839fddc66e09722cdfc5"
+SRCREV = "fc7e26dde8c9cca5ca645dad95b6deadde0110d2"
 SRCREV_innersrc = "f79ebd22c0b7e4795900181a499618f22b6fe89e"
 SRCBRANCH = "release_2.7"
 
