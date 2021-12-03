@@ -60,11 +60,11 @@ addtask deploy after do_install before do_build
 do_deploy() {
 	install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.32.out ${DEPLOYDIR}
 	rm -f ${DEPLOYDIR}/acrn.32.out
-	lnr ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.32.out ${DEPLOYDIR}/acrn.32.out
+	ln -rs ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.32.out ${DEPLOYDIR}/acrn.32.out
 
 	install -m 0755 ${D}${libdir}/acrn/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.bin ${DEPLOYDIR}
 	rm -f ${DEPLOYDIR}/acrn.bin
-	lnr ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.bin ${DEPLOYDIR}/acrn.bin
+	ln -rs ${DEPLOYDIR}/acrn.${ACRN_BOARD}.${ACRN_SCENARIO}.bin ${DEPLOYDIR}/acrn.bin
 
 	rm -f ${DEPLOYDIR}/ACPI_*.bin
 	if [ -x ${D}${libdir}/acrn/acpi ]; then
