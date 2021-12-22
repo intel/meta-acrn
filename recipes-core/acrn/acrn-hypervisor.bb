@@ -1,7 +1,7 @@
 require acrn-common.inc
 
-ACRN_BOARD ?= "nuc7i7dnb"
-ACRN_SCENARIO  ?= "industry"
+ACRN_BOARD ?= "nuc11tnbi5"
+ACRN_SCENARIO  ?= "shared"
 ACRN_CONFIG_PATCH ?= ""
 
 EXTRA_OEMAKE += "HV_OBJDIR=${B}/hypervisor "
@@ -14,7 +14,7 @@ inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi"
+DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi python3-defusedxml-native"
 
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
@@ -76,9 +76,6 @@ do_deploy() {
 	fi
 }
 
-# acrn.32.out file has elf32-i386 file format in 64-bit build, which throws Unknown file format error.
-# Stripping is already done by source while building.
-# So 'arch' and 'already-stripped' QA checks can be skipped.
 INSANE_SKIP:${PN} += "arch already-stripped"
 
 do_compile:class-native() {
