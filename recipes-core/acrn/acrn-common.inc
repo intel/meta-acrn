@@ -3,16 +3,14 @@ HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
 
-SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH} \
-            file://0001-crashlog-fix-build-issue-with-e2fsprogs-v1.46.2.patch \
-            file://0001-dm-tools-compatible-with-openssl3.0.patch \
+SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "2.5"
-SRCREV = "e5aa63b08eb6bff4e40b1c3468cd010c56fbbce7"
-SRCBRANCH = "release_2.5"
+PV = "2.7"
+SRCREV = "fd223fa2e4e1568bef7ef72ced9bd5b46cecbe88"
+SRCBRANCH = "release_2.7"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
