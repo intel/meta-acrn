@@ -1,0 +1,6 @@
+define KFEATURE_DESCRIPTION "Add required kernel features for 5.10 SOS kernel"
+define KFEATURE_COMPATIBILITY board
+
+kconf non-hardware acrn-common.cfg
+kconf non-hardware sos.cfg
+kconf non-hardware sos_5.10.cfg
