@@ -55,7 +55,7 @@ ACRN is supported on the following Intel platforms:
 * Tiger Lake
 * Elkhart Lake
 
-About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/2.4/reference/hardware.html)
+About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/2.7/reference/hardware.html)
 
 
 ## Set Up Build Host
@@ -85,13 +85,13 @@ $ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib bu
 ### Dependencies
 
 meta-acrn layer depends on:
-* [poky](https://git.yoctoproject.org/cgit/cgit.cgi/poky), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-virtualization](https://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization), branch master [or hardknott/gatesgarth/dunfell]
-* [meta-intel](https://git.yoctoproject.org/cgit/cgit.cgi/meta-intel), branch master [or hardknott/gatesgarth/dunfell]
+* [poky](https://git.yoctoproject.org/cgit/cgit.cgi/poky), branch master [or honister]
+* [meta-oe](https://github.com/openembedded/meta-openembedded/tree/master/meta-oe), branch master [or honister]
+* [meta-python](https://github.com/openembedded/meta-openembedded/tree/master/meta-python), branch master [or honinster]
+* [meta-filesystems](https://github.com/openembedded/meta-openembedded/tree/master/meta-filesystems), branch master [or honister]
+* [meta-networking](https://github.com/openembedded/meta-openembedded/tree/master/meta-networking), branch master [or honister]
+* [meta-virtualization](https://git.yoctoproject.org/cgit/cgit.cgi/meta-virtualization), branch master [or honister]
+* [meta-intel](https://git.yoctoproject.org/cgit/cgit.cgi/meta-intel), branch master [or honister]
 
 ### Build Image
 
@@ -173,19 +173,6 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
 
 > Note how the parent `local.conf` refers to what `DEPLOY_DIR_IMAGE` will be in `uos.conf`.  Remember to keep these in sync.
 
-#### Build UOS image via multiconfig
-
-> Based on your target image. It can be:
->  - core-image-base
->  - core-image-sato
->  - core-image-weston
-
-```
-$ bitbake mc:uos:core-image-base
-```
-
-This should build you a `core-image-base-intel-corei7-64.wic` can be located at `build/master-acrn-uos/deploy/images/intel-corei7-64/`.
-
 #### Build ACRN image
 
 > Based on your target image, It can be:
@@ -198,10 +185,9 @@ This should build you a `core-image-base-intel-corei7-64.wic` can be located at 
 $ bitbake acrn-image-base
 ```
 
-Note that thanks to a bug in bitbake if you go straight to `acrn-image-base` from an empty sstate then it will build a lot of recipes twice.  For speed, build the UOS image first and then the SOS, as the SOS image can re-use 99% of the sstate.
-
 By default, building `acrn-image-base` will build a `.wic` image and can be located at `build/master-acrn-sos/deploy/images/intel-corei7-64/`.
 
+Based on configuration, it will also build post-launched VM and install on acrn-image-*.wic along with launch script. Separately user VMs can be located at `build/master-acrn-uos/deploy/images/intel-corei7-64/`. User VM images can be core-image-base, core-image-sato and core-image-weston.
 
 ## Booting ACRN Image
 
@@ -305,49 +291,45 @@ IMAGE_INSTALL:append:pn-acrn-image-base = " core-image-weston-package"
 
 #### ACRN BOARD Configuration
 
-To build for your target board, set `ACRN_BOARD` in your `conf/local.conf`. By default it is set to `nuc7i7dnb`
+To build for your target board, set `ACRN_BOARD` in your `conf/local.conf`. By default it is set to `nuc11tnbi5`
 ```
 ACRN_BOARD = "whl-ipc-i5"
 ```
 
 Supported Boards:
-- apl-mrb
-- apl-up2-n3350
-- apl-up2
-- nuc6cayh
-- nuc7i7dnb
+- nuc11tnbi5
+- cfl-k700-i7
 - whl-ipc-i5
-- whl-ipc-i7
 
-For More information, Please check [Supported Hardware](https://projectacrn.github.io/2.4/reference/hardware.html)
+For More information, Please check [Supported Hardware](https://projectacrn.github.io/2.7/reference/hardware.html)
 
 #### ACRN SCENARIO Configuration
 
-To build for your acrn scenario, set `ACRN_SCENARIO` in your `conf/local.conf`. By default it is set to `industry` scenario.
+To build for your acrn scenario, set `ACRN_SCENARIO` in your `conf/local.conf`. By default it is set to `shared` scenario.
 ```
 ACRN_SCENARIO  = "hybrid"
 ```
 Supported scenarios:
 - sdc
-- logical_partition
-- industry
+- shared
+- partitioned
 - hybrid
 - hybrid_rt
 
-For more information, please check [Build With the ACRN Scenario](https://projectacrn.github.io/2.4/getting-started/building-from-source.html#build-with-the-acrn-scenario)
+For more information, please check [Generate a Scenario Configuration File and Launch Scripts](https://projectacrn.github.io/2.7/getting-started/getting-started.html#generate-a-scenario-configuration-file-and-launch-scripts)
 
-To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/2.4/tutorials/acrn_configuration_tool.html)
+To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/2.7/tutorials/acrn_configuration_tool.html)
 
 #### ACRN BUILD MODE Configuration
 
-To build ACRN in `RELEASE` mode, set `1` to `ACRN_RELEASE` in your `conf/local.conf`. By default it is set to `0`
+To build ACRN in `RELEASE` mode, set `y` to `ACRN_RELEASE` in your `conf/local.conf`. By default it is set to `n`
 ```
-ACRN_RELEASE = "1"
+ACRN_RELEASE = "y"
 ```
 
-To build ACRN in `DEBUG` mode, set `0` to `ACRN_RELEASE` in your `conf/local.conf`.
+To build ACRN in `DEBUG` mode, set `n` to `ACRN_RELEASE` in your `conf/local.conf`.
 ```
-ACRN_RELEASE = "0"
+ACRN_RELEASE = "n"
 ```
 
 ### Kernel Configuration
@@ -356,25 +338,25 @@ There are multiple kernel variant available for both SOS and UOS.
 
 #### SOS
 
-To switch to linux-intel-acrn-sos LTS 5.4 kernel (default), in 'local.conf' replace with the following lines:
+To switch to linux-intel-acrn-sos LTS 5.10 kernel (default), in 'local.conf' replace with the following lines:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "5.4%"
+PREFERRED_VERSION_linux-intel-acrn-sos = "5.10%"
 ```
 
 #### UOS
 
 
-To switch to linux-intel-acrn-uos LTS 5.4 kernel (default), in 'conf/multiconfig/uos.conf' replace with following lines:
+To switch to linux-intel-acrn-uos LTS 5.10 kernel (default), in 'conf/multiconfig/uos.conf' replace with following lines:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
-PREFERRED_VERSION_linux-intel-acrn-uos = "5.4%"
+PREFERRED_VERSION_linux-intel-acrn-uos = "5.10%"
 ```
 
-To switch to linux-intel-rt-acrn-uos Preempt-RT 5.4 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+To switch to linux-intel-rt-acrn-uos Preempt-RT 5.10 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
-PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.4%"
+PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.10%"
 ```
 
 ### GRUB Configuration
@@ -398,7 +380,7 @@ For example, using hybrid scenario for nuc7i7dnb:
      VMFLAGS = "vm0 vm1"
      # vm0 (prelaunch vm zephyr)
      VM_APPEND_vm0 = "xxx"
-     KERNEL_IMAGE_vm0 = "zephyr.bin"
+     KERNEL_IMAGE_vm0 = "/custom path/zephyr.bin"
      KERNEL_MOD_vm0 = "Zephyr_RawImage"
      ACPI_TAG_vm0 = "ACPI_VM0"
      ACPI_BIN_vm0 = "ACPI_VM0.bin"
@@ -406,15 +388,18 @@ For example, using hybrid scenario for nuc7i7dnb:
 
      # vm1 (sos)
      VM_APPEND_vm1 = "xxx"
-     KERNEL_IMAGE_vm1 = "bzImage"
+     KERNEL_IMAGE_vm1 = "/custom path/bzImage" //Pass complete path
      KERNEL_MOD_vm1 = "Linux_bzImage"
      PART_LABEL_vm1 = "boot"
 
 * ACRN_EFI_GRUB2_MOD_CFG wic variable (semicolon (;) separated list)
     to make additional entries in grub.cfg i.e insmod ext3
 
-For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/2.4/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub)
-and [acrn-bootconf.bbclass](https://github.com/intel/meta-acrn/blob/master/classes/acrn-bootconf.bbclass)
+Additionaly grub bootloader uses 'search' command at grub menu entry to find the device by file (--file).
+
+* ACRN_HV_EFI_CFG wic variable to add ACRN Hyperviosr parameters
+
+For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/2.7/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub),  [acrn-bootconf.bbclass](https://github.com/intel/meta-acrn/blob/master/classes/acrn-bootconf.bbclass) and [ACRN Hypervisor Parameters](https://projectacrn.github.io/latest/user-guides/hv-parameters.html#acrn-hypervisor-parameters)
 
 
 ### Override distro configuration
@@ -471,10 +456,10 @@ $ bitbake mc:installer:acrn-image-base
 The following undergo regular basic testing with their respective MACHINE types.
 
 intel-corei7-64:
-    NUC7i7DNH
+    NUC11TNHi5
 
 intel-skylake-64:
-    NUC7i7DNH
+    NUC11TNHi5
 
 
 ## Contributing
