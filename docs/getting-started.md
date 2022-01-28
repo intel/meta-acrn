@@ -359,6 +359,12 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
 PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.10%"
 ```
 
+To switch to linux-intel-rt-acrn-uos Preempt-RT 5.4 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
+PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.4%"
+```
+
 ### GRUB Configuration
 
 Following variables are used to prepare kernel command lines for Pre-launched User VMs and Service VM. Based on these variables an ACRN specific `grub.cfg` gets generated.
