@@ -44,7 +44,7 @@ do_compile[dirs] = "${S}"
 do_install[dirs] = "${S}"
 
 # Fixed in v1.2 and onward
-CVE_CHECK_WHITELIST += "CVE-2019-18844"
+CVE_CHECK_IGNORE += "CVE-2019-18844"
 
 copy_sources() {
     cp -r -f ${WORKDIR}/offline-patches/boards/* ${S}/misc/config_tools/data/
