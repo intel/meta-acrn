@@ -41,6 +41,7 @@ SRC_URI = "git://github.com/projectacrn/acrn-libvirt.git;protocol=https;branch=$
            file://configure.ac-search-for-rpc-rpc.h-in-the-sysroot.patch \
            file://0001-build-drop-unnecessary-libgnu.la-reference.patch \
            file://gnutls-helper.py \
+           file://Fix-template-matching-in-page.xsl.patch \
           "
 
 SRCBRANCH = "dev-acrn-v6.1.0"
