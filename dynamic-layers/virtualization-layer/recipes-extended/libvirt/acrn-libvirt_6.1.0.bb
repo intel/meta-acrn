@@ -46,7 +46,7 @@ SRC_URI = "git://github.com/projectacrn/acrn-libvirt.git;protocol=https;branch=$
 
 SRCBRANCH = "dev-acrn-v6.1.0"
 # with acrn v6.1.0
-SRCREV_libvirt = "c4315b7f6350d5184e38103fc59cdd6d408884dd"
+SRCREV_libvirt = "897b25800f17c46f960e66e45d9862e92d3af551"
 SRCREV_keycodemapdb = "27acf0ef828bf719b2053ba398b195829413dbdd"
 
 inherit autotools gettext update-rc.d pkgconfig ptest systemd useradd perlnative
