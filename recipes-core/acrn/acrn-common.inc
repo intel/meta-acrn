@@ -1,7 +1,7 @@
 SUMMARY = "A Type 1 hypervisor stack, running directly on the bare-metal hardware"
 HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=ba07c9571f2096ec6349ef0167ec5e60"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
            git://github.com/intel-innersource/virtualization.hypervisors.acrn.acrn-dev.acrn-offline-patch.git;protocol=https;branch=master;destsuffix=offline-patches;name=innersrc \
@@ -10,8 +10,8 @@ SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branc
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
 PV = "3.0"
-SRCREV = "c4bf41bfd0a491c9d9d6833631999b0ee10d4b76"
-SRCREV_innersrc = "7681f4da37cdd74e4b67ce71efbe03fb5a159554"
+SRCREV = "cfcea649761b64fe175d8ff65265b4022b53feb1"
+SRCREV_innersrc = "eae56846fc13b1908082bd0bf19104a240d1b7a7"
 SRCBRANCH = "master"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
