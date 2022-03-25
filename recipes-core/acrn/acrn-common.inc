@@ -4,6 +4,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=ba07c9571f2096ec6349ef0167ec5e60"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
+           file://0001-nuc11tnbi5.xml-update-sample-board-xml.patch \
            git://github.com/intel-innersource/virtualization.hypervisors.acrn.acrn-dev.acrn-offline-patch.git;protocol=https;branch=master;destsuffix=offline-patches;name=innersrc \
 "
 
