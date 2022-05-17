@@ -4,6 +4,8 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
+            file://0001-hv-crypto-fix-a-minor-build-Werror.patch \
+            file://0001-Makefile-disable-Werror-option-for-now.patch \
 "
 
 # Snapshot tags are of the format:

@@ -1,0 +1,62 @@
+From cadeb5c7b640b9b6099d6cc4e3ef1bc5d3f25887 Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Fri, 13 May 2022 22:47:08 +0800
+Subject: [PATCH] Makefile: disable -Werror option for now
+
+GCC12 causing multiple warnings which are currently being treated as error.
+
+Ignore for now, untill not fixed upstream.
+
+Issue raised: https://github.com/projectacrn/acrn-hypervisor/issues/7453
+
+Upstream-Status: Inappropriate
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ devicemodel/Makefile                    | 2 +-
+ misc/debug_tools/acrn_crashlog/Makefile | 2 +-
+ misc/services/acrn_manager/Makefile     | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index 1920ccc19..4f7b39895 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -28,7 +28,7 @@ CFLAGS += -D_GNU_SOURCE
+ CFLAGS += -DNO_OPENSSL
+ CFLAGS += -m64
+ CFLAGS += -Wall -ffunction-sections
+-CFLAGS += -Werror
++#CFLAGS += -Werror
+ CFLAGS += -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+ CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
+ CFLAGS += -fno-delete-null-pointer-checks -fwrapv
+diff --git a/misc/debug_tools/acrn_crashlog/Makefile b/misc/debug_tools/acrn_crashlog/Makefile
+index c2367704e..742bef703 100644
+--- a/misc/debug_tools/acrn_crashlog/Makefile
++++ b/misc/debug_tools/acrn_crashlog/Makefile
+@@ -31,7 +31,7 @@ CFLAGS := -g -O0 -std=gnu11
+ CFLAGS += -D_GNU_SOURCE
+ CFLAGS += -m64
+ CFLAGS += -Wall -ffunction-sections
+-CFLAGS += -Werror
++#CFLAGS += -Werror
+ CFLAGS += -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+ CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
+ CFLAGS += -fpie
+diff --git a/misc/services/acrn_manager/Makefile b/misc/services/acrn_manager/Makefile
+index af63b81d1..05d52905e 100644
+--- a/misc/services/acrn_manager/Makefile
++++ b/misc/services/acrn_manager/Makefile
+@@ -22,7 +22,7 @@ MANAGER_CFLAGS += -D_GNU_SOURCE
+ MANAGER_CFLAGS += -DNO_OPENSSL
+ MANAGER_CFLAGS += -m64
+ MANAGER_CFLAGS += -Wall -ffunction-sections
+-MANAGER_CFLAGS += -Werror
++#MANAGER_CFLAGS += -Werror
+ MANAGER_CFLAGS += -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+ MANAGER_CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
+ MANAGER_CFLAGS += -fno-delete-null-pointer-checks -fwrapv
+-- 
+2.25.1
+
