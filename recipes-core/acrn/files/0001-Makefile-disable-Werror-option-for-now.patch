@@ -1,0 +1,48 @@
+From 4cf3a61a3eeab0c7a3726d624104ff0f327094b1 Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Fri, 13 May 2022 22:47:08 +0800
+Subject: [PATCH] Makefile: disable -Werror option for now
+
+GCC12 causing multiple warnings which are currently being treated as error.
+
+Ignore for now, untill not fixed upstream.
+
+Issue raised: https://github.com/projectacrn/acrn-hypervisor/issues/7453
+
+Upstream-Status: Inappropriate
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ devicemodel/Makefile             | 2 +-
+ misc/services/life_mngr/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index 3fcd1dd55..c08593f2a 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -28,7 +28,7 @@ CFLAGS += -D_GNU_SOURCE
+ CFLAGS += -DNO_OPENSSL
+ CFLAGS += -m64
+ CFLAGS += -Wall -ffunction-sections
+-CFLAGS += -Werror
++#CFLAGS += -Werror
+ CFLAGS += -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+ CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
+ CFLAGS += -fno-delete-null-pointer-checks -fwrapv
+diff --git a/misc/services/life_mngr/Makefile b/misc/services/life_mngr/Makefile
+index b2992d447..151f9afaf 100644
+--- a/misc/services/life_mngr/Makefile
++++ b/misc/services/life_mngr/Makefile
+@@ -8,7 +8,7 @@ LIFEMNGR_CFLAGS += -D_GNU_SOURCE
+ LIFEMNGR_CFLAGS += -DNO_OPENSSL
+ LIFEMNGR_CFLAGS += -m64
+ LIFEMNGR_CFLAGS += -Wall -ffunction-sections
+-LIFEMNGR_CFLAGS += -Werror
++#LIFEMNGR_CFLAGS += -Werror
+ LIFEMNGR_CFLAGS += -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
+ LIFEMNGR_CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
+ LIFEMNGR_CFLAGS += -fno-delete-null-pointer-checks -fwrapv
+-- 
+2.25.1
+

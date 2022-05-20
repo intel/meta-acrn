@@ -5,13 +5,14 @@ LIC_FILES_CHKSUM = "file://LICENSE;md5=ba07c9571f2096ec6349ef0167ec5e60"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
            git://github.com/intel-innersource/virtualization.hypervisors.acrn.acrn-dev.acrn-offline-patch.git;protocol=https;branch=master;destsuffix=offline-patches;name=innersrc \
+           file://0001-Makefile-disable-Werror-option-for-now.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
 PV = "3.0"
-SRCREV = "f8f1689a887fd377ec7acf224a4513465545500a"
-SRCREV_innersrc = "96ebf90cfccd7abf7d9943431f06d2e56aa202f0"
+SRCREV = "df3390f4014bc707a7c301843240af6ae357edc0"
+SRCREV_innersrc = "045ff4172396a5675cb0b8958efd383885f6e26f"
 SRCBRANCH = "master"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
