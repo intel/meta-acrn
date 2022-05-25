@@ -4,15 +4,7 @@
 
 All tests should be ran primarily on the supported platform:
 
-* Kaby Lake NUC ([details here](https://projectacrn.github.io/2.4/reference/hardware.html#verified-platforms-according-to-acrn-usage))
-
-### SOS kernel without ACRN
-
-Without starting the ACRN hypervisor, does the SOS kernel successfully boot.  This is required for interaction-free installation which can use a first-boot script to configure the EFI boot manager.
-
-### EFI Boot Manager updated
-
-When the SOS is first booted, it should add an entry to the EFI boot loader to start itself under ACRN.
+* Tiger Lake NUC ([details here](https://projectacrn.github.io/2.7/reference/hardware.html#verified-platforms-according-to-acrn-usage))
 
 ### Console Guest Functional
 

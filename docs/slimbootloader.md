@@ -33,7 +33,7 @@ TMPDIR = "${TOPDIR}/master-acrn-sos"
 DISTRO = "acrn-demo-sos"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "5.4%"
+PREFERRED_VERSION_linux-intel-acrn-sos = "5.10%"
 
 ACRN_BOARD = "ehl-crb-b"
 ACRN_SCENARIO = "hybrid"
@@ -54,7 +54,7 @@ build$ echo Zephyr_RawImage > conf/zephyr.txt
 ```
 
 ### 5. Copy Zephyr image file to the conf/zephyr.bin
-Please refer to [Using Zephyr as User OS](https://projectacrn.github.io/1.6/tutorials/using_zephyr_as_uos.html) about how to build Zephyr
+Please refer to [Using Zephyr as User OS](https://projectacrn.github.io/2.7/tutorials/using_zephyr_as_user_vm.html) about how to build Zephyr
 
 ### 6. Generate SBL sign key file
 ```
@@ -72,10 +72,10 @@ build$ bitbake mc:sos:acrn-image-minimal
 ### 8. Check the sbl_os container image file has been deployed in the generated wic image
 ```
 build$ sudo mount \
-`sudo losetup -f -P --show master-acrn-sos/deploy/images/intel-corei7-64/acrn-image-minimal-intel-corei7-64.wic.acrn`p2 \
+`sudo losetup -f -P --show master-acrn-sos/deploy/images/intel-corei7-64/acrn-image-minimal-intel-corei7-64.wic`p2 \
 /mnt
 build$ ls /mnt/boot/
-bzImage bzImage-5.4.52-linux-intel-acrn-sos EFI loader sbl_os
+bzImage bzImage-5.10.*-linux-intel-acrn-sos EFI loader sbl_os
 ```
 
 ### Optional Other Variables
