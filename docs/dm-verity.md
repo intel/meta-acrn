@@ -25,7 +25,7 @@ CONTAINER_PACKAGE_DEPLOY_DIR = "${TOPDIR}/master-acrn-uos/deploy/images/${MACHIN
 CONTAINER_PACKAGE_MC = "uos"
 
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "5.4%"
+PREFERRED_VERSION_linux-intel-acrn-sos = "5.10%"
 
 IMAGE_CLASSES += "dm-verity-img"
 
