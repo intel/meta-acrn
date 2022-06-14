@@ -10,6 +10,7 @@ python () {
 }
 
 SRC_URI:append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
+                    file://0001-regulator-consumer-Add-missing-stubs-to-regulator-co.patch \
                     file://uos_rt_5.10.scc \
 "
 
@@ -20,9 +21,9 @@ KMETA_BRANCH = "yocto-5.10"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
-LINUX_VERSION ?= "5.10.109"
-SRCREV_machine ?= "1a9009a376865b4c0d381b8cd683ca9a10b5a09a"
-SRCREV_meta ?= "19e7547dd6617760d6094b7a42da1a718b5a96ee"
+LINUX_VERSION ?= "5.10.115"
+SRCREV_machine ?= "319577bba3954e68f22144f28d3e6191c2d953d7"
+SRCREV_meta ?= "6337d56f23d18e5680493dadcb52899d5e6a7c09"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-preempt-rt-acrn-uos"
 
