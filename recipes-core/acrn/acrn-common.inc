@@ -1,19 +1,17 @@
 SUMMARY = "A Type 1 hypervisor stack, running directly on the bare-metal hardware"
 HOMEPAGE = "https://projectacrn.org/"
 LICENSE = "BSD-3-Clause"
-LIC_FILES_CHKSUM = "file://LICENSE;md5=b762ef53db85c389256a9d215053edf7"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=ba07c9571f2096ec6349ef0167ec5e60"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
-            file://0001-hv-crypto-fix-a-minor-build-Werror.patch \
-            file://0001-misc-acrnd-fix-a-minor-build-Werror.patch \
             file://0001-Makefile-disable-Werror-option-for-now.patch \
 "
 
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "2.7"
-SRCREV = "fd223fa2e4e1568bef7ef72ced9bd5b46cecbe88"
-SRCBRANCH = "release_2.7"
+PV = "3.0"
+SRCREV = "506c87cfa3f11b87e912d54f72d6cf8f20ce1415"
+SRCBRANCH = "release_3.0"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 
