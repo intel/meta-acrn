@@ -6,7 +6,7 @@ SRC_URI += "file://dont-build-tools.patch \
 
 inherit python3native
 
-DEPENDS += "util-linux libusb1 openssl libpciaccess acrn-tools"
+DEPENDS += "util-linux libusb1 openssl libpciaccess acrn-tools cjson virtual/libsdl2 pixman"
 
 # Tell the build where to find acrn-tools
 EXTRA_OEMAKE += "COPTS=${STAGING_DIR_TARGET}${includedir}/acrn"

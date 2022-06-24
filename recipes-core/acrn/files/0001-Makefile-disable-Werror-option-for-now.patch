@@ -1,4 +1,4 @@
-From 448c4157df53fbfa0d5731afaf8ab6f60e036be8 Mon Sep 17 00:00:00 2001
+From 4cf3a61a3eeab0c7a3726d624104ff0f327094b1 Mon Sep 17 00:00:00 2001
 From: Naveen Saini <naveen.kumar.saini@intel.com>
 Date: Fri, 13 May 2022 22:47:08 +0800
 Subject: [PATCH] Makefile: disable -Werror option for now
@@ -13,13 +13,12 @@ Upstream-Status: Inappropriate
 
 Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
 ---
- devicemodel/Makefile                    | 2 +-
- misc/debug_tools/acrn_crashlog/Makefile | 2 +-
- misc/services/life_mngr/Makefile        | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ devicemodel/Makefile             | 2 +-
+ misc/services/life_mngr/Makefile | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/devicemodel/Makefile b/devicemodel/Makefile
-index 1920ccc19..4f7b39895 100644
+index 3fcd1dd55..c08593f2a 100644
 --- a/devicemodel/Makefile
 +++ b/devicemodel/Makefile
 @@ -28,7 +28,7 @@ CFLAGS += -D_GNU_SOURCE
@@ -31,21 +30,8 @@ index 1920ccc19..4f7b39895 100644
  CFLAGS += -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
  CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
  CFLAGS += -fno-delete-null-pointer-checks -fwrapv
-diff --git a/misc/debug_tools/acrn_crashlog/Makefile b/misc/debug_tools/acrn_crashlog/Makefile
-index c2367704e..742bef703 100644
---- a/misc/debug_tools/acrn_crashlog/Makefile
-+++ b/misc/debug_tools/acrn_crashlog/Makefile
-@@ -31,7 +31,7 @@ CFLAGS := -g -O0 -std=gnu11
- CFLAGS += -D_GNU_SOURCE
- CFLAGS += -m64
- CFLAGS += -Wall -ffunction-sections
--CFLAGS += -Werror
-+#CFLAGS += -Werror
- CFLAGS += -O2 -U_FORTIFY_SOURCE -D_FORTIFY_SOURCE=2
- CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
- CFLAGS += -fpie
 diff --git a/misc/services/life_mngr/Makefile b/misc/services/life_mngr/Makefile
-index a27252c7b..80c301e8f 100644
+index b2992d447..151f9afaf 100644
 --- a/misc/services/life_mngr/Makefile
 +++ b/misc/services/life_mngr/Makefile
 @@ -8,7 +8,7 @@ LIFEMNGR_CFLAGS += -D_GNU_SOURCE
