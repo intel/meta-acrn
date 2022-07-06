@@ -1,8 +1,9 @@
-From 071de6ed6e2eb84eccedfb6d2ce32048ddb1e3ac Mon Sep 17 00:00:00 2001
+From 325bb289cd7671067dea0d73e27750844ac050c2 Mon Sep 17 00:00:00 2001
 From: Naveen Saini <naveen.kumar.saini@intel.com>
-Date: Tue, 17 Aug 2021 14:52:42 +0800
-Subject: [PATCH] No need to build & install the tools as we can use the
- libraries already installed.
+Date: Wed, 6 Jul 2022 14:53:39 +0800
+Subject: [PATCH] No need to build & install the tools
+
+Tools are being built & installed by seperate recipe
 
 Upstream-Status: Inappropriate
 
@@ -12,10 +13,10 @@ Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 808117ff..cc50052f 100644
+index 3872b2ce6..9994b13cb 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -114,7 +114,7 @@ hvdiffconfig:
+@@ -131,7 +131,7 @@ hvdiffconfig:
  hvapplydiffconfig:
  	@$(MAKE) applydiffconfig $(HV_MAKEOPTS) PATCH=$(abspath $(PATCH))
  
@@ -24,9 +25,9 @@ index 808117ff..cc50052f 100644
  	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) DM_BUILD_VERSION=$(BUILD_VERSION) DM_BUILD_TAG=$(BUILD_TAG) DM_ASL_COMPILER=$(ASL_COMPILER) TOOLS_OUT=$(TOOLS_OUT) RELEASE=$(RELEASE)
  
  tools:
-@@ -167,7 +167,7 @@ apl-up2-hybrid-install-debug:
- sbl-hypervisor-install-debug: kbl-nuc-i7-industry-install-debug \
- 			      apl-up2-hybrid-install-debug
+@@ -161,7 +161,7 @@ hypervisor-install: hypervisor
+ hypervisor-install-debug:
+ 	$(MAKE) $(HV_MAKEOPTS) install-debug
  
 -devicemodel-install: tools-install devicemodel
 +devicemodel-install: devicemodel
@@ -34,5 +35,5 @@ index 808117ff..cc50052f 100644
  
  tools-install: tools
 -- 
-2.17.1
+2.25.1
 
