@@ -1,0 +1,6 @@
+define KFEATURE_DESCRIPTION "Add required kernel features for 5.10 User VM kernel"
+define KFEATURE_COMPATIBILITY board
+
+kconf non-hardware acrn-common.cfg
+kconf non-hardware user-vm.cfg
+kconf non-hardware user-vm_5.10.cfg

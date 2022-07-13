@@ -1,1 +1,1 @@
-require ${@bb.utils.contains("DISTRO_FEATURES", "SOS", "acrn-grub-bootconf.inc", "", d)}
+require ${@bb.utils.contains("DISTRO_FEATURES", "ServiceVM", "acrn-grub-bootconf.inc", "", d)}

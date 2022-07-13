@@ -1,14 +1,14 @@
 require linux-intel-acrn_5.10.inc
 
-SRC_URI:append = " file://sos_5.10.scc"
+SRC_URI:append = " file://service-vm_5.10.scc"
 
-LINUX_VERSION_EXTENSION = "-linux-intel-acrn-sos"
+LINUX_VERSION_EXTENSION = "-linux-intel-acrn-service-vm"
 
-SUMMARY = "Linux Kernel with ACRN enabled (SOS)"
+SUMMARY = "Linux Kernel with ACRN enabled (Service VM)"
 
 KERNEL_FEATURES:append = " features/criu/criu-enable.scc \
                           cgl/cfg/iscsi.scc \
-                          sos_5.10.scc \
+                          service-vm_5.10.scc \
 "
 
 # config warning:  'CONFIG_IRQ_REMAP' last val (y) and .config val (n) do not matchs
