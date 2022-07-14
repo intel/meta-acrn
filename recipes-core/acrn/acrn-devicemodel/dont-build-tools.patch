@@ -1,6 +1,6 @@
-From 325bb289cd7671067dea0d73e27750844ac050c2 Mon Sep 17 00:00:00 2001
+From 3908c4da2f89208c582162f479aacb4a42e2bdd1 Mon Sep 17 00:00:00 2001
 From: Naveen Saini <naveen.kumar.saini@intel.com>
-Date: Wed, 6 Jul 2022 14:53:39 +0800
+Date: Thu, 14 Jul 2022 18:02:30 +0800
 Subject: [PATCH] No need to build & install the tools
 
 Tools are being built & installed by seperate recipe
@@ -13,19 +13,19 @@ Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
  1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/Makefile b/Makefile
-index 3872b2ce6..9994b13cb 100644
+index 253840528..915a7cc6a 100644
 --- a/Makefile
 +++ b/Makefile
-@@ -131,7 +131,7 @@ hvdiffconfig:
+@@ -132,7 +132,7 @@ hvdiffconfig:
  hvapplydiffconfig:
  	@$(MAKE) applydiffconfig $(HV_MAKEOPTS) PATCH=$(abspath $(PATCH))
  
 -devicemodel: tools
 +devicemodel:
- 	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) DM_BUILD_VERSION=$(BUILD_VERSION) DM_BUILD_TAG=$(BUILD_TAG) DM_ASL_COMPILER=$(ASL_COMPILER) TOOLS_OUT=$(TOOLS_OUT) RELEASE=$(RELEASE)
+ 	$(MAKE) -C $(T)/devicemodel DM_OBJDIR=$(DM_OUT) DM_BUILD_VERSION=$(BUILD_VERSION) DM_BUILD_TAG=$(BUILD_TAG) TOOLS_OUT=$(TOOLS_OUT) RELEASE=$(RELEASE) IASL_MIN_VER=$(IASL_MIN_VER)
  
  tools:
-@@ -161,7 +161,7 @@ hypervisor-install: hypervisor
+@@ -162,7 +162,7 @@ hypervisor-install: hypervisor
  hypervisor-install-debug:
  	$(MAKE) $(HV_MAKEOPTS) install-debug
  
