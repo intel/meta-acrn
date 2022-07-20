@@ -21,8 +21,8 @@ III. [Building ACRN Bootable Image](#building-acrn-bootable-image)
    - [Build ACRN image](#build-acrn-image)
 
 IV.  [Booting ACRN Image](#booting-acrn-image)
- * [Boot ACRN and SOS](#boot-acrn-and-sos)
- * [Launching UOS](#launching-uos)
+ * [Boot ACRN and Service OS](#boot-acrn-and-sos)
+ * [Launching User VM](#launching-uos)
    - [USB Passthrough](#usb-passthrough)
 
 V.   [Configurations](#configurations)
@@ -33,8 +33,8 @@ V.   [Configurations](#configurations)
    - [ACRN SCENARIO Configuration](#acrn-scenario-configuration)
    - [ACRN BUILD MODE Configuration](#acrn-build-mode-configuration)
  * [Kernel Configuration](#kernel-configuration)
-   - [SOS](#sos)
-   - [UOS](#uos)
+   - [Service VM](#service-os)
+   - [User VM](#user-os)
  * [GRUB Configuration](#grub-configuration)
  * [Override distro configuration](#override-distro-configuration)
 
@@ -133,7 +133,7 @@ $ bitbake-layers add-layer ../meta-acrn
 
 #### Configure Service VM (SOS)
 
-meta-acrn maintains prototype DISTRO configurations for both Servcie VM OS (SOS) and User VM OS (UOS). `acrn-demo-sos` for Service VM OS and `acrn-demo-uos` for User VM OS.
+meta-acrn maintains prototype DISTRO configurations for both Servcie VM OS (SOS) and User VM OS (UOS). `acrn-demo-service-vm` for Service VM OS and `acrn-demo-user-vm` for User VM OS.
 `local.conf` carries the common configuration, which can be overwritten by individual multiconfigs `conf/multiconfig/xxx.conf`
 For the Service VM OS, we carry configuration in `conf/local.conf` and for User VM OS we carry in `conf/multiconfig/uos.conf`
 
@@ -143,7 +143,7 @@ Append the following configuration in `conf/local.conf`:
 ```
 MACHINE = "intel-corei7-64"
 TMPDIR = "${TOPDIR}/master-acrn-sos"
-DISTRO = "acrn-demo-sos"
+DISTRO = "acrn-demo-service-vm"
 
 # Also use the 'uos' configuration
 BBMULTICONFIG = "uos"
@@ -158,7 +158,7 @@ IMAGE_INSTALL:append:pn-acrn-image-base = " core-image-base-package"
 IMAGE_INSTALL:append:pn-acrn-image-sato = " core-image-weston-package"
 
 # set preferred kernel for sos
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-service-vm"
 ```
 
 #### Configure Post-launched User VM (UOS)
@@ -166,9 +166,9 @@ PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
 Add the following in `conf/multiconfig/uos.conf`:
 
 ```
-DISTRO = "acrn-demo-uos"
+DISTRO = "acrn-demo-user-vm"
 TMPDIR = "${TOPDIR}/master-acrn-uos"
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-user-vm"
 ```
 
 > Note how the parent `local.conf` refers to what `DEPLOY_DIR_IMAGE` will be in `uos.conf`.  Remember to keep these in sync.
@@ -191,7 +191,7 @@ Based on configuration, it will also build post-launched VM and install on acrn-
 
 ## Booting ACRN Image
 
-### Boot ACRN and SOS
+### Boot ACRN and Service VM
 
 On successful build, you will find the ACRN bootable image `acrn-image-base-intel-corei7-64.wic` in the `build/master-acrn-sos/deploy/images/intel-corei7-64/` directory.
 
@@ -216,7 +216,7 @@ Now burn the image onto the USB drive:
 ```
 This should give you a bootable USB flash device.  Insert the device into a bootable USB socket on the target, and power on. It should give two boot options, 'boot' and 'ACRN (Yocto)'. Select 'ACRN (Yocto)' to spawn hypervisor, while 'boot' to boot as normal Linux.
 
-### Launching UOS
+### Launching User VM
 
 ```
 $ /var/lib/machines/launch-base.sh
@@ -334,35 +334,35 @@ ACRN_RELEASE = "n"
 
 ### Kernel Configuration
 
-There are multiple kernel variant available for both SOS and UOS.
+There are multiple kernel variant available for both Service VM and User VM.
 
-#### SOS
+#### Service VM
 
-To switch to linux-intel-acrn-sos LTS 5.10 kernel (default), in 'local.conf' replace with the following lines:
+To switch to linux-intel-acrn-service-vm LTS 5.10 kernel (default), in 'local.conf' replace with the following lines:
 ```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "5.10%"
-```
-
-#### UOS
-
-
-To switch to linux-intel-acrn-uos LTS 5.10 kernel (default), in 'conf/multiconfig/uos.conf' replace with following lines:
-```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-uos"
-PREFERRED_VERSION_linux-intel-acrn-uos = "5.10%"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-service-vm"
+PREFERRED_VERSION_linux-intel-acrn-service-vm = "5.10%"
 ```
 
-To switch to linux-intel-rt-acrn-uos Preempt-RT 5.10 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+#### User VM
+
+
+To switch to linux-intel-acrn-user-vm LTS 5.10 kernel (default), in 'conf/multiconfig/uos.conf' replace with following lines:
 ```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
-PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.10%"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-user-vm"
+PREFERRED_VERSION_linux-intel-acrn-user-vm = "5.10%"
 ```
 
-To switch to linux-intel-rt-acrn-uos Preempt-RT 5.4 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+To switch to linux-intel-acrn-rtvm Preempt-RT 5.10 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
 ```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-rt-acrn-uos"
-PREFERRED_VERSION_linux-intel-rt-acrn-uos = "5.4%"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-rtvm"
+PREFERRED_VERSION_linux-intel-acrn-rtvm = "5.10%"
+```
+
+To switch to linux-intel-acrn-rtvm Preempt-RT 5.4 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-rtvm"
+PREFERRED_VERSION_linux-intel-acrn-rtvm = "5.4%"
 ```
 
 ### GRUB Configuration
@@ -410,9 +410,9 @@ For more information, please check [Update Ubuntu GRUB](https://projectacrn.gith
 
 ### Override distro configuration
 
-Due to parsing sequence conflict with `meta-intel`, weak assignments are not used in `acrn-demo-sos` and `acrn-demo-uos` distros. So to override distro configuration in `conf/local.conf`, override syntax can be used i.e
+Due to parsing sequence conflict with `meta-intel`, weak assignments are not used in `acrn-demo-service-vm` and `acrn-demo-user-vm` distros. So to override distro configuration in `conf/local.conf`, override syntax can be used i.e
 ```
-WKS_FILE_acrn-demo-sos = "your-custom.wks.in"
+WKS_FILE_acrn-demo-service-vm = "your-custom.wks.in"
 ```
 
 

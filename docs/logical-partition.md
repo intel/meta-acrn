@@ -6,7 +6,7 @@ Example on build and setup for logical partition, these are based on default con
 add multiconfig and common setting for both vm in local.conf
 ```
 MACHINE = "intel-corei7-64"
-DISTRO = "acrn-demo-uos"
+DISTRO = " acrn-demo-user-vm"
 BBMULTICONFIG = "vm0 vm1"
 
 # update fstab in this case can cause problem to mount rootfs
