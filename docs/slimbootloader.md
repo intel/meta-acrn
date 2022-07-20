@@ -25,15 +25,15 @@ build $ echo "MACHINE = \"intel-corei7-64\"" >> conf/local.conf
 build $ echo "BBMULTICONFIG = \"sos\"" >> conf/local.conf
 ```
 
-### 3. Create SOS config file as below
+### 3. Create Service VM config file as below
 ```
 build $ mkdir conf/multiconfig
 build $ cat conf/multiconfig/sos.conf
 TMPDIR = "${TOPDIR}/master-acrn-sos"
-DISTRO = "acrn-demo-sos"
+DISTRO = "acrn-demo-service-vm"
 
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "5.10%"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-service-vm"
+PREFERRED_VERSION_linux-intel-acrn-service-vm = "5.10%"
 
 ACRN_BOARD = "ehl-crb-b"
 ACRN_SCENARIO = "hybrid"
@@ -64,7 +64,7 @@ build$ cp cert/OS1_TestKey_Priv_RSA2048.pem cert/TestSigningPrivateKey.pem
 
 Please refer to [SBL Keys Generation](https://slimbootloader.github.io/getting-started/build-host-setup.html#sbl-keys) for the details of SBL tools.
 
-### 7. Build SOS image
+### 7. Build Service VM image
 ```
 build$ bitbake mc:sos:acrn-image-minimal
 ```
@@ -80,10 +80,10 @@ bzImage bzImage-5.10.*-linux-intel-acrn-sos EFI loader sbl_os
 
 ### Optional Other Variables
 * MB_DEPENDENCY  
-  Set any tasks you want to run before the acrn_sblimage task start. Normally it is not needed since the acrn_sblimage is scheduled at the very last minute of the SOS image creation.
+  Set any tasks you want to run before the acrn_sblimage task start. Normally it is not needed since the acrn_sblimage is scheduled at the very last minute of the Service VM image creation.
 
 * MB_MC_DEPENDENCY  
-  Set any tasks of UOS you want to run before the acrn_sblimage task start. Typically, it can be used to wait the UOS Linux kernel build in case you want to add the UOS Linux kernel bzImage to the container image so that it can boot as the pre-launched OS.  
+  Set any tasks of User VM you want to run before the acrn_sblimage task start. Typically, it can be used to wait the User VM Linux kernel build in case you want to add the User VM Linux kernel bzImage to the container image so that it can boot as the pre-launched VM.  
   ```
   MB_MC_DEPENDENCY = "\
       uos:virtual/kernel:do_deply \
@@ -106,6 +106,6 @@ bzImage bzImage-5.10.*-linux-intel-acrn-sos EFI loader sbl_os
   Example: currentMultibootConfig = d.getVar('BB_CURRENT_MC')
 
 * ACRN_FIRMWARE
-  Set ACRN_FIRMWARE="uefi" in your sos multiconfig file (Example: conf/multiconfig/sos.conf) to generate the ACRN EFI application which allows to boot your sbl_os image on UEFI-BIOS systems.
+  Set ACRN_FIRMWARE="uefi" in your Service VM (sos) multiconfig file (Example: conf/multiconfig/sos.conf) to generate the ACRN EFI application which allows to boot your sbl_os image on UEFI-BIOS systems.
   See the "Enable ACRN Secure Boot With EFI-Stub" page on the "Project ACRN Documentation" for the details.
   The acrn.efi file will be generated in the deployment directory (Example: master-acrn-sos/deploy/images/intel-corei7-64/acrn.efi)

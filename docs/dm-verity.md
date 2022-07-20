@@ -19,13 +19,13 @@ Create conf/multiconfig/sos.conf.
 ```
 MACHINE = "intel-corei7-64"
 TMPDIR = "${TOPDIR}/master-acrn-sos"
-DISTRO = "acrn-demo-sos"
+DISTRO = "acrn-demo-service-vm"
 
 CONTAINER_PACKAGE_DEPLOY_DIR = "${TOPDIR}/master-acrn-uos/deploy/images/${MACHINE}"
 CONTAINER_PACKAGE_MC = "uos"
 
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-sos"
-PREFERRED_VERSION_linux-intel-acrn-sos = "5.10%"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-service-vm"
+PREFERRED_VERSION_linux-intel-acrn-service-vm = "5.10%"
 
 IMAGE_CLASSES += "dm-verity-img"
 
@@ -47,12 +47,12 @@ KERNEL_IMAGE_vm0 = "${KERNEL_IMAGETYPE}-${INITRAMFS_LINK_NAME}.bin"
 KERNEL_MOD_vm0 = "Linux_bzImage"
 ```
 
-conf/local.conf should enable multiconfig build for sos
+conf/local.conf should enable multiconfig build for Service VM (sos)
 
 ```
 BBMULTICONFIG = "sos"
 
-# Or, to buid uos too
+# Or, to buid User VM too
 BBMULTICONFIG = "sos uos"
 ```
 
