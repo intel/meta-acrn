@@ -1,17 +1,17 @@
-SUMMARY = "Linux Preempt RT Kernel with ACRN enabled (UOS)"
+SUMMARY = "Linux Preempt RT Kernel with ACRN enabled (User VM)"
 
 require recipes-kernel/linux/linux-intel.inc
 
 # PREFERRED_PROVIDER for virtual/kernel. This avoids errors when trying
 # to build multiple virtual/kernel providers.
 python () {
-    if d.getVar("KERNEL_PACKAGE_NAME", True) == "kernel" and d.getVar("PREFERRED_PROVIDER_virtual/kernel") != "linux-intel-rt-acrn-uos":
-        raise bb.parse.SkipPackage("Set PREFERRED_PROVIDER_virtual/kernel to linux-intel-rt-acrn-uos to enable it")
+    if d.getVar("KERNEL_PACKAGE_NAME", True) == "kernel" and d.getVar("PREFERRED_PROVIDER_virtual/kernel") != "linux-intel-acrn-rtvm":
+        raise bb.parse.SkipPackage("Set PREFERRED_PROVIDER_virtual/kernel to linux-intel-acrn-rtvm to enable it")
 }
 
 SRC_URI:append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
                     file://0001-regulator-consumer-Add-missing-stubs-to-regulator-co.patch \
-                    file://uos_rt_5.10.scc \
+                    file://user-rtvm_5.10.scc \
 "
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
@@ -25,7 +25,7 @@ LINUX_VERSION ?= "5.10.115"
 SRCREV_machine ?= "319577bba3954e68f22144f28d3e6191c2d953d7"
 SRCREV_meta ?= "6337d56f23d18e5680493dadcb52899d5e6a7c09"
 
-LINUX_VERSION_EXTENSION = "-linux-intel-preempt-rt-acrn-uos"
+LINUX_VERSION_EXTENSION = "-linux-intel-acrn-preempt-rtvm"
 
 LINUX_KERNEL_TYPE = "preempt-rt"
 

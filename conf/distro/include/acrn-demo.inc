@@ -23,6 +23,6 @@ INHERIT += "uninative"
 TCLIBCAPPEND = ""
 
 # Set the Sato network manager to be systemd, instead of connman.
-# The SOS needs to use networkd to get the bridges working correctly, and
+# The Service VM needs to use networkd to get the bridges working correctly, and
 # networkd makes guest networking trivial.
 NETWORK_MANAGER = "systemd"
