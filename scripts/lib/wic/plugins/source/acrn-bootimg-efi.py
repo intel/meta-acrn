@@ -141,9 +141,8 @@ class BootimgEFIPlugin(SourcePlugin):
 
         logger.debug("Writing grubefi config %s/hdd/boot/EFI/BOOT/grub.cfg",
                      cr_workdir)
-        cfg = open("%s/hdd/boot/EFI/BOOT/grub.cfg" % cr_workdir, "w")
-        cfg.write(grubefi_conf)
-        cfg.close()
+        with open("%s/hdd/boot/EFI/BOOT/grub.cfg" % cr_workdir, "w") as cfg:
+            cfg.write(grubefi_conf)
 
     @classmethod
     def do_configure_partition(cls, part, source_params, creator, cr_workdir,
