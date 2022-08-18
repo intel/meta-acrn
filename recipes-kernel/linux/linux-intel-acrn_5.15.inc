@@ -1,0 +1,29 @@
+SUMMARY = "Linux Kernel 5.15 with ACRN enabled"
+
+require recipes-kernel/linux/linux-intel.inc
+
+SRC_URI:append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
+                 "
+
+LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
+
+KBRANCH = "5.15/linux"
+KMETA_BRANCH = "yocto-5.15"
+
+LINUX_VERSION ?= "5.15.49"
+SRCREV_machine ?= "db21c2106e1609b1305b5190d6b54e5c473a4570"
+SRCREV_meta ?= "d9823ca27110545274f77718aefbd809c29947e6"
+
+DEPENDS += "elfutils-native openssl-native util-linux-native"
+
+KERNEL_FEATURES:append = " features/netfilter/netfilter.scc \
+                          features/security/security.scc  \
+                          cfg/hv-guest.scc \
+                          cfg/paravirt_kvm.scc \
+                          features/net/stmicro/stmmac.cfg \
+"
+# Following commit is backported from mainline 5.19 to linux-intel 5.15 kernel
+# Commit: https://github.com/torvalds/linux/commit/8b766b0f8eece55155146f7628610ce54a065e0f
+# In which 'CONFIG_FB_BOOT_VESA_SUPPORT' config option is dropped.
+# This causes warning during config audit. So suppress the harmless warning for now.
+KCONF_BSP_AUDIT_LEVEL = "0"
