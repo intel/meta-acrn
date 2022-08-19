@@ -3,16 +3,16 @@ SUMMARY = "Linux Kernel 5.10 with ACRN enabled"
 require recipes-kernel/linux/linux-intel.inc
 
 SRC_URI:append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
-                    file://0001-regulator-consumer-Add-missing-stubs-to-regulator-co.patch"
+                 "
 
 LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 
 KBRANCH = "5.10/yocto"
 KMETA_BRANCH = "yocto-5.10"
 
-LINUX_VERSION ?= "5.10.115"
-SRCREV_machine ?= "6d2c1213aa7e48623e06ec2243a390bfb2f86ecd"
-SRCREV_meta ?= "6337d56f23d18e5680493dadcb52899d5e6a7c09"
+LINUX_VERSION ?= "5.10.131"
+SRCREV_machine ?= "2844bafc86f40a61268f2e4aa71e11bbf181bb2f"
+SRCREV_meta ?= "443f1c2f821e55dd96d115bb09e89f8f106b63d4"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
