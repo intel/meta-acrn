@@ -1,6 +1,6 @@
-From 1eff8a425f74542cbc8907cc774905ea398a9c74 Mon Sep 17 00:00:00 2001
+From 251eb0980908fec0afc9dfb9019896e4e598449f Mon Sep 17 00:00:00 2001
 From: Naveen Saini <naveen.kumar.saini@intel.com>
-Date: Mon, 4 Apr 2022 13:42:47 +0800
+Date: Thu, 14 Jul 2022 18:05:21 +0800
 Subject: [PATCH] Makefile: allow to pass compiler and linker flags
 
 Upstream-Status: Inappropriate [oe-specific]
@@ -11,7 +11,7 @@ Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/devicemodel/Makefile b/devicemodel/Makefile
-index 205ed10bc..bfd9dd7c3 100644
+index 1b0b27384..936daf722 100644
 --- a/devicemodel/Makefile
 +++ b/devicemodel/Makefile
 @@ -44,6 +44,7 @@ CFLAGS += -I$(SYSROOT)/usr/include/glib-2.0
@@ -20,9 +20,9 @@ index 205ed10bc..bfd9dd7c3 100644
  CFLAGS += -I$(SYSROOT)/usr/include/GLES2
 +CFLAGS += -I$(COPTS)
  
- ifneq (, $(DM_ASL_COMPILER))
- CFLAGS += -DASL_COMPILER=\"$(DM_ASL_COMPILER)\"
-@@ -78,6 +79,7 @@ LDFLAGS += -Wl,-z,noexecstack
+ CFLAGS += -DIASL_MIN_VER=\"$(IASL_MIN_VER)\"
+ 
+@@ -76,6 +77,7 @@ LDFLAGS += -Wl,-z,noexecstack
  LDFLAGS += -Wl,-z,relro,-z,now
  LDFLAGS += -pie
  LDFLAGS += -L$(TOOLS_OUT)/services
@@ -31,5 +31,5 @@ index 205ed10bc..bfd9dd7c3 100644
  LIBS = -lrt
  LIBS += -lpthread
 -- 
-2.17.1
+2.25.1
 
