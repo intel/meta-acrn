@@ -13,6 +13,8 @@ do_compile() {
 do_install() {
 	install -d ${D}${bindir}
 	install -m 0755 ${B}/life_mngr ${D}${bindir}
+	install -d ${D}${sysconfdir}/life_mngr
+	install -m 0644 ${B}/life_mngr.conf ${D}${sysconfdir}/life_mngr/
 	install -d ${D}${systemd_unitdir}/system/
 	install -m 0644 ${B}/life_mngr.service ${D}${systemd_unitdir}/system/
 }
