@@ -14,7 +14,7 @@ inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi python3-defusedxml-native python3-elementpath-native"
+DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi python3-defusedxml-native python3-elementpath-native python3-xmlschema-native"
 
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
@@ -79,7 +79,7 @@ do_deploy() {
 INSANE_SKIP:${PN} += "arch already-stripped"
 
 do_compile:class-native() {
-	oe_runmake -C hypervisor pre_build
+	oe_runmake -C hypervisor
 }
 
 do_install:class-native(){
