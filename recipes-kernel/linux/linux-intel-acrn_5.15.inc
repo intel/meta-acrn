@@ -10,9 +10,9 @@ LIC_FILES_CHKSUM = "file://COPYING;md5=6bc538ed5bd9a7fc9398086aedcd7e46"
 KBRANCH = "5.15/linux"
 KMETA_BRANCH = "yocto-5.15"
 
-LINUX_VERSION ?= "5.15.49"
-SRCREV_machine ?= "db21c2106e1609b1305b5190d6b54e5c473a4570"
-SRCREV_meta ?= "d9823ca27110545274f77718aefbd809c29947e6"
+LINUX_VERSION ?= "5.15.71"
+SRCREV_machine ?= "d47a37762969ea0d354a73e568a116eed6530d3c"
+SRCREV_meta ?= "7b8c11231180c913824a3ca227f111ce1a7efb1d"
 
 DEPENDS += "elfutils-native openssl-native util-linux-native"
 
