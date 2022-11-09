@@ -1,60 +1,235 @@
 #!/bin/bash
+#
+# Copyright (C) 2022 Intel Corporation.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
 
-function launch_UOS()
-{
-mac=$(cat /sys/class/net/e*/address)
-vm_name=vm$1
-mac_seed=${mac:9:8}-${vm_name}
+# Launch script for VM name: POST_STD_VM2
 
-#check if the vm is running or not
-vm_ps=$(pgrep -a -f acrn-dm)
-result=$(echo $vm_ps | grep -w "${vm_name}")
-if [[ "$result" != "" ]]; then
-  echo "$vm_name is running, can't create twice!"
-  exit
-fi
+# Helper functions
 
-#logger_setting, format: logger_name,level; like following
-logger_setting="--logger_setting console,level=4;kmsg,level=3;disk,level=5"
-
-#for memsize setting
-mem_size=2048M
-
-gpudevice=`cat /sys/bus/pci/devices/0000:00:02.0/device`
-
-echo "8086 $gpudevice" > /sys/bus/pci/drivers/pci-stub/new_id
-echo "0000:00:02.0" > /sys/bus/pci/devices/0000:00:02.0/driver/unbind
-echo "0000:00:02.0" > /sys/bus/pci/drivers/pci-stub/bind
-
-acrn-dm -A -m $mem_size -s 0:0,hostbridge \
-  -s 2,passthru,0/2/0,gpu \
-  -s 5,virtio-console,@stdio:stdio_port \
-  -s 6,virtio-hyper_dmabuf \
-  -s 3,virtio-blk,/var/lib/machines/core-image-weston.wic \
-  -s 4,virtio-net,tap0 \
-  -s 7,virtio-rnd \
-  --ovmf /usr/share/acrn/bios/OVMF.fd \
-  --cpu_affinity 0,1 \
-  $logger_setting \
-  --mac_seed $mac_seed \
-  $vm_name
+function probe_modules() {
+    modprobe pci_stub
 }
 
-# offline SOS CPUs except BSP before launch UOS
-for i in `ls -d /sys/devices/system/cpu/cpu[1-99]`; do
-        online=`cat $i/online`
-        idx=`echo $i | tr -cd "[1-99]"`
-        echo cpu$idx online=$online
-        if [ "$online" = "1" ]; then
-                echo 0 > $i/online
-		# during boot time, cpu hotplug may be disabled by pci_device_probe during a pci module insmod
-		while [ "$online" = "1" ]; do
-			sleep 1
-			echo 0 > $i/online
-			online=`cat $i/online`
-		done
-                echo $idx > /sys/devices/virtual/misc/acrn_hsm/remove_cpu
+function offline_cpus() {
+    # Each parameter of this function is considered the APIC ID (as is reported in /proc/cpuinfo, in decimal) of a CPU
+    # assigned to a post-launched RTVM.
+    for i in $*; do
+        processor_id=$(grep -B 15 "apicid.*: ${i}$" /proc/cpuinfo | grep "^processor" | head -n 1 | cut -d ' ' -f 2)
+        if [ -z ${processor_id} ]; then
+            continue
         fi
-done
+        cpu_path="/sys/devices/system/cpu/cpu${processor_id}"
+        if [ -f ${cpu_path}/online ]; then
+            online=`cat ${cpu_path}/online`
+            echo cpu${processor_id} online=${online} >> /dev/stderr
+            if [ "${online}" = "1" ] && [ "${processor_id}" != "0" ]; then
+                echo 0 > ${cpu_path}/online
+                online=`cat ${cpu_path}/online`
+                # during boot time, cpu hotplug may be disabled by pci_device_probe during a pci module insmod
+                while [ "${online}" = "1" ]; do
+                    sleep 1
+                    echo 0 > ${cpu_path}/online
+                    online=`cat ${cpu_path}/online`
+                done
+                echo ${processor_id} > /sys/devices/virtual/misc/acrn_hsm/remove_cpu
+            fi
+        fi
+    done
+}
 
-launch_UOS 1 "64 448 8"
+function unbind_device() {
+    physical_bdf=$1
+
+    vendor_id=$(cat /sys/bus/pci/devices/${physical_bdf}/vendor)
+    device_id=$(cat /sys/bus/pci/devices/${physical_bdf}/device)
+
+    echo $(printf "%04x %04x" ${vendor_id} ${device_id}) > /sys/bus/pci/drivers/pci-stub/new_id
+    echo ${physical_bdf} > /sys/bus/pci/devices/${physical_bdf}/driver/unbind
+    echo ${physical_bdf} > /sys/bus/pci/drivers/pci-stub/bind
+}
+
+function create_tap() {
+    # create a unique tap device for each VM
+    tap=$1
+    tap_exist=$(ip a show dev $tap)
+    if [ "$tap_exist"x != "x" ]; then
+        echo "$tap TAP device already available, reusing it."
+    else
+        ip tuntap add dev $tap mode tap
+    fi
+
+    # if acrn-br0 exists, add VM's unique tap device under it
+    br_exist=$(ip a | grep acrn-br0 | awk '{print $1}')
+    if [ "$br_exist"x != "x" -a "$tap_exist"x = "x" ]; then
+        echo "acrn-br0 bridge already exists, adding new $tap TAP device to it..."
+        ip link set "$tap" master acrn-br0
+        ip link set dev "$tap" down
+        ip link set dev "$tap" up
+    fi
+}
+
+function mount_partition() {
+    partition=$1
+
+    tmpdir=`mktemp -d`
+    mount ${partition} ${tmpdir}
+    echo ${tmpdir}
+}
+
+function unmount_partition() {
+    tmpdir=$1
+
+    umount ${tmpdir}
+    rmdir ${tmpdir}
+}
+
+# Generators of device model parameters
+
+function add_cpus() {
+    # Each parameter of this function is considered the processor ID (as is reported in /proc/cpuinfo) of a CPU assigned
+    # to a post-launched RTVM.
+
+    if [ "${vm_type}" = "RTVM" ] || [ "${scheduler}" = "SCHED_NOOP" ]; then
+        offline_cpus $*
+    fi
+
+    cpu_list=$(local IFS=, ; echo "$*")
+    echo -n "--cpu_affinity ${cpu_list}"
+}
+
+function add_interrupt_storm_monitor() {
+    threshold_per_sec=$1
+    probe_period_in_sec=$2
+    inject_delay_in_ms=$3
+    delay_duration_in_ms=$4
+
+    echo -n "--intr_monitor ${threshold_per_sec},${probe_period_in_sec},${inject_delay_in_ms},${delay_duration_in_ms}"
+}
+
+function add_logger_settings() {
+    loggers=()
+
+    for conf in $*; do
+        logger=${conf%=*}
+        level=${conf#*=}
+        loggers+=("${logger},level=${level}")
+    done
+
+    cmd_param=$(local IFS=';' ; echo "${loggers[*]}")
+    echo -n "--logger_setting ${cmd_param}"
+}
+
+function add_virtual_device() {
+    slot=$1
+    kind=$2
+    options=$3
+
+    if [ "${kind}" = "virtio-net" ]; then
+        # Create the tap device
+        if [[ ${options} =~ tap=([^,]+) ]]; then
+            tap_conf="${BASH_REMATCH[1]}"
+            create_tap "${tap_conf}" >> /dev/stderr
+        fi
+    fi
+
+    if [ "${kind}" = "virtio-input" ]; then
+        options=$*
+        if [[ "${options}" =~ id:([a-zA-Z0-9_\-]*) ]]; then
+            unique_identifier="${BASH_REMATCH[1]}"
+            options=${options/",id:${unique_identifier}"/''}
+        fi
+
+        if [[ "${options}" =~ (Device name: )(.*),( Device physical path: )(.*) ]]; then
+            device_name="${BASH_REMATCH[2]}"
+            phys_name="${BASH_REMATCH[4]}"
+            local IFS=$'\n'
+            device_name_paths=$(grep -r "${device_name}" /sys/class/input/event*/device/name)
+            phys_paths=$(grep -r "${phys_name}" /sys/class/input/event*/device/phys)
+        fi
+
+        if [ -n "${device_name_paths}" ] && [ -n "${phys_paths}" ]; then
+            for device_path in ${device_name_paths}; do
+                for phys_path in ${phys_paths}; do
+                    if [ "${device_path%/device*}" = "${phys_path%/device*}" ]; then
+                        event_path=${device_path}
+                        if [[ ${event_path} =~ event([0-9]+) ]]; then
+                            event_num="${BASH_REMATCH[1]}"
+                            options="/dev/input/event${event_num}"
+                            break
+                        fi
+                    fi
+                done
+            done
+        fi
+
+        if [[ ${options} =~ event([0-9]+) ]]; then
+            echo "${options} input device path is available in the service vm." >> /dev/stderr
+        else
+            echo "${options} input device path is not found in the service vm." >> /dev/stderr
+            return
+        fi
+
+        if [ -n "${options}" ] && [ -n "${unique_identifier}" ]; then
+            options="${options},${unique_identifier}"
+        fi
+
+    fi
+
+    echo -n "-s ${slot},${kind}"
+    if [ -n "${options}" ]; then
+        echo -n ",${options}"
+    fi
+}
+
+function add_passthrough_device() {
+    slot=$1
+    physical_bdf=$2
+    options=$3
+
+    unbind_device ${physical_bdf%,*}
+
+    # bus, device and function as decimal integers
+    bus_temp=${physical_bdf#*:};     bus=$((16#${bus_temp%:*}))
+    dev_temp=${physical_bdf##*:};    dev=$((16#${dev_temp%.*}))
+    fun=$((16#${physical_bdf#*.}))
+
+    echo -n "-s "
+    printf '%s,passthru,%x/%x/%x' ${slot} ${bus} ${dev} ${fun}
+    if [ -n "${options}" ]; then
+        echo -n ",${options}"
+    fi
+}
+
+###
+# The followings are generated by launch_cfg_gen.py
+###
+
+# Defining variables that describe VM types
+vm_type='STANDARD_VM'
+scheduler='SCHED_BVT'
+
+# Initializing
+probe_modules
+mac=$(cat /sys/class/net/e*/address)
+
+# Invoking ACRN device model
+dm_params=(
+    `add_cpus                                 0 2`
+    -m 512M
+    --ovmf /usr/share/acrn/bios/OVMF.fd
+    `add_virtual_device                       1:0 lpc`
+    `add_virtual_device                       0:0 hostbridge`
+    `add_virtual_device                       3 virtio-console @stdio:stdio_port`
+    `add_virtual_device                       4 virtio-net tap=YaaG3,mac_seed=${mac:0:17}-POST_STD_VM2`
+    `add_virtual_device                       5 virtio-blk /var/lib/machines/core-image-weston.wic`
+    `add_logger_settings                      console=4 kmsg=3 disk=5`
+    POST_STD_VM2
+)
+
+echo "Launch device model with parameters: ${dm_params[@]}"
+acrn-dm "${dm_params[@]}"
+
+# Deinitializing
