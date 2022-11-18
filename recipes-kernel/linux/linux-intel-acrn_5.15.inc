@@ -2,6 +2,8 @@ SUMMARY = "Linux Kernel 5.15 with ACRN enabled"
 
 require recipes-kernel/linux/linux-intel.inc
 
+SRC_URI:prepend = "git://github.com/intel/linux-intel-lts.git;protocol=https;name=machine;branch=${KBRANCH}; \
+                    "
 SRC_URI:append = "  file://0001-menuconfig-mconf-cfg-Allow-specification-of-ncurses-.patch \
                  "
 
