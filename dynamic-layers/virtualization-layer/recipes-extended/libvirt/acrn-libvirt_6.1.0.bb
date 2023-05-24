@@ -490,3 +490,10 @@ CVE_CHECK_IGNORE += "CVE-2014-8135 CVE-2014-8136 CVE-2015-5313 CVE-2017-1000256 
 #and
 #https://libvirt.org/git/?p=libvirt.git;a=commit;h=2a07c990bd9143d7a0fe8d1b6b7c763c52185240
 #Ref: https://security.libvirt.org/2019/0001.html
+
+# Currently the libvirt-python debug libraries contain buildpaths
+INSANE_SKIP:${PN}-dbg += "buildpaths"
+# File /usr/lib/libvirt.so.0.6001.0
+INSANE_SKIP:${PN} += "buildpaths"
+INSANE_SKIP:${PN}-python += "buildpaths"
+INSANE_SKIP:${PN}-ptest += "buildpaths"
