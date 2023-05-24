@@ -47,6 +47,14 @@ do_install[dirs] = "${S}"
 # Fixed in v1.2 and onward
 CVE_CHECK_IGNORE += "CVE-2019-18844"
 
+# Being built in debug mode to enable ACRN console, so
+# skip buildpaths check for dbg pkgs
+INSANE_SKIP:${PN}-dbg += "buildpaths"
+
+# File /usr/lib/acrn/acrn.nuc11tnbi5.shared.map [buildpaths]
+# Skip buildpath check for linker map file also
+INSANE_SKIP:${PN} += "buildpaths"
+
 copy_sources() {
     cp -r -f ${WORKDIR}/offline-patches/boards/* ${S}/misc/config_tools/data/
 }
