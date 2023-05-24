@@ -3,5 +3,4 @@ define KFEATURE_COMPATIBILITY board
 
 kconf non-hardware acrn-common.cfg
 kconf non-hardware service-vm.cfg
-kconf non-hardware service-vm_5.10.cfg
 kconf non-hardware service-vm_5.15.cfg
