@@ -9,6 +9,7 @@ EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} SCENARIO=${ACRN_SCENARIO}"
 EXTRA_OEMAKE += "EFI_OBJDIR=${B}/misc/efi-stub"
 
 SRC_URI:append:class-target = " file://hypervisor-dont-build-pre_build.patch"
+SRC_URI:append = " file://0001-hypervisor-Makefile-ignore-warning-due-to-gcc-13.patch"
 
 inherit python3native deploy
 

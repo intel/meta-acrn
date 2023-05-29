@@ -1,0 +1,45 @@
+From 42691b87fc1ea8c375b15d4ae67a9ecc661c319b Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Mon, 29 May 2023 16:45:41 +0800
+Subject: [PATCH] hypervisor/Makefile: ignore warning due to gcc-13
+
+Error:
+| In function 'partition_epc',
+|     inlined from 'init_sgx' at arch/x86/sgx.c:116:19:
+|   [-Werror=maybe-uninitialized]
+|    86 |                         vm_epc_maps[mid][vm_id].gpa = vm_config->epc.base + vm_config->epc.size - vm_request_size;
+|       |                                                                             ~~~~~~~~~~~~~~^~~~~
+| arch/x86/sgx.c: In function 'init_sgx':
+| arch/x86/sgx.c:61:32: note: 'vm_config' was declared here
+|    61 |         struct acrn_vm_config *vm_config;
+|       |                                ^~~~~~~~~
+| cc1: all warnings being treated as errors
+
+Issue raised. https://github.com/projectacrn/acrn-hypervisor/issues/8413
+
+Ignore fow now, until fixed upstream.
+
+Upstream-Status: Inappropriate
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ hypervisor/Makefile | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index bd45b539f..eb590c350 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -67,6 +67,9 @@ CFLAGS += -Werror
+ 
+ # ACRN depends on zero length array. Silence the gcc if Warrary-bounds is default option
+ CFLAGS += -Wno-array-bounds
++
++# arch/x86/sgx.c:86:91: error: 'vm_config' may be used uninitialized
++CFLAGS += -Wno-maybe-uninitialized
+ CFLAGS += -O2
+ ifeq (y, $(CONFIG_RELOC))
+ CFLAGS += -fpie
+-- 
+2.34.1
+
