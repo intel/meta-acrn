@@ -15,9 +15,9 @@ SRC_URI:append = "  file://user-rtvm_5.15.scc \
 KBRANCH = "5.15/preempt-rt"
 KMETA_BRANCH = "yocto-5.15"
 
-LINUX_VERSION ?= "5.15.71"
-SRCREV_machine ?= "e29405e36bfbda7ace776548de802b76f61b80d9"
-SRCREV_meta ?= "7b8c11231180c913824a3ca227f111ce1a7efb1d"
+LINUX_VERSION ?= "5.15.113"
+SRCREV_machine ?= "aba6427c7d2c49b8dcfad7d7ec57d0bba719bfb9"
+SRCREV_meta ?= "957ddf5f9d4bf5791e88a46ce9ec4352a6d0a171"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-acrn-preempt-rtvm"
 

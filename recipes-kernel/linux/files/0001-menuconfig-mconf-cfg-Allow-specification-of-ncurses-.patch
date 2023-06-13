@@ -1,6 +1,6 @@
-From bebd63730a433ba62549a80114a9851328aa8897 Mon Sep 17 00:00:00 2001
+From 1403f21678da77f6662f26e16b6bd377e167d660 Mon Sep 17 00:00:00 2001
 From: Bruce Ashfield <bruce.ashfield@windriver.com>
-Date: Mon, 2 Jul 2018 23:10:28 -0400
+Date: Tue, 13 Jun 2023 13:58:32 +0800
 Subject: [PATCH] menuconfig,mconf-cfg: Allow specification of ncurses location
 
 In some cross build environments such as the Yocto Project build
@@ -21,14 +21,14 @@ cc: Michal Marek <mmarek@suse.cz>
 cc: linux-kbuild@vger.kernel.org
 Signed-off-by: Bruce Ashfield <bruce.ashfield@windriver.com>
 ---
- scripts/kconfig/mconf-cfg.sh | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ scripts/kconfig/mconf-cfg.sh | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
 diff --git a/scripts/kconfig/mconf-cfg.sh b/scripts/kconfig/mconf-cfg.sh
-index c812872d7f9d..42d20819025c 100755
+index 025b565e0b7c..89a2c6b057ad 100755
 --- a/scripts/kconfig/mconf-cfg.sh
 +++ b/scripts/kconfig/mconf-cfg.sh
-@@ -4,6 +4,14 @@
+@@ -4,6 +4,15 @@
  PKG="ncursesw"
  PKG2="ncurses"
  
@@ -40,9 +40,10 @@ index c812872d7f9d..42d20819025c 100755
 +       exit 0
 +fi
 +
- if [ -n "$(command -v pkg-config)" ]; then
- 	if pkg-config --exists $PKG; then
- 		echo cflags=\"$(pkg-config --cflags $PKG)\"
++
+ if [ -n "$(command -v ${HOSTPKG_CONFIG})" ]; then
+ 	if ${HOSTPKG_CONFIG} --exists $PKG; then
+ 		echo cflags=\"$(${HOSTPKG_CONFIG} --cflags $PKG)\"
 -- 
-2.17.1
+2.34.1
 
