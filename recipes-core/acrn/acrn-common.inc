@@ -4,14 +4,12 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=ba07c9571f2096ec6349ef0167ec5e60"
 
 SRC_URI = "git://github.com/projectacrn/acrn-hypervisor.git;protocol=https;branch=${SRCBRANCH}; \
-            file://0001-Makefile-disable-Werror-option-for-now.patch \
-"
-
+        "
 # Snapshot tags are of the format:
 # acrn-<year>w<week>.<day>-<timestamp><pass|fail>
-PV = "3.1"
-SRCREV = "7fad37e0259af8c13779f33b24cadaf78f043f2b"
-SRCBRANCH = "release_3.1"
+PV = "3.2"
+SRCREV = "20695be8a493d01f8d9881678703d22cd5d137ce"
+SRCBRANCH = "release_3.2"
 
 UPSTREAM_CHECK_GITTAGREGEX = "^v(?P<pver>\d+(\.\d+)+)$"
 

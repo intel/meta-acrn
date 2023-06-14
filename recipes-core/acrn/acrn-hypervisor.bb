@@ -9,13 +9,12 @@ EXTRA_OEMAKE += "BOARD=${ACRN_BOARD} SCENARIO=${ACRN_SCENARIO}"
 EXTRA_OEMAKE += "EFI_OBJDIR=${B}/misc/efi-stub"
 
 SRC_URI:append:class-target = " file://hypervisor-dont-build-pre_build.patch"
-SRC_URI:append = " file://0001-hypervisor-Makefile-ignore-warning-due-to-gcc-13.patch"
 
 inherit python3native deploy
 
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi python3-defusedxml-native python3-elementpath-native"
+DEPENDS += "acrn-hypervisor-native acpica-native python3-lxml-native gnu-efi python3-defusedxml-native python3-elementpath-native python3-xmlschema-native"
 
 # parallel build could face build failure in case of config-tool method:
 #    | .config does not exist and no defconfig available for BOARD...
@@ -80,7 +79,7 @@ do_deploy() {
 INSANE_SKIP:${PN} += "arch already-stripped"
 
 do_compile:class-native() {
-	oe_runmake -C hypervisor pre_build
+	oe_runmake -C hypervisor ${B}/hypervisor/hv_prebuild_check.out
 }
 
 do_install:class-native(){
