@@ -2,6 +2,9 @@ SUMMARY = "Linux Kernel 5.15 with ACRN enabled"
 
 require linux-intel-acrn.inc
 
+SRC_URI:prepend = "git://github.com/intel/linux-intel-lts.git;protocol=https;name=machine;branch=${KBRANCH}; \
+                    "
+
 KBRANCH = "5.15/linux"
 KMETA_BRANCH = "yocto-5.15"
 

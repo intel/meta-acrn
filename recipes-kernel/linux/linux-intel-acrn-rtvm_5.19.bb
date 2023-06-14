@@ -2,7 +2,7 @@ SUMMARY = "Linux Preempt RT Kernel with ACRN enabled (User VM)"
 
 require linux-intel-acrn.inc
 
-SRC_URI:prepend = "git://github.com/intel/linux-intel-lts.git;protocol=https;name=machine;branch=${KBRANCH}; \
+SRC_URI:prepend = "git://github.com/intel/mainline-tracking.git;protocol=https;name=machine;nobranch=1; \
                     "
 
 # PREFERRED_PROVIDER for virtual/kernel. This avoids errors when trying
@@ -15,13 +15,12 @@ python () {
 SRC_URI:append = "  file://user-rtvm_5.15.scc \
                 "
 
-KBRANCH = "5.15/preempt-rt"
-KMETA_BRANCH = "yocto-5.15"
+KMETA_BRANCH = "yocto-5.19"
 
-LINUX_VERSION ?= "5.15.113"
-SRCREV_machine ?= "aba6427c7d2c49b8dcfad7d7ec57d0bba719bfb9"
-SRCREV_meta ?= "957ddf5f9d4bf5791e88a46ce9ec4352a6d0a171"
+LINUX_VERSION ?= "5.19.0"
+SRCREV_machine ?= "3abe09b48ca3c13b50c78d3b7b0d7ce668211a70"
+SRCREV_meta ?= "f5d4c109d6de04005def04c3a06f053ae0c397ad"
 
-LINUX_VERSION_EXTENSION = "-linux-intel-acrn-preempt-rtvm"
+LINUX_VERSION_EXTENSION = "-mainline-tracking-acrn-preempt-rtvm"
 
 LINUX_KERNEL_TYPE = "preempt-rt"
