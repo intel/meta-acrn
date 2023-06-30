@@ -22,5 +22,5 @@ do_install[mcdepends] += "multiconfig:${ACRN_CURRENT_MC}:${CONTAINER_PACKAGE_MC}
 
 do_install () {
 	install -d ${D}${containerdir}
-	install ${CONTAINER_PACKAGE_DEPLOY_DIR}/${IMAGE_NAME}-${MACHINE}.wic ${D}${containerdir}/${IMAGE_NAME}.wic
+	install ${CONTAINER_PACKAGE_DEPLOY_DIR}/${IMAGE_NAME}-${MACHINE}.rootfs.wic ${D}${containerdir}/${IMAGE_NAME}.wic
 }
