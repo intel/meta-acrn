@@ -1,6 +1,6 @@
 DISTRO = "acrn-demo"
 DISTRO_NAME = "ACRN Demo"
-DISTRO_VERSION = "4.1+snapshot-${DATE}"
+DISTRO_VERSION = "4.2"
 
 DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
                    systemd efi largefile opengl ptest multiarch \
