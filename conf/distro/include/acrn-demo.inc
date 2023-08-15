@@ -4,7 +4,8 @@ DISTRO_VERSION = "4.1+snapshot-${DATE}"
 
 DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
                    systemd efi largefile opengl ptest multiarch \
-                   wayland vulkan pulseaudio bluez5 gobject-introspection-data"
+                   wayland vulkan pulseaudio bluez5 gobject-introspection-data \
+                   pam usrmerge"
 
 VIRTUAL-RUNTIME_init_manager = "systemd"
 DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
