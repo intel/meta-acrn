@@ -48,6 +48,7 @@ SRCBRANCH = "dev-acrn-v6.1.0"
 # with acrn v6.1.0
 SRCREV_libvirt = "666d8e6f0aa9b89a8594edef3bd5b466fa3ca300"
 SRCREV_keycodemapdb = "27acf0ef828bf719b2053ba398b195829413dbdd"
+SRCREV_FORMAT = "libvirt_keycodemapdb"
 
 inherit autotools gettext update-rc.d pkgconfig ptest systemd useradd perlnative
 USERADD_PACKAGES = "${PN}"
