@@ -8,5 +8,5 @@ SRC_URI:prepend = "git://github.com/intel/mainline-tracking.git;protocol=https;n
 KMETA_BRANCH = "yocto-5.19"
 
 LINUX_VERSION ?= "5.19.0"
-SRCREV_machine ?= "a436283ed605fe33d4a6ba58470af8e01dd8b0d0"
+SRCREV_machine ?= "e999ad3f8ef0a7bcc2ce051cd28085280ce9a9c0"
 SRCREV_meta ?= "f5d4c109d6de04005def04c3a06f053ae0c397ad"
