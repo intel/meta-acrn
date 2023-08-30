@@ -18,7 +18,7 @@ SRC_URI:append = "  file://user-rtvm_5.15.scc \
 KMETA_BRANCH = "yocto-5.19"
 
 LINUX_VERSION ?= "5.19.0"
-SRCREV_machine ?= "3abe09b48ca3c13b50c78d3b7b0d7ce668211a70"
+SRCREV_machine ?= "200a2dbc2fdf6100f19a59c2d92174d604cf0812"
 SRCREV_meta ?= "f5d4c109d6de04005def04c3a06f053ae0c397ad"
 
 LINUX_VERSION_EXTENSION = "-mainline-tracking-acrn-preempt-rtvm"
