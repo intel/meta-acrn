@@ -50,12 +50,11 @@ This layer provides ACRN Hypvervisor integration with Yocto Project.
 ## Supported Hardware
 
 ACRN is supported on the following Intel platforms:
-* Kaby Lake
-* Whiskey Lake
 * Tiger Lake
-* Elkhart Lake
+* Alder Lake
+* Raptor Lake
 
-About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/2.7/reference/hardware.html)
+About minimum system requirements and limitations, please find more information at [Supported Hardware](https://projectacrn.github.io/3.2/reference/hardware.html)
 
 
 ## Set Up Build Host
@@ -63,20 +62,23 @@ About minimum system requirements and limitations, please find more information 
 ### Compatible Linux Distribution
 Make sure your build host meets the following requirements:
 
-- 50 Gbytes of free disk space
+- 90 Gbytes of free disk space
+- 8 Gbytes of RAM
 - Runs a supported Linux distribution
 
-Currently, the Yocto Project is supported on a number of Linux Distributions. This guide covers only for Ubuntu 18.04 (LTS). To know more about the complete list of    supported Linux distributions, please visit [Supported Linux Distributions](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#detailed-supported-distros)
+Currently, the Yocto Project is supported on a number of Linux Distributions. This guide covers only for Ubuntu 22.04 (LTS). To know more about the complete list of supported Linux distributions, please visit [Supported Linux Distributions](https://www.yoctoproject.org/docs/current/mega-manual/mega-manual.html#detailed-supported-distros)
 - Git 1.8.3.1 or greater
 - tar 1.28 or greater
-- Python 3.5.0 or greater
-- gcc 5.0 or greater
+- Python 3.8.0 or greater
+- gcc 8.0 or greater
+- GNU make 4.0 or greater
 
 ### Required Packages for Build Host
 Install essential host packages on your build host (Ubuntu):
 
 ```
-$ sudo apt-get install gawk wget git-core diffstat unzip texinfo gcc-multilib build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev pylint3 xterm
+$ sudo apt install gawk wget git diffstat unzip texinfo gcc build-essential chrpath socat cpio python3 python3-pip python3-pexpect xz-utils debianutils iputils-ping python3-git python3-jinja2 libegl1-mesa libsdl1.2-dev python3-subunit mesa-common-dev zstd liblz4-tool file locales
+$ sudo locale-gen en_US.UTF-8
 ```
 
 ## Building ACRN Bootable Image
@@ -298,10 +300,10 @@ ACRN_BOARD = "whl-ipc-i5"
 
 Supported Boards:
 - nuc11tnbi5
-- cfl-k700-i7
-- whl-ipc-i5
+- alderlake
+- raptorlake
 
-For More information, Please check [Supported Hardware](https://projectacrn.github.io/2.7/reference/hardware.html)
+For More information, Please check [Supported Hardware](https://projectacrn.github.io/3.2/reference/hardware.html)
 
 #### ACRN SCENARIO Configuration
 
@@ -316,9 +318,9 @@ Supported scenarios:
 - hybrid
 - hybrid_rt
 
-For more information, please check [Generate a Scenario Configuration File and Launch Scripts](https://projectacrn.github.io/2.7/getting-started/getting-started.html#generate-a-scenario-configuration-file-and-launch-scripts)
+For more information, please check [Generate a Scenario Configuration File and Launch Scripts](https://projectacrn.github.io/3.2/getting-started/getting-started.html#generate-a-scenario-configuration-file-and-launch-script)
 
-To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/2.7/tutorials/acrn_configuration_tool.html)
+To customize ACRN Configruation, please check [Introduction to ACRN Configuration](https://projectacrn.github.io/3.2/tutorials/acrn_configuration_tool.html)
 
 #### ACRN BUILD MODE Configuration
 
@@ -338,31 +340,43 @@ There are multiple kernel variant available for both Service VM and User VM.
 
 #### Service VM
 
-To switch to linux-intel-acrn-service-vm LTS 5.10 kernel (default), in 'local.conf' replace with the following lines:
+To switch to linux-intel-acrn-service-vm LTS 5.15 kernel (default), in 'local.conf' replace with the following lines:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-service-vm"
-PREFERRED_VERSION_linux-intel-acrn-service-vm = "5.10%"
+PREFERRED_VERSION_linux-intel-acrn-service-vm = "5.15%"
+```
+
+To switch to linux-intel-acrn-service-vm mainline tracking 5.19 kernel, in 'local.conf' replace with the following lines:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-service-vm"
+PREFERRED_VERSION_linux-intel-acrn-service-vm = "5.19%"
 ```
 
 #### User VM
 
 
-To switch to linux-intel-acrn-user-vm LTS 5.10 kernel (default), in 'conf/multiconfig/uos.conf' replace with following lines:
+To switch to linux-intel-acrn-user-vm LTS 5.15 kernel (default), in 'conf/multiconfig/uos.conf' replace with following lines:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-user-vm"
-PREFERRED_VERSION_linux-intel-acrn-user-vm = "5.10%"
+PREFERRED_VERSION_linux-intel-acrn-user-vm = "5.15%"
 ```
 
-To switch to linux-intel-acrn-rtvm Preempt-RT 5.10 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+To switch to linux-intel-acrn-user-vm mainline tracking 5.19 kernel, in 'conf/multiconfig/uos.conf' replace with following lines:
 ```
-PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-rtvm"
-PREFERRED_VERSION_linux-intel-acrn-rtvm = "5.10%"
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-user-vm"
+PREFERRED_VERSION_linux-intel-acrn-user-vm = "5.19%"
 ```
 
-To switch to linux-intel-acrn-rtvm Preempt-RT 5.4 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+To switch to linux-intel-acrn-rtvm Preempt-RT 5.15 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
 ```
 PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-rtvm"
-PREFERRED_VERSION_linux-intel-acrn-rtvm = "5.4%"
+PREFERRED_VERSION_linux-intel-acrn-rtvm = "5.15%"
+```
+
+To switch to linux-intel-acrn-rtvm Preempt-RT mainline tracking 5.19 kernel, in 'conf/multiconfig/uos.conf' replace with following line:
+```
+PREFERRED_PROVIDER_virtual/kernel = "linux-intel-acrn-rtvm"
+PREFERRED_VERSION_linux-intel-acrn-rtvm = "5.19%"
 ```
 
 ### GRUB Configuration
@@ -405,7 +419,7 @@ Additionaly grub bootloader uses 'search' command at grub menu entry to find the
 
 * ACRN_HV_EFI_CFG wic variable to add ACRN Hyperviosr parameters
 
-For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/2.7/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub),  [acrn-bootconf.bbclass](https://github.com/intel/meta-acrn/blob/master/classes/acrn-bootconf.bbclass) and [ACRN Hypervisor Parameters](https://projectacrn.github.io/latest/user-guides/hv-parameters.html#acrn-hypervisor-parameters)
+For more information, please check [Update Ubuntu GRUB](https://projectacrn.github.io/3.2/tutorials/using_hybrid_mode_on_nuc.html#update-ubuntu-grub),  [acrn-bootconf.bbclass](https://github.com/intel/meta-acrn/blob/master/classes/acrn-bootconf.bbclass) and [ACRN Hypervisor Parameters](https://projectacrn.github.io/latest/user-guides/hv-parameters.html#acrn-hypervisor-parameters)
 
 
 ### Override distro configuration
