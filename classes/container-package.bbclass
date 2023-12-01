@@ -18,7 +18,7 @@ containerdir ?= "${localstatedir}/lib/machines"
 
 # multiconfig build
 ACRN_CURRENT_MC = "${@ "" if (d.getVar("BB_CURRENT_MC") == "default") else d.getVar("BB_CURRENT_MC") }"
-do_install[mcdepends] += "multiconfig:${ACRN_CURRENT_MC}:${CONTAINER_PACKAGE_MC}:${IMAGE_NAME}:do_image_complete"
+do_install[mcdepends] += "mc:${ACRN_CURRENT_MC}:${CONTAINER_PACKAGE_MC}:${IMAGE_NAME}:do_image_complete"
 
 do_install () {
 	install -d ${D}${containerdir}

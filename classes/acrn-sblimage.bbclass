@@ -83,7 +83,7 @@ python() {
 
     for multibootPackageMcDependency in multibootPackageMcDependencyList:
         if multibootPackageMcDependency:
-            mcdependency = "multiconfig:%s:%s" % (currentMultibootConfig, multibootPackageMcDependency)
+            mcdependency = "mc:%s:%s" % (currentMultibootConfig, multibootPackageMcDependency)
             bb.debug(1, "MultibootMcDependency: %s" % (mcdependency))
             d.appendVarFlag('do_acrn_sblimage', 'mcdepends', ' ' + mcdependency)
 
