@@ -16,6 +16,8 @@ check-lxdialog.sh for environments such as the Yocto Project.  Adding
 a CROSS_CURSES_LIB and CROSS_CURSES_INC solves the issue and allowing
 compiling and linking against the right headers and libraries.
 
+Upstream-Status: Submitted
+
 Signed-off-by: Jason Wessel <jason.wessel@windriver.com>
 cc: Michal Marek <mmarek@suse.cz>
 cc: linux-kbuild@vger.kernel.org
