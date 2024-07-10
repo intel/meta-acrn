@@ -225,6 +225,10 @@ dm_params=(
     `add_virtual_device                       3 virtio-console @stdio:stdio_port`
     `add_virtual_device                       4 virtio-net tap=YaaG3,mac_seed=${mac:0:17}-POST_STD_VM2`
     `add_virtual_device                       5 virtio-blk /var/lib/machines/core-image-base.wic`
+    `add_virtual_device                       6 virtio-sound pcmp=C0D0p@1;pcmc=C0D0c@1`
+    `add_virtual_device                       7 virtio-sound pcmp=C1D0p@1;pcmc=C1D0c@1`
+    `add_virtual_device                       8 virtio-sound pcmp=C2D0p@1;pcmc=C2D0c@1`
+    `add_virtual_device                       9 virtio-sound pcmp=C3D0p@1`
     `add_logger_settings                      console=4 kmsg=3 disk=5`
     POST_STD_VM2
 )
