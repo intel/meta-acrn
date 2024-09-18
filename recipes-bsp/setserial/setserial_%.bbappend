@@ -11,8 +11,8 @@ SYSTEMD_SERVICE:${PN} = "setserial.service"
 do_install:append() {
     install -d ${D}${sysconfdir}/
     install -d ${D}${systemd_system_unitdir}
-    install -m 0755 ${WORKDIR}/setserial ${D}${sysconfdir}/
-    install -m 0644 ${WORKDIR}/setserial.service \
+    install -m 0755 ${UNPACKDIR}/setserial ${D}${sysconfdir}/
+    install -m 0644 ${UNPACKDIR}/setserial.service \
                      ${D}${systemd_system_unitdir}/setserial.service
     sed -i \
         -e 's,@SYSCONFDIR@,${sysconfdir},g' \
