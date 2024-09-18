@@ -21,8 +21,6 @@ require conf/distro/include/yocto-uninative.inc
 require conf/distro/include/security_flags.inc
 INHERIT += "uninative"
 
-TCLIBCAPPEND = ""
-
 # Set the Sato network manager to be systemd, instead of connman.
 # The Service VM needs to use networkd to get the bridges working correctly, and
 # networkd makes guest networking trivial.

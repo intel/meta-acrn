@@ -42,3 +42,6 @@ do_install[dirs] = "${S}"
 
 # Fixed in v1.2 and onward
 CVE_CHECK_IGNORE += "CVE-2019-18844 CVE-2021-36145"
+
+# Skip TMPDIR [buildpaths] QA check
+ERROR_QA:remove = "buildpaths"
