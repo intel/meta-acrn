@@ -12,7 +12,7 @@ python () {
         raise bb.parse.SkipPackage("Set PREFERRED_PROVIDER_virtual/kernel to linux-intel-acrn-rtvm to enable it")
 }
 
-SRC_URI:append = "  file://user-rtvm_5.15.scc \
+SRC_URI:append = "  file://user-rtvm_6.1.scc \
                 "
 
 KBRANCH = "6.1/preempt-rt"

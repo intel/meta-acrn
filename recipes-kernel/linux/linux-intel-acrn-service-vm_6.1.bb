@@ -1,6 +1,6 @@
 require linux-intel-acrn_6.1.inc
 
-SRC_URI:append = " file://service-vm_5.15.scc"
+SRC_URI:append = " file://service-vm_6.1.scc"
 
 LINUX_VERSION_EXTENSION = "-linux-intel-acrn-service-vm"
 
@@ -8,7 +8,7 @@ SUMMARY = "Linux Kernel with ACRN enabled (Service VM)"
 
 KERNEL_FEATURES:append = " features/criu/criu-enable.scc \
                           cgl/cfg/iscsi.scc \
-                          service-vm_5.15.scc \
+                          service-vm_6.1.scc \
 "
 
 # config warning:  'CONFIG_IRQ_REMAP' last val (y) and .config val (n) do not matchs

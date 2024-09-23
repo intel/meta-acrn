@@ -30,8 +30,3 @@ KERNEL_FEATURES:append = " features/netfilter/netfilter.scc \
                           cfg/paravirt_kvm.scc \
                           features/net/stmicro/stmmac.cfg \
 "
-# Following commit is backported from mainline 5.19 to linux-intel 5.15 kernel
-# Commit: https://github.com/torvalds/linux/commit/8b766b0f8eece55155146f7628610ce54a065e0f
-# In which 'CONFIG_FB_BOOT_VESA_SUPPORT' config option is dropped.
-# This causes warning during config audit. So suppress the harmless warning for now.
-KCONF_BSP_AUDIT_LEVEL = "0"
