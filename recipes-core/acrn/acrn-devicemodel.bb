@@ -2,11 +2,12 @@ require acrn-common.inc
 
 SRC_URI += "file://dont-build-tools.patch \
             file://allow-to-pass-compiler-and-linker-flags.patch \
+            file://0001-devicemodel-Makefile-skip-Werror-address-error-check.patch \
             "
 
 inherit python3native
 
-DEPENDS += "util-linux libusb1 openssl libpciaccess acrn-tools cjson virtual/libsdl2 pixman"
+DEPENDS += "util-linux libusb1 openssl libpciaccess acrn-tools cjson virtual/libsdl2 pixman liburing"
 
 # Tell the build where to find acrn-tools
 EXTRA_OEMAKE += "COPTS=${STAGING_DIR_TARGET}${includedir}/acrn"

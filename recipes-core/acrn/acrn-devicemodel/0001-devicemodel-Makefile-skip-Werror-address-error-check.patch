@@ -1,0 +1,36 @@
+From bd12ad91b51cd0e32c2970ea7b14c137152929ac Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Mon, 23 Sep 2024 11:08:50 +0800
+Subject: [PATCH] devicemodel/Makefile: skip Werror=address error check for now
+
+| hw/acpi/core.c: In function 'acpi_dev_finddev':
+| hw/acpi/core.c:283:30: error: the comparison will always evaluate as 'true' for the address of 'hid' will never be NULL [-Werror=address]
+|   283 |                 if (adp->hid != NULL && !strcmp(adp->hid, hid))
+|       |                              ^~
+| In file included from hw/acpi/core.c:24:
+| 3.3/git/devicemodel/include/acpi_dev.h:24:14: note: 'hid' declared here
+|    24 |         char hid[9];
+|       |              ^~~
+
+Upstream-Status: Inappropriate  [OE-Specific]
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ devicemodel/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index 249b4e271..62262c4b5 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -34,6 +34,7 @@ CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
+ CFLAGS += -fno-delete-null-pointer-checks -fwrapv
+ CFLAGS += -fpie
+ CFLAGS += -Wno-stringop-truncation -Wno-address-of-packed-member
++CFLAGS += -Wno-error=address
+ 
+ CFLAGS += -I$(BASEDIR)/include
+ CFLAGS += -I$(BASEDIR)/include/public
+-- 
+2.37.3
+
