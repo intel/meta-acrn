@@ -9,6 +9,8 @@ DISTRO_FEATURES = "${DISTRO_FEATURES_DEFAULT} \
 
 VIRTUAL-RUNTIME_init_manager = "systemd"
 DISTRO_FEATURES_BACKFILL_CONSIDERED = "sysvinit"
+# systemd hardcodes /root in its source codes, other values are not offically supported
+ROOT_HOME = "/root"
 
 WARN_TO_ERROR_QA = "already-stripped compile-host-path install-host-path \
                     installed-vs-shipped ldflags pn-overrides rpaths staticdev \
