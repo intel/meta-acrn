@@ -17,6 +17,7 @@ do_install() {
 	install -m 0644 ${B}/life_mngr.conf ${D}${sysconfdir}/life_mngr/
 	install -d ${D}${systemd_unitdir}/system/
 	install -m 0644 ${B}/life_mngr.service ${D}${systemd_unitdir}/system/
+	install -m 0644 ${B}/life_mngr_shutdown.service ${D}${systemd_unitdir}/system/
 }
 
-SYSTEMD_SERVICE:${PN} = "life_mngr.service"
+SYSTEMD_SERVICE:${PN} = "life_mngr.service life_mngr_shutdown.service"
