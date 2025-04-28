@@ -40,8 +40,8 @@ do_configure[dirs] = "${S}"
 do_compile[dirs] = "${S}"
 do_install[dirs] = "${S}"
 
-# Fixed in v1.2 and onward
-CVE_CHECK_IGNORE += "CVE-2019-18844 CVE-2021-36145"
+CVE_STATUS[CVE-2019-18844] = "fixed-version: Fixed from version 1.2+"
+CVE_STATUS[CVE-2021-36145] = "fixed-version: Fixed from version 2.5+"
 
 # Skip TMPDIR [buildpaths] QA check
 ERROR_QA:remove = "buildpaths"
