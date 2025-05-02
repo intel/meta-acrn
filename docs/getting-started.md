@@ -483,4 +483,4 @@ intel-skylake-64:
 ## Contributing
 You are encouraged to follow Github Pull request workflow to share changes and following commit message guidelines are recommended [OE patch guidelines](https://www.openembedded.org/wiki/Commit_Patch_Message_Guidelines)
 
-Layer Maintainer: Naveen Saini \<naveen.kumar.saini@intel.com\>
+Layer Maintainer: Chee Yang Lee <chee.yang.lee@intel.com>
