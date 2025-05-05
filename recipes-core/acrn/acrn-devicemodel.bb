@@ -1,8 +1,8 @@
 require acrn-common.inc
 
-SRC_URI += "file://dont-build-tools.patch \
-            file://allow-to-pass-compiler-and-linker-flags.patch \
-            file://0001-devicemodel-Makefile-skip-Werror-address-error-check.patch \
+SRC_URI += "file://0001-No-need-to-build-install-the-tools.patch \
+            file://0002-Makefile-allow-to-pass-compiler-and-linker-flags.patch \
+            file://0003-devicemodel-Makefile-skip-Werror-address-error-check.patch \
             "
 
 inherit python3native

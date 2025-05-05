@@ -1,0 +1,53 @@
+From 9a8bc2004b80d0ed8861faadbcf12f968d15f507 Mon Sep 17 00:00:00 2001
+From: Naveen Saini <naveen.kumar.saini@intel.com>
+Date: Mon, 5 May 2025 10:46:08 +0800
+Subject: [PATCH] acrn: Use '-std=gnu11' to fix build with GCC 15
+
+| In file included from lib/string.c:5:
+| acrn-hypervisor/3.3/git/hypervisor/include/lib/types.h:31:15: error: 'bool' cannot be defined via 'typedef'
+|    31 | typedef _Bool bool;
+|       |               ^~~~
+| acrn-hypervisor/3.3/git/hypervisor/include/lib/types.h:31:15: note: 'bool' is a keyword with '-std=c23' onwards
+| acrn-hypervisor/3.3/git/hypervisor/include/lib/types.h:31:1: error: useless type name in empty declaration [-Werror]
+|    31 | typedef _Bool bool;
+|       | ^~~~~~~
+
+| lib/sprintf.c:102:42: error: initializer-string for array of 'char' truncates NUL terminator but destination lacks 'nonstring' attribute (6 chars into 5 available) [-Werror=unterminated-string-initialization]
+|   102 |         static const char flagchars[5] = "#0- +";
+|       |                                          ^~~~~~~
+
+Upstream-Status: Inappropriate  [OE-Specific]
+
+Signed-off-by: Naveen Saini <naveen.kumar.saini@intel.com>
+---
+ devicemodel/Makefile | 1 +
+ hypervisor/Makefile  | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/devicemodel/Makefile b/devicemodel/Makefile
+index 72dc62e6b..372bab663 100644
+--- a/devicemodel/Makefile
++++ b/devicemodel/Makefile
+@@ -34,6 +34,7 @@ CFLAGS += -Wformat -Wformat-security -fno-strict-aliasing
+ CFLAGS += -fno-delete-null-pointer-checks -fwrapv
+ CFLAGS += -fpie
+ CFLAGS += -Wno-stringop-truncation -Wno-address-of-packed-member
++CFLAGS += -std=gnu11
+ 
+ CFLAGS += -I$(BASEDIR)/include
+ CFLAGS += -I$(BASEDIR)/include/public
+diff --git a/hypervisor/Makefile b/hypervisor/Makefile
+index c59594fa3..a22c824c2 100644
+--- a/hypervisor/Makefile
++++ b/hypervisor/Makefile
+@@ -61,6 +61,7 @@ CFLAGS += -m64 -mno-mmx -mno-sse -mno-sse2 -mno-80387 -mno-fp-ret-in-387
+ CFLAGS += -mno-red-zone -mpopcnt
+ CFLAGS += -nostdinc -nostdlib -fno-common
+ CFLAGS += -Werror
++CFLAGS += -std=gnu11 -Wno-unterminated-string-initialization
+ 
+ # ACRN depends on zero length array. Silence the gcc if Warrary-bounds is default option
+ CFLAGS += -Wno-array-bounds
+-- 
+2.37.3
+
